@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEFANCY — Comfort Designed for You</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: { DEFAULT: '#3D5A73', light: '#5B7D95', dark: '#2C4156' },
+        accent: { DEFAULT: '#C8956C', light: '#E0B794', dark: '#A67A52' },
+        bg: { DEFAULT: '#FAFAF7', alt: '#F2EFEB' },
+        txt: { DEFAULT: '#2C2C2C', light: '#6B6B6B', muted: '#999999' },
+        border: '#E5E2DD',
+        star: '#E8B44A',
+        sale: '#C45B4A',
+        success: '#5C8A5E',
+      },
+      fontFamily: {
+        heading: ['DM Serif Display', 'Georgia', 'serif'],
+        body: ['DM Sans', '-apple-system', 'sans-serif'],
+      },
+    },
+  },
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; color: #2C2C2C; background: #FAFAF7; -webkit-font-smoothing: antialiased; }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Announcement slider */
+  .announcement-bar .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.6s ease; }
+  .announcement-bar .slide.active { opacity: 1; }
+
+  /* Marquee */
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .marquee-track { animation: marquee 35s linear infinite; }
+  .trust-marquee { animation: marquee 25s linear infinite; }
+  .marquee-container:hover .marquee-track,
+  .marquee-container:hover .trust-marquee { animation-play-state: paused; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Mega menu */
+  .mega-menu { opacity: 0; visibility: hidden; transform: translateY(8px); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .group:hover .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  /* Nav: transparent → solid on scroll */
+  #mainNav[data-transparent="true"] { background: transparent; }
+  #mainNav[data-transparent="false"] {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #E5E2DD;
+  }
+  #mainNav[data-transparent="false"] .nav-link { color: #2C2C2C !important; }
+  #mainNav[data-transparent="false"] .nav-link:hover { color: #3D5A73 !important; }
+  #mainNav[data-transparent="false"] .nav-logo img { filter: none !important; }
+
+  /* Mobile menu */
+  .mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  .mobile-overlay.open { opacity: 1; visibility: visible; }
+
+  /* Review slides */
+  .review-slide { opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
+  .review-slide.active { opacity: 1; pointer-events: auto; }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #F2EFEB; }
+  ::-webkit-scrollbar-thumb { background: #C8956C; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A67A52; }
+
+  /* Smooth scroll */
+  html { scroll-behavior: smooth; }
+
+  /* Drag-to-scroll cursor */
+  #productCarousel { cursor: grab; }
+  #productCarousel.dragging { cursor: grabbing; scroll-behavior: auto !important; scroll-snap-type: none !important; }
+  #productCarousel.dragging * { pointer-events: none; user-select: none; }
+
+  /* Active swatch */
+  .variant-swatch.active { border-width: 2px; border-color: #3D5A73; }
+
+  /* Bundle tab states */
+  .bundle-tab { border: 1px solid transparent; }
+  .bundle-tab:hover { background: rgba(255,255,255,0.15) !important; }
+  .bundle-tab.active { background: rgba(255,255,255,0.2) !important; border-color: rgba(224,183,148,0.4) !important; }
+
+  /* Bundle image fade */
+  #bundleImg { transition: opacity 0.2s ease; }
+</style>
+</head>
+<body>
+
+<!-- ========== 1. ANNOUNCEMENT BAR ========== -->
+<div class="announcement-bar fixed top-0 left-0 right-0 z-[60] bg-[#FFF9E6] text-txt text-center h-10 overflow-hidden" id="announcementBar">
+  <div class="relative h-full max-w-7xl mx-auto px-4">
+    <!-- Center: rotating promos -->
+    <div class="slide active" data-slide="0">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">SLEEP WEEK: Free Shipping on All Orders + 100-Night Risk-Free Trial</p>
+    </div>
+    <div class="slide" data-slide="1">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">🎁 Bundle &amp; Save 15% — Pillow + Towel Sets</p>
+    </div>
+    <div class="slide" data-slide="2">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">🌙 100-Night Comfort Guarantee — Love It or Return It</p>
+    </div>
+    <!-- Right: secondary info -->
+    <div class="hidden lg:flex items-center gap-3 absolute right-4 top-1/2 -translate-y-1/2 text-xs text-txt-light">
+      <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> HSA/FSA eligible</span>
+      <a href="#" class="underline underline-offset-2 hover:text-primary transition font-medium">Learn more</a>
+    </div>
+  </div>
+  <button onclick="closeAnnouncementBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-txt/40 hover:text-txt transition text-xl leading-none lg:right-auto lg:left-[calc(50%+280px)]" aria-label="Close announcement">&times;</button>
+</div>
+
+<!-- ========== 2. NAVIGATION (transparent overlay on hero) ========== -->
+<header id="mainNav" class="fixed top-10 left-0 right-0 z-50 transition-all duration-400" data-transparent="true">
+  <nav class="max-w-[1400px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
+    <!-- Left: Nav Links -->
+    <ul class="hidden lg:flex items-center gap-7">
+      <li class="relative group">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-white hover:text-white/70 transition py-5 inline-flex items-center gap-1">
+          Products
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <!-- Mega Menu (full-width dropdown) -->
+        <div class="mega-menu fixed left-0 right-0 bg-white border-b border-border shadow-2xl" id="megaMenu">
+          <div class="max-w-[1400px] mx-auto px-8 py-10">
+            <div class="grid grid-cols-12 gap-8">
+              <!-- Col 1: Best Sellers with large product cards -->
+              <div class="col-span-4">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Best Sellers</p>
+                <div class="grid grid-cols-2 gap-4">
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=300&h=300&fit=crop" alt="J-Shaped Pillow" class="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">J-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $59.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=300&h=300&fit=crop" alt="Space Capsule Pillow" class="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Space Capsule Pillow 2-Pack</p>
+                    <p class="text-xs text-txt-muted mt-1">From $49.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=300&h=300&fit=crop" alt="U-Shaped Pillow" class="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">U-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $69.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="https://images.unsplash.com/photo-1600369672770-985fd30004eb?w=300&h=300&fit=crop" alt="Cloud Towel Set" class="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Cloud Towel Set (4-Pack)</p>
+                    <p class="text-xs text-txt-muted mt-1">From $45.99</p>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Col 2: Categories -->
+              <div class="col-span-3 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Categories</p>
+                <div class="flex flex-col gap-3.5">
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Pregnancy Pillows
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Functional Pillows
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Bath Towels
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Bundles &amp; Sets
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Gift Cards
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                </div>
+                <a href="#" class="inline-block mt-6 text-sm font-semibold text-primary hover:text-primary-dark transition underline underline-offset-4">Shop All →</a>
+              </div>
+
+              <!-- Col 3: Featured promo card -->
+              <div class="col-span-5 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Featured</p>
+                <a href="#" class="block rounded-xl overflow-hidden group/promo relative">
+                  <div class="relative aspect-[16/7]">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=350&fit=crop" alt="Bundle & Save" class="w-full h-full object-cover group-hover/promo:scale-[1.03] transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-5 left-6 right-6">
+                      <p class="text-white font-heading text-2xl mb-1">Bundle &amp; Save 15%</p>
+                      <p class="text-white/70 text-sm">Pillow + Towel Sets — curated for comfort</p>
+                      <span class="inline-block mt-3 text-white text-xs font-semibold tracking-[1px] uppercase border-b border-white/50 pb-0.5">Shop Bundles →</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="relative group/explore">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-white hover:text-white/70 transition inline-flex items-center gap-1 py-5">
+          Explore
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="absolute top-full left-0 bg-white rounded-lg shadow-xl py-3 min-w-[180px] opacity-0 invisible group-hover/explore:opacity-100 group-hover/explore:visible transition-all duration-200 z-50">
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">About Us</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Our Story</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Blog</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Contact Us</a>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Center: Logo -->
+    <a href="/" class="nav-logo absolute left-1/2 -translate-x-1/2"><img src="public/logo.png" alt="WEFANCY" class="h-8 sm:h-9" style="filter:brightness(0) invert(1);"></a>
+
+    <!-- Right: Account + Cart -->
+    <div class="hidden lg:flex items-center gap-6">
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-white hover:text-white/70 transition">Account</a>
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-white hover:text-white/70 transition flex items-center gap-1.5">
+        Cart
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <div class="flex lg:hidden items-center gap-3 ml-auto">
+      <button aria-label="Cart" class="nav-link text-white hover:text-white/70 transition p-1 relative">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </button>
+      <button id="mobileMenuBtn" aria-label="Menu" class="nav-link text-white hover:text-white/70 transition p-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-black/40 z-[70]" onclick="closeMobileMenu()"></div>
+<!-- Mobile Menu Drawer -->
+<div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-[300px] h-full bg-white z-[80] shadow-2xl overflow-y-auto">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-8">
+      <img src="public/logo.png" alt="WEFANCY" class="h-6">
+      <button onclick="closeMobileMenu()" class="text-txt p-1" aria-label="Close menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="flex flex-col gap-5">
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Shop All</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Pregnancy Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Functional Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Towels</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Bundles</a>
+      <hr class="border-border">
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Our Story</a>
+      <a href="#reviews" class="text-lg font-medium text-txt hover:text-primary transition">Reviews</a>
+      <hr class="border-border">
+      <a href="#" class="text-sm text-txt-light">Account</a>
+      <a href="#" class="text-sm text-txt-light">Help &amp; FAQ</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 3. HERO (Pluto-style: centered, social proof, big CTA) ========== -->
+<section class="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+  <!-- Background video — auto-playing sleep scene -->
+  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover scale-[1.02]">
+    <source src="public/sleep video.mp4" type="video/mp4">
+  </video>
+  <!-- Overlay: soft dark gradient for text readability -->
+  <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/30"></div>
+
+  <!-- Centered content -->
+  <div class="relative z-10 text-center px-4 max-w-2xl mx-auto">
+    <!-- Promo badge -->
+    <div class="inline-block bg-black/60 backdrop-blur-sm text-white text-xs sm:text-sm font-medium tracking-[1px] uppercase px-4 py-1.5 rounded-sm mb-6 reveal">
+      SLEEP WEEK: Free Shipping on All Orders
+    </div>
+
+    <!-- Main heading -->
+    <h1 class="font-heading text-4xl sm:text-5xl md:text-[56px] lg:text-[64px] text-white leading-[1.1] mb-5 reveal reveal-delay-1">
+      Comfort crafted<br>just for <em class="italic">you</em>
+    </h1>
+
+    <!-- Subtitle with trust signals -->
+    <p class="text-white/80 text-base sm:text-lg leading-relaxed mb-3 reveal reveal-delay-2">
+      Ergonomic pillows &amp; premium towels designed for deeper sleep.
+    </p>
+    <p class="text-white/60 text-sm sm:text-base mb-8 reveal reveal-delay-2">
+      Free Shipping &nbsp;+&nbsp; 100-Night Risk-Free Trial
+    </p>
+
+    <!-- Big rounded CTA button -->
+    <div class="reveal reveal-delay-3 mb-6">
+      <a href="#bestsellers" class="inline-block bg-accent hover:bg-accent-dark text-white text-sm sm:text-base font-semibold tracking-[1.5px] uppercase px-12 sm:px-16 py-4 sm:py-5 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+        Shop Now
+      </a>
+    </div>
+
+    <!-- Social proof: stars + review count -->
+    <div class="reveal reveal-delay-4">
+      <div class="flex items-center justify-center gap-1 mb-1">
+        <svg class="w-5 h-5 text-star" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        <svg class="w-5 h-5 text-star" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        <svg class="w-5 h-5 text-star" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        <svg class="w-5 h-5 text-star" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        <svg class="w-5 h-5 text-star" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+      </div>
+      <a href="#reviews" class="text-white/80 text-sm underline underline-offset-2 hover:text-white transition">10,847 reviews</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TRUST MARQUEE (below hero) ========== -->
+<section class="bg-primary-dark py-3.5 overflow-hidden">
+  <div class="marquee-container">
+    <div class="trust-marquee flex items-center gap-0 whitespace-nowrap">
+      <!-- Set 1 -->
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>100-Night Free Trial</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>30-Day No-Questions-Asked Returns</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Free Shipping on Orders $75+</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Hypoallergenic &amp; Dermatologist Tested</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>10,000+ 5-Star Reviews</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>2-Year Warranty</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>100-Night Free Trial</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>30-Day No-Questions-Asked Returns</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Free Shipping on Orders $75+</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Hypoallergenic &amp; Dermatologist Tested</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>10,000+ 5-Star Reviews</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+      <span class="flex items-center gap-2 px-8 text-white text-sm font-medium tracking-wide"><svg class="w-4 h-4 text-accent-light flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>2-Year Warranty</span>
+      <span class="text-white/20 text-lg select-none">✦</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. BEST SELLERS (Brooklinen-style horizontal carousel) ========== -->
+<section id="bestsellers" class="bg-bg py-20 sm:py-24 overflow-hidden">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+    <!-- Header: title + button left, arrows right -->
+    <div class="flex items-start justify-between mb-8 sm:mb-10 reveal">
+      <div>
+        <h2 class="font-heading text-3xl sm:text-4xl text-txt leading-tight">Best in Bed</h2>
+        <a href="#" class="inline-block mt-4 border border-txt rounded-full px-5 py-2 text-sm font-medium text-txt hover:bg-txt hover:text-white transition-all duration-200">Shop Best Sellers</a>
+      </div>
+      <div class="hidden sm:flex items-center gap-3 mt-3">
+        <button onclick="scrollCarousel(-1)" class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-txt-muted hover:text-txt hover:border-txt transition" aria-label="Previous">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button onclick="scrollCarousel(1)" class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-txt-muted hover:text-txt hover:border-txt transition" aria-label="Next">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Product carousel -->
+    <div id="productCarousel" class="flex gap-5 lg:gap-6 overflow-x-auto scroll-smooth pb-4 -mx-5 px-5 sm:-mx-8 sm:px-8 snap-x snap-mandatory" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>#productCarousel::-webkit-scrollbar{display:none}</style>
+
+      <!-- Product 1: J-Shaped Pregnancy Pillow -->
+      <div class="product-card group flex-shrink-0 w-[75vw] sm:w-[45vw] lg:w-[28vw] xl:w-[27vw] snap-start reveal reveal-delay-1">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-primary text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Best Seller</span>
+          <img src="public/j-1.png" alt="J-Shaped Pregnancy Pillow" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="public/j-2.png" alt="J-Shaped Pregnancy Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <p class="text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Best Value</p>
+            <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">J-Shaped Pregnancy Pillow</h3>
+          </div>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$79.99</span>
+          <span class="font-semibold text-[15px] text-txt">$59.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">25% off</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(2,847)</span>
+        </div>
+        <!-- Color swatches with variant images -->
+        <div class="flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#F5C6D0] cursor-pointer transition" data-img="public/j-1.png" data-hover="public/j-2.png" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/灰/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/黑灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/黑灰/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#7B93A8] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/蓝灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/蓝灰/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#D4B896] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/粉灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/粉灰/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 2: U-Shaped Pregnancy Pillow -->
+      <div class="product-card group flex-shrink-0 w-[75vw] sm:w-[45vw] lg:w-[28vw] xl:w-[27vw] snap-start reveal reveal-delay-2">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-primary text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Best Seller</span>
+          <img src="public/u-1.png" alt="U-Shaped Pregnancy Pillow" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="public/u-2.png" alt="U-Shaped Pregnancy Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">U-Shaped Pregnancy Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$89.99</span>
+          <span class="font-semibold text-[15px] text-txt">$69.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">22% off</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(1,523)</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#F5C6D0] cursor-pointer transition" data-img="public/u-1.png" data-hover="public/u-2.png" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/U型枕/1黑.jpg" data-hover="抱枕独立站材料/六个品套图/U型枕/2黑.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/U型枕/1灰.jpg" data-hover="抱枕独立站材料/六个品套图/U型枕/2灰.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 3: Space Capsule Pillow 2-Pack -->
+      <div class="product-card group flex-shrink-0 w-[75vw] sm:w-[45vw] lg:w-[28vw] xl:w-[27vw] snap-start reveal reveal-delay-3">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-success text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">New</span>
+          <img src="public/母婴级头枕.png" alt="Space Capsule Pillow 2-Pack" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/太空舱/2.jpg" alt="Space Capsule Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Space Capsule Pillow 2-Pack</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$64.99</span>
+          <span class="font-semibold text-[15px] text-txt">$49.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">23% off</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(986)</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="public/母婴级头枕.png" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/太空舱/2.jpg" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/零压力/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/零压力/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 4: Seahorse Pillow -->
+      <div class="product-card group flex-shrink-0 w-[75vw] sm:w-[45vw] lg:w-[28vw] xl:w-[27vw] snap-start reveal reveal-delay-4">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-success text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">New</span>
+          <img src="public/海马枕.png" alt="Seahorse Pillow" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/海马枕/条纹/2.jpg" alt="Seahorse Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Seahorse Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$59.99</span>
+          <span class="font-semibold text-[15px] text-txt">$45.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">23% off</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(642)</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#E8E0D4] cursor-pointer transition" data-img="public/海马枕.png" data-hover="抱枕独立站材料/六个品套图/海马枕/条纹/2.jpg" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/海马枕/灰色/1.jpg" data-hover="抱枕独立站材料/六个品套图/海马枕/灰色/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#F5C6D0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/海马枕/粉/1.jpg" data-hover="抱枕独立站材料/六个品套图/海马枕/粉/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 5 (peek card) -->
+      <a href="#" class="group flex-shrink-0 w-[75vw] sm:w-[45vw] lg:w-[28vw] xl:w-[27vw] snap-start">
+        <div class="relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-accent text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Bundle</span>
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=640&h=640&fit=crop" alt="Pillow + Towel Bundle" class="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <p class="text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Save 15%</p>
+            <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Pillow + Towel Bundle</h3>
+          </div>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$105.98</span>
+          <span class="font-semibold text-[15px] text-txt">$89.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">15% off</span>
+        </div>
+        <div class="flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(438)</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== SHOP BY CATEGORY (moved to 3rd position) ========== -->
+<section class="bg-white py-20 sm:py-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <div class="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-0">
+      <div class="lg:w-[28%] lg:pr-10 flex-shrink-0 reveal">
+        <p class="text-[11px] font-semibold tracking-[2.5px] uppercase text-txt-muted mb-3">Our Collections</p>
+        <h2 class="font-heading text-3xl sm:text-4xl text-txt leading-[1.15] mb-4">Shop by category</h2>
+        <p class="text-txt-light text-[15px] leading-relaxed mb-8">From pregnancy support to beauty sleep essentials, find the perfect comfort for every need.</p>
+        <a href="#" class="inline-block bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-8 py-3.5 rounded-full transition-all duration-300 mb-8">Shop All</a>
+        <div class="flex gap-3">
+          <button onclick="scrollCollection(-1)" class="w-11 h-11 rounded-full border border-txt/20 hover:border-txt flex items-center justify-center transition-colors duration-200" aria-label="Previous">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L5 9l7 6"/></svg>
+          </button>
+          <button onclick="scrollCollection(1)" class="w-11 h-11 rounded-full border border-txt/20 hover:border-txt flex items-center justify-center transition-colors duration-200" aria-label="Next">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l7 6-7 6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="lg:w-[72%] overflow-hidden">
+        <div id="collectionTrack" class="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4" style="scrollbar-width:none;-ms-overflow-style:none;">
+          <style>#collectionTrack::-webkit-scrollbar{display:none;}</style>
+          <a href="#" class="collection-card snap-start flex-shrink-0 w-[70vw] sm:w-[42vw] lg:w-[calc(33.333%-11px)] relative rounded-xl overflow-hidden group">
+            <div class="aspect-[3/4]">
+              <img src="https://images.unsplash.com/photo-1615529328331-f8917597711f?w=800&h=1000&fit=crop" alt="Pregnancy Pillows" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+              <h3 class="absolute bottom-6 left-6 right-6 font-heading text-white text-xl sm:text-2xl">Pregnancy Pillows</h3>
+            </div>
+          </a>
+          <a href="#" class="collection-card snap-start flex-shrink-0 w-[70vw] sm:w-[42vw] lg:w-[calc(33.333%-11px)] relative rounded-xl overflow-hidden group">
+            <div class="aspect-[3/4]">
+              <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&h=1000&fit=crop" alt="Functional Pillows" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+              <h3 class="absolute bottom-6 left-6 right-6 font-heading text-white text-xl sm:text-2xl">Functional Pillows</h3>
+            </div>
+          </a>
+          <a href="#" class="collection-card snap-start flex-shrink-0 w-[70vw] sm:w-[42vw] lg:w-[calc(33.333%-11px)] relative rounded-xl overflow-hidden group">
+            <div class="aspect-[3/4]">
+              <img src="https://images.unsplash.com/photo-1600369672770-985fd30004eb?w=800&h=1000&fit=crop" alt="Premium Towels" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+              <h3 class="absolute bottom-6 left-6 right-6 font-heading text-white text-xl sm:text-2xl">Premium Towels</h3>
+            </div>
+          </a>
+          <a href="#" class="collection-card snap-start flex-shrink-0 w-[70vw] sm:w-[42vw] lg:w-[calc(33.333%-11px)] relative rounded-xl overflow-hidden group">
+            <div class="aspect-[3/4]">
+              <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=1000&fit=crop" alt="Beauty Pillows" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+              <h3 class="absolute bottom-6 left-6 right-6 font-heading text-white text-xl sm:text-2xl">Beauty Pillows</h3>
+            </div>
+          </a>
+          <a href="#" class="collection-card snap-start flex-shrink-0 w-[70vw] sm:w-[42vw] lg:w-[calc(33.333%-11px)] relative rounded-xl overflow-hidden group">
+            <div class="aspect-[3/4]">
+              <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=1000&fit=crop" alt="Travel & Accessories" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+              <h3 class="absolute bottom-6 left-6 right-6 font-heading text-white text-xl sm:text-2xl">Travel & Accessories</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BUNDLE & SAVE (bold promotional banner) ========== -->
+<section class="bg-bg-alt py-20 sm:py-24 overflow-hidden">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <div class="grid lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden reveal">
+      <!-- Left: bundle image (switches on tab click) -->
+      <div class="relative bg-[#E8E0D6] min-h-[360px] lg:min-h-[520px] overflow-hidden" id="bundleImageWrap">
+        <img id="bundleImg" src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=900&h=700&fit=crop&q=80" alt="Bundle products" class="w-full h-full object-cover transition-opacity duration-400">
+        <!-- Floating price tags -->
+        <div class="absolute top-6 left-6 sm:top-8 sm:left-8">
+          <div class="bg-white rounded-full px-4 py-2 shadow-lg flex items-center gap-2">
+            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 6h.008v.008H6V6Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="bundleCount" class="font-semibold text-sm text-txt">3 items</span>
+          </div>
+        </div>
+      </div>
+      <!-- Right: promo content -->
+      <div class="bg-primary p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+        <div class="inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-1.5 w-fit mb-6">
+          <span class="text-accent-light text-sm font-bold">★</span>
+          <span class="text-white/90 text-xs font-semibold tracking-wide uppercase">Most Popular</span>
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl lg:text-[44px] text-white leading-[1.1] mb-4">Bundle & Save<br>up to 25%</h2>
+        <p class="text-white/70 text-base sm:text-lg leading-relaxed mb-8 max-w-md">Mix and match your favorites. The more you bundle, the more you save — curated combos designed for complete comfort.</p>
+
+        <!-- Bundle options (tabs) -->
+        <div class="space-y-3 mb-8" id="bundleTabs">
+          <div class="bundle-tab active flex items-center justify-between bg-white/20 border border-accent-light/40 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200" data-img="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=900&h=700&fit=crop&q=80" data-count="3 items">
+            <div>
+              <p class="text-white font-semibold text-[15px] mb-0.5">Pregnancy Comfort Bundle</p>
+              <p class="text-white/50 text-sm">J-Pillow + Nursing Pillow + Pillowcase</p>
+            </div>
+            <div class="text-right flex-shrink-0 ml-4">
+              <p class="text-white/50 text-sm line-through">$149.97</p>
+              <p class="text-accent-light font-bold text-lg">$119.99</p>
+            </div>
+          </div>
+          <div class="bundle-tab flex items-center justify-between bg-white/10 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200" data-img="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=900&h=700&fit=crop&q=80" data-count="2 items">
+            <div>
+              <p class="text-white font-semibold text-[15px] mb-0.5">Sleep Essentials Bundle</p>
+              <p class="text-white/50 text-sm">Capsule Pillow 2-Pack + Cloud Towels</p>
+            </div>
+            <div class="text-right flex-shrink-0 ml-4">
+              <p class="text-white/50 text-sm line-through">$129.97</p>
+              <p class="text-accent-light font-bold text-lg">$97.49</p>
+            </div>
+          </div>
+          <div class="bundle-tab flex items-center justify-between bg-white/10 rounded-xl px-5 py-4 cursor-pointer transition-all duration-200" data-img="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=900&h=700&fit=crop&q=80" data-count="4 items">
+            <div>
+              <p class="text-white font-semibold text-[15px] mb-0.5">Ultimate Comfort Bundle <span class="text-accent-light text-xs font-bold ml-1">BEST VALUE</span></p>
+              <p class="text-white/50 text-sm">U-Pillow + Beauty Pillow + Towels + Cases</p>
+            </div>
+            <div class="text-right flex-shrink-0 ml-4">
+              <p class="text-white/50 text-sm line-through">$219.96</p>
+              <p class="text-accent-light font-bold text-lg">$164.99</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#" class="inline-block w-fit bg-accent hover:bg-accent-dark text-white text-sm font-semibold tracking-[1px] uppercase px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">Shop All Bundles</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== REVIEWS (compact card: left stat + right quote, auto-rotate) ========== -->
+<section id="reviews" class="bg-white py-20 sm:py-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <div class="bg-white rounded-2xl border border-border shadow-md overflow-hidden reveal">
+      <div class="flex flex-col lg:flex-row">
+        <!-- Left: stars + stat + CTA -->
+        <div class="flex-shrink-0 lg:w-[340px] xl:w-[380px] p-8 sm:p-10 lg:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-border/50">
+          <div class="flex text-accent text-xl mb-4">★★★★★</div>
+          <h2 class="font-heading text-3xl sm:text-[36px] xl:text-[40px] text-primary leading-[1.15] mb-6">Over 10,000+ 5&nbsp;star reviews</h2>
+          <a href="#" class="inline-block w-fit bg-primary hover:bg-primary-dark text-white text-sm font-semibold tracking-[0.5px] px-7 py-3 rounded-full transition-colors duration-200">See all reviews</a>
+        </div>
+
+        <!-- Right: single review (auto-rotates, fixed height) -->
+        <div class="flex-1 p-8 sm:p-10 lg:p-12 flex flex-col justify-center relative" style="min-height:220px;">
+          <!-- Review slides — all absolutely positioned to prevent height shift -->
+          <div class="review-slide active absolute inset-0 p-8 sm:p-10 lg:p-12 flex flex-col justify-center" data-review="0">
+            <h3 class="font-heading text-lg sm:text-xl text-txt mb-3">"Wish I bought it sooner"</h3>
+            <p class="text-txt-light text-[15px] leading-relaxed mb-5 line-clamp-3">"As a first-time mom I really struggled to sleep well. This pregnancy pillow saved me! It's the perfect mix of soft and firm so I don't sink in but don't feel like I'm sleeping on a rock."</p>
+            <p class="font-semibold text-sm text-primary">Sarah T. — <span class="font-normal text-txt-light">Los Angeles, CA</span></p>
+          </div>
+          <div class="review-slide absolute inset-0 p-8 sm:p-10 lg:p-12 flex flex-col justify-center" data-review="1">
+            <h3 class="font-heading text-lg sm:text-xl text-txt mb-3">"Best purchase I've made this year"</h3>
+            <p class="text-txt-light text-[15px] leading-relaxed mb-5 line-clamp-3">"The Space Capsule pillows are incredible. Perfect support, breathable, and my neck pain has disappeared after just a week. I bought a second set for the guest room."</p>
+            <p class="font-semibold text-sm text-primary">Michael R. — <span class="font-normal text-txt-light">Austin, TX</span></p>
+          </div>
+          <div class="review-slide absolute inset-0 p-8 sm:p-10 lg:p-12 flex flex-col justify-center" data-review="2">
+            <h3 class="font-heading text-lg sm:text-xl text-txt mb-3">"Worth every penny"</h3>
+            <p class="text-txt-light text-[15px] leading-relaxed mb-5 line-clamp-3">"These cloud towels are softer than any luxury hotel towel I've used. Quick drying, no lint, and they still feel brand new after months of washing."</p>
+            <p class="font-semibold text-sm text-primary">Linda B. — <span class="font-normal text-txt-light">New York, NY</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TRIAL NIGHTS (Pluto-style: giant text + 3 floating parallax images) ========== -->
+<section id="trialSection" class="relative bg-bg overflow-hidden min-h-screen flex items-center justify-center">
+  <!-- Floating image 1: top-left -->
+  <div class="parallax-img absolute z-10" data-speed="-0.35" style="top:4%;left:3%;transform:rotate(-4deg);">
+    <div class="w-[220px] sm:w-[300px] lg:w-[380px] rounded-2xl overflow-hidden shadow-[0_16px_50px_rgba(0,0,0,0.10)]">
+      <img src="public/100-1.jpg" alt="Woman resting comfortably with premium pillow" class="w-full aspect-[3/2] object-cover">
+    </div>
+  </div>
+
+  <!-- Floating image 2: top-right -->
+  <div class="parallax-img absolute z-10" data-speed="0.3" style="top:8%;right:4%;transform:rotate(3deg);">
+    <div class="w-[200px] sm:w-[260px] lg:w-[320px] rounded-2xl overflow-hidden shadow-[0_16px_50px_rgba(0,0,0,0.10)]">
+      <img src="public/100-2.jpg" alt="Happy couple with their pillow" class="w-full aspect-[3/2] object-cover">
+    </div>
+  </div>
+
+  <!-- Floating image 3: bottom-left -->
+  <div class="parallax-img absolute z-10" data-speed="-0.25" style="bottom:8%;left:5%;transform:rotate(-2deg);">
+    <div class="w-[200px] sm:w-[260px] lg:w-[320px] rounded-2xl overflow-hidden shadow-[0_16px_50px_rgba(0,0,0,0.10)]">
+      <img src="public/100-3.jpg" alt="Couple sleeping comfortably with pillows" class="w-full aspect-[3/2] object-cover">
+    </div>
+  </div>
+
+  <!-- Floating image 4: bottom-right -->
+  <div class="parallax-img absolute z-10" data-speed="0.4" style="bottom:6%;right:3%;transform:rotate(2deg);">
+    <div class="w-[180px] sm:w-[240px] lg:w-[300px] rounded-2xl overflow-hidden shadow-[0_16px_50px_rgba(0,0,0,0.10)]">
+      <img src="public/100-4.jpg" alt="Cozy bedroom setup" class="w-full aspect-[3/2] object-cover">
+    </div>
+  </div>
+
+  <!-- Center content -->
+  <div class="relative z-20 text-center px-4 max-w-4xl mx-auto py-20 sm:py-24">
+    <h2 class="font-heading text-txt leading-[0.85] tracking-tight mb-8 sm:mb-12" style="font-size:clamp(80px, 14vw, 220px);font-weight:400;">
+      100 nights.
+    </h2>
+    <p class="text-txt-light text-base sm:text-lg leading-relaxed max-w-lg mx-auto mb-8 sm:mb-10">
+      Love it or return it! We offer a 100-night risk-free trial from the date you receive your order to test it out in the comfort of your bed.
+    </p>
+    <a href="#" class="inline-block bg-accent hover:bg-accent-dark text-white text-sm font-semibold tracking-[2px] uppercase px-12 sm:px-16 py-4 sm:py-5 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+      Find Out More
+    </a>
+  </div>
+</section>
+
+<!-- ========== 6. WHY WEFANCY ========== -->
+<section class="bg-bg-alt py-20 sm:py-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+  <div class="grid md:grid-cols-2 items-stretch rounded-2xl overflow-hidden">
+    <!-- Left: text content -->
+    <div class="flex items-center px-8 sm:px-12 lg:px-20 xl:px-28 py-12 sm:py-16 reveal">
+      <div class="max-w-lg">
+        <h2 class="font-heading text-[28px] sm:text-[34px] lg:text-[40px] text-txt leading-[1.15] mb-6">Why WEFANCY?</h2>
+        <p class="text-txt-light text-[15px] sm:text-base leading-relaxed mb-4">
+          Luxuriously soft yet durable, our pillows are crafted for 5-star spas and resorts, offering a cloud-like feel you'll look forward to every night.
+        </p>
+        <p class="text-txt-light text-[15px] sm:text-base leading-relaxed mb-6">
+          Recommended for anyone that wants cozy, supportive, and luxuriously soft sleep essentials.
+        </p>
+        <ul class="space-y-2.5 mb-8">
+          <li class="flex items-center gap-2.5 text-txt text-[15px]">
+            <span class="w-1.5 h-1.5 rounded-full bg-txt/60 flex-shrink-0"></span>
+            Premium hypoallergenic materials
+          </li>
+          <li class="flex items-center gap-2.5 text-txt text-[15px]">
+            <span class="w-1.5 h-1.5 rounded-full bg-txt/60 flex-shrink-0"></span>
+            Ergonomic body-contouring design
+          </li>
+          <li class="flex items-center gap-2.5 text-txt text-[15px]">
+            <span class="w-1.5 h-1.5 rounded-full bg-txt/60 flex-shrink-0"></span>
+            100-night risk-free trial, free shipping
+          </li>
+        </ul>
+        <a href="#bestsellers" class="inline-block bg-accent hover:bg-accent-dark text-white text-sm font-semibold px-8 py-3.5 rounded-full transition-all duration-300">Shop Best Sellers</a>
+      </div>
+    </div>
+    <!-- Right: full-bleed image -->
+    <div class="reveal">
+      <img src="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=1000&h=900&fit=crop&q=80" alt="Cozy bedroom with linen bedding and warm light" class="w-full h-full object-cover min-h-[360px] md:min-h-full">
+    </div>
+  </div>
+  </div>
+</section>
+
+
+
+<!-- ========== VIDEO STORIES CAROUSEL ========== -->
+<section class="bg-bg py-20 sm:py-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <!-- Heading -->
+    <div class="text-center mb-10 sm:mb-14 reveal">
+      <h2 class="font-heading text-3xl sm:text-4xl text-txt mb-3">WEFANCY Stories</h2>
+      <p class="text-txt-light text-base sm:text-lg mb-4">Don't take our word for it, see what our customers have to say!</p>
+      <div class="flex items-center justify-center gap-2">
+        <span class="text-star text-lg tracking-wide">★★★★★</span>
+        <span class="font-semibold text-xl text-txt">4.9</span>
+        <span class="text-txt-muted text-sm">Based on 10,000+ reviews</span>
+      </div>
+    </div>
+
+    <!-- Carousel -->
+    <div class="relative">
+      <div id="videoTrack" class="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6" style="scrollbar-width:none;-ms-overflow-style:none;">
+        <style>#videoTrack::-webkit-scrollbar{display:none;}</style>
+
+        <!-- Video Card 1 -->
+        <a href="#" class="video-card snap-start flex-shrink-0 w-[65vw] sm:w-[38vw] lg:w-[calc(25%-15px)] relative rounded-xl overflow-hidden group">
+          <div class="aspect-[9/16] bg-[#E8E4DF]">
+            <img src="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=600&h=1067&fit=crop" alt="Bedroom makeover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+            <!-- Play button -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="#2D2D2D"><polygon points="6,3 18,10 6,17"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Video Card 2 -->
+        <a href="#" class="video-card snap-start flex-shrink-0 w-[65vw] sm:w-[38vw] lg:w-[calc(25%-15px)] relative rounded-xl overflow-hidden group">
+          <div class="aspect-[9/16] bg-[#E8E4DF]">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&h=1067&fit=crop" alt="Unboxing WEFANCY" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="#2D2D2D"><polygon points="6,3 18,10 6,17"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Video Card 3 -->
+        <a href="#" class="video-card snap-start flex-shrink-0 w-[65vw] sm:w-[38vw] lg:w-[calc(25%-15px)] relative rounded-xl overflow-hidden group">
+          <div class="aspect-[9/16] bg-[#E8E4DF]">
+            <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&h=1067&fit=crop" alt="Sleep routine" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="#2D2D2D"><polygon points="6,3 18,10 6,17"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Video Card 4 -->
+        <a href="#" class="video-card snap-start flex-shrink-0 w-[65vw] sm:w-[38vw] lg:w-[calc(25%-15px)] relative rounded-xl overflow-hidden group">
+          <div class="aspect-[9/16] bg-[#E8E4DF]">
+            <img src="https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=600&h=1067&fit=crop" alt="Pillow review" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="#2D2D2D"><polygon points="6,3 18,10 6,17"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Video Card 5 -->
+        <a href="#" class="video-card snap-start flex-shrink-0 w-[65vw] sm:w-[38vw] lg:w-[calc(25%-15px)] relative rounded-xl overflow-hidden group">
+          <div class="aspect-[9/16] bg-[#E8E4DF]">
+            <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600&h=1067&fit=crop" alt="Morning comfort" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="#2D2D2D"><polygon points="6,3 18,10 6,17"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Video Card 6 -->
+        <a href="#" class="video-card snap-start flex-shrink-0 w-[65vw] sm:w-[38vw] lg:w-[calc(25%-15px)] relative rounded-xl overflow-hidden group">
+          <div class="aspect-[9/16] bg-[#E8E4DF]">
+            <img src="https://images.unsplash.com/photo-1615529328331-f8917597711f?w=600&h=1067&fit=crop" alt="Cozy night" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="#2D2D2D"><polygon points="6,3 18,10 6,17"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Progress bar + arrows -->
+      <div class="flex items-center justify-between mt-4 sm:mt-6">
+        <div class="flex-1 h-px bg-border mr-6 relative">
+          <div id="videoProgress" class="absolute top-0 left-0 h-full bg-txt transition-all duration-300" style="width:25%"></div>
+        </div>
+        <div class="flex gap-3 flex-shrink-0">
+          <button onclick="scrollVideos(-1)" class="w-11 h-11 rounded-full border border-txt/20 hover:border-txt flex items-center justify-center transition-colors duration-200" aria-label="Previous">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L5 9l7 6"/></svg>
+          </button>
+          <button onclick="scrollVideos(1)" class="w-11 h-11 rounded-full border border-txt/20 hover:border-txt flex items-center justify-center transition-colors duration-200" aria-label="Next">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l7 6-7 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BLOG ========== -->
+<section class="bg-bg py-20 sm:py-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <h2 class="font-heading text-3xl sm:text-4xl text-txt">From the Journal</h2>
+        <p class="text-txt-light text-[15px] mt-2">Tips, science, and stories to help you sleep better.</p>
+      </div>
+      <a href="#" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">View All
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Blog Card 1 -->
+      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" alt="Bedroom styling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Sleep Science</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">The Perfect Bedroom Temperature for Deep Sleep</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">Research shows the ideal sleeping temperature is between 60-67°F. Here's how to optimize your bedroom environment.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Mar 5, 2026</span>
+            <span>·</span>
+            <span>4 min read</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Blog Card 2 -->
+      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-1">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80" alt="White bedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Buying Guide</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">Cotton vs. Bamboo Sheets: Which Is Right for You?</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">We break down the feel, breathability, and durability of the two most popular sheet materials on the market.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Feb 28, 2026</span>
+            <span>·</span>
+            <span>6 min read</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Blog Card 3 -->
+      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-2">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80" alt="Cozy pillows" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Wellness</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">5 Evening Rituals That Actually Improve Sleep Quality</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">From pillow mists to weighted blankets — simple habits backed by sleep experts to wind down your night.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Feb 20, 2026</span>
+            <span>·</span>
+            <span>5 min read</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="sm:hidden text-center mt-8">
+      <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">View All Articles
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 12. COMFORT PROMISE ========== -->
+<section class="bg-primary-dark py-12 sm:py-16">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="grid sm:grid-cols-3 gap-10 sm:gap-8 text-center">
+      <div class="reveal reveal-delay-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Ethically Made</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Responsibly sourced materials, certified safe for your family.</p>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12.75 3.03v.568c0 .334.148.65.405.864a4.5 4.5 0 0 1 0 6.635 .997.997 0 0 0-.405.864v.568m0-9.5a4.49 4.49 0 0 0-3.397 1.549M12.75 3.03V1.5m0 1.53a4.49 4.49 0 0 1 3.397 1.549M3.378 15.18A23.96 23.96 0 0 1 12 13.5a23.96 23.96 0 0 1 8.622 1.68M3.378 15.18A24.078 24.078 0 0 0 2.25 16.5c0 1.68.503 3.246 1.367 4.55A24.006 24.006 0 0 0 12 22.5a24.006 24.006 0 0 0 8.383-1.45A8.457 8.457 0 0 0 21.75 16.5a24.078 24.078 0 0 0-1.128-1.32" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Sustainable Packaging</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Recyclable and minimal packaging — because comfort shouldn't cost the earth.</p>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Designed with Care</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Every product is tested by real families before it reaches yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 14. FOOTER ========== -->
+<footer class="bg-bg-alt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-16 pb-8">
+    <!-- Top: Logo -->
+    <div class="mb-10">
+      <a href="/"><img src="public/logo.png" alt="WEFANCY" class="h-7"></a>
+    </div>
+    <hr class="border-border mb-10">
+
+    <!-- Links Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Shop</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Pregnancy Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Functional Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Premium Towels</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Bundles</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Gift Cards</a>
+          <a href="#" class="text-[13px] text-sale font-medium hover:text-sale/80 transition">Sale</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Help</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">FAQ</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Shipping &amp; Returns</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Care Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Size Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Track Order</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">About</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Our Story</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Reviews</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Press</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Careers</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Blog</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Get In Touch</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Contact Us</a>
+          <p class="text-[13px] text-txt-light">hello@wefancy.com</p>
+        </div>
+        <!-- Social Icons -->
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Instagram">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Facebook">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Pinterest">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="TikTok">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <hr class="border-border mb-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <!-- Payment Icons -->
+      <div class="flex items-center gap-2 text-txt-muted">
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">VISA</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">MC</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">AMEX</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">PayPal</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Apple Pay</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Shop Pay</span>
+      </div>
+      <p class="text-txt-muted text-[11px]">&copy; 2026 WEFANCY. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Terms of Service</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Privacy Policy</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+// Announcement bar rotation
+(function() {
+  const slides = document.querySelectorAll('.announcement-bar .slide');
+  let current = 0;
+  if (slides.length > 1) {
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 5000);
+  }
+})();
+
+// Close announcement bar
+function closeAnnouncementBar() {
+  const bar = document.getElementById('announcementBar');
+  bar.style.transform = 'translateY(-100%)';
+  bar.style.transition = 'transform 0.3s ease';
+  setTimeout(() => { bar.style.display = 'none'; }, 300);
+  document.getElementById('mainNav').style.top = '0';
+}
+
+// Mega menu: keep top aligned to nav bottom
+(function() {
+  var nav = document.getElementById('mainNav');
+  var mega = document.getElementById('megaMenu');
+  if (!nav || !mega) return;
+  function syncMega() {
+    mega.style.top = (nav.offsetTop + nav.offsetHeight) + 'px';
+  }
+  syncMega();
+  window.addEventListener('scroll', syncMega, { passive: true });
+  new MutationObserver(syncMega).observe(nav, { attributes: true, attributeFilter: ['style'] });
+})();
+
+// Nav: transparent on hero, solid after scroll
+(function() {
+  const nav = document.getElementById('mainNav');
+  const heroHeight = window.innerHeight * 0.7;
+  function updateNav() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > heroHeight) {
+      nav.dataset.transparent = 'false';
+    } else {
+      nav.dataset.transparent = 'true';
+    }
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+})();
+
+// Scroll reveal with Intersection Observer
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// Best Sellers carousel scroll
+function scrollCarousel(dir) {
+  const c = document.getElementById('productCarousel');
+  const card = c.querySelector('.product-card');
+  const cardWidth = card.offsetWidth + 20;
+  c.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
+}
+
+// Drag-to-scroll for product carousel
+(function() {
+  const carousel = document.getElementById('productCarousel');
+  if (!carousel) return;
+  let isDown = false, startX, scrollLeft, hasDragged = false;
+
+  carousel.addEventListener('mousedown', function(e) {
+    if (e.target.closest('.variant-swatch')) return;
+    isDown = true;
+    hasDragged = false;
+    carousel.classList.add('dragging');
+    startX = e.pageX;
+    scrollLeft = carousel.scrollLeft;
+  });
+  carousel.addEventListener('mouseleave', function() {
+    if (!isDown) return;
+    isDown = false;
+    carousel.classList.remove('dragging');
+  });
+  carousel.addEventListener('mouseup', function() {
+    isDown = false;
+    carousel.classList.remove('dragging');
+    if (hasDragged) {
+      carousel.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', preventClick, { once: true });
+      });
+    }
+  });
+  carousel.addEventListener('mousemove', function(e) {
+    if (!isDown) return;
+    e.preventDefault();
+    var dx = e.pageX - startX;
+    if (Math.abs(dx) > 5) hasDragged = true;
+    carousel.scrollLeft = scrollLeft - dx;
+  });
+
+  function preventClick(e) { e.preventDefault(); }
+})();
+
+// Variant swatch click — switch product images
+(function() {
+  document.querySelectorAll('.variant-swatch').forEach(function(swatch) {
+    swatch.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var card = this.closest('.product-card');
+      if (!card) return;
+      // Update active state
+      card.querySelectorAll('.variant-swatch').forEach(function(s) {
+        s.classList.remove('active');
+        s.style.borderWidth = '1px';
+        s.style.borderColor = '#E5E2DD';
+      });
+      this.classList.add('active');
+      this.style.borderWidth = '2px';
+      this.style.borderColor = '#3D5A73';
+      // Swap images
+      var img = card.querySelector('.product-img');
+      var hoverImg = card.querySelector('.product-hover-img');
+      if (img && this.dataset.img) {
+        img.src = this.dataset.img;
+        // public images (solid bg) use contain, variant photos use cover
+        if (this.dataset.contain) {
+          img.style.objectFit = 'contain';
+        } else {
+          img.style.objectFit = 'cover';
+        }
+      }
+      if (hoverImg && this.dataset.hover) hoverImg.src = this.dataset.hover;
+    });
+  });
+})();
+
+// Bundle tabs — switch image on click
+(function() {
+  var tabs = document.querySelectorAll('.bundle-tab');
+  var img = document.getElementById('bundleImg');
+  var count = document.getElementById('bundleCount');
+  if (!tabs.length || !img) return;
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) {
+        t.classList.remove('active');
+        t.style.background = 'rgba(255,255,255,0.1)';
+        t.style.borderColor = 'transparent';
+      });
+      this.classList.add('active');
+      this.style.background = 'rgba(255,255,255,0.2)';
+      this.style.borderColor = 'rgba(224,183,148,0.4)';
+      // Fade image
+      img.style.opacity = '0';
+      setTimeout(function() {
+        img.src = tab.dataset.img;
+        img.style.opacity = '1';
+      }, 200);
+      if (count && this.dataset.count) count.textContent = this.dataset.count;
+    });
+  });
+})();
+
+// Video stories carousel
+function scrollVideos(dir) {
+  const track = document.getElementById('videoTrack');
+  if (!track) return;
+  const card = track.querySelector('.video-card');
+  const cardWidth = card.offsetWidth + 20;
+  track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
+}
+(function() {
+  const track = document.getElementById('videoTrack');
+  const bar = document.getElementById('videoProgress');
+  if (!track || !bar) return;
+  track.addEventListener('scroll', function() {
+    const pct = track.scrollLeft / (track.scrollWidth - track.clientWidth) * 100;
+    bar.style.width = Math.max(pct, 5) + '%';
+  }, { passive: true });
+})();
+
+// Collection carousel scroll
+function scrollCollection(dir) {
+  const track = document.getElementById('collectionTrack');
+  if (!track) return;
+  const card = track.querySelector('.collection-card');
+  const cardWidth = card.offsetWidth + 16; // card width + gap
+  track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
+}
+
+// Parallax floating images
+(function() {
+  const imgs = document.querySelectorAll('.parallax-img');
+  if (!imgs.length) return;
+  function updateParallax() {
+    const scrollY = window.scrollY;
+    imgs.forEach(img => {
+      const rect = img.closest('section').getBoundingClientRect();
+      const sectionTop = rect.top + scrollY;
+      const offset = (scrollY - sectionTop) * parseFloat(img.dataset.speed);
+      const baseTransform = img.style.transform.replace(/translateY\([^)]*\)/g, '').trim();
+      img.style.transform = baseTransform + ` translateY(${offset}px)`;
+    });
+  }
+  window.addEventListener('scroll', updateParallax, { passive: true });
+  updateParallax();
+})();
+
+// Review auto-rotate
+(function() {
+  const slides = document.querySelectorAll('.review-slide');
+  let idx = 0;
+  if (slides.length > 1) {
+    setInterval(() => {
+      slides[idx].classList.remove('active');
+      idx = (idx + 1) % slides.length;
+      slides[idx].classList.add('active');
+    }, 6000);
+  }
+})();
+
+// Mobile menu
+function openMobileMenu() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.getElementById('mobileOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('mobileOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('mobileMenuBtn').addEventListener('click', openMobileMenu);
+</script>
+
+</body>
+</html>
