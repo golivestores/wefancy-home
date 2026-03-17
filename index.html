@@ -111,7 +111,284 @@ tailwind.config = {
   .bundle-tab.active { background: rgba(255,255,255,0.2) !important; border-color: rgba(224,183,148,0.4) !important; }
 
   /* Bundle image fade */
-  #bundleImg { transition: opacity 0.2s ease; }
+  #bundleImg { transition: opacity 0.2s ease, transform 0.6s ease; }
+
+  /* Hide nav + announcement on scroll down */
+  .announcement-bar { transition: transform 0.35s ease; }
+  #mainNav { transition: all 0.35s ease; }
+  .announcement-bar.hidden-up { transform: translateY(-100%); }
+  #mainNav.hidden-up { transform: translateY(-120px); }
+
+  /* Hero custom cursor (V2 style) */
+  .hero-section { cursor: none; }
+  .hero-cursor {
+    position: fixed; width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(61,90,115,0.7);
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; z-index: 100; opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .hero-cursor.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .hero-cursor svg { display: block; }
+  @media (max-width: 1023px) {
+    .hero-section { cursor: auto; }
+    .hero-cursor { display: none !important; }
+  }
+
+  /* Product card hover lift (V2 style) */
+  .product-card { transition: box-shadow 0.3s ease, transform 0.3s ease; display: flex; flex-direction: column; border-radius: 12px; padding: 8px 8px 12px; margin: -8px -8px -12px; }
+  .product-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); transform: translateY(-4px); background: #fff; }
+  #productCarousel { padding-top: 8px; margin-top: -8px; }
+
+  /* Product card content alignment */
+  .product-card .card-label { min-height: 20px; }
+  .product-card .card-title { min-height: 40px; }
+  .product-card .card-price { min-height: 24px; }
+  .product-card .card-stars { min-height: 20px; }
+  .product-card .card-swatches { min-height: 28px; }
+
+  /* Bundle & Why image zoom on hover (V2 collection style) */
+  #bundleImageWrap:hover #bundleImg { transform: scale(1.04); }
+  .why-img-wrap { overflow: hidden; }
+  .why-img-wrap img { transition: transform 0.6s ease; }
+  .why-img-wrap:hover img { transform: scale(1.04); }
+
+  /* Comfort highlights cards (Sleepgram style) */
+  .comfort-card {
+    background: #F2EFEB;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    flex-shrink: 0;
+    width: 82vw;
+    snap-align: start;
+  }
+  @media (min-width: 640px) {
+    .comfort-card { width: auto; flex-shrink: 1; }
+  }
+  .comfort-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+  }
+  .comfort-card-media {
+    margin: 12px 12px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+  }
+  .comfort-card-media video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.6s ease;
+  }
+  .comfort-card:hover .comfort-card-media video { transform: scale(1.04); }
+  .comfort-card-body {
+    padding: 20px 20px 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .comfort-card-text { flex: 1; }
+  .comfort-card-arrow {
+    flex-shrink: 0;
+    color: #6B6B6B;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .comfort-card:hover .comfort-card-arrow {
+    color: #2C2C2C;
+    transform: translateX(4px);
+  }
+
+  /* ===== Sleep Easy (Casper-style full-width zigzag + scrolling pillow) ===== */
+  .sleep-easy-section {
+    background: #F2EFEB;
+    padding: 100px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Scrolling traveler pillow */
+  .sleep-easy-traveler {
+    position: absolute;
+    left: 50%;
+    top: 420px;
+    transform: translateX(-50%);
+    z-index: 2;
+    pointer-events: none;
+    transition: none;
+    will-change: transform;
+  }
+
+  /* Hero */
+  .sleep-easy-hero {
+    text-align: center;
+    margin-bottom: 100px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .sleep-easy-illust-main {
+    width: 260px; height: auto;
+    margin: 0 auto 40px;
+    display: block;
+  }
+  .sleep-easy-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(36px, 5.5vw, 56px);
+    font-weight: 400;
+    color: #2C2C2C;
+    line-height: 1.12;
+    margin-bottom: 20px;
+  }
+  .sleep-easy-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    color: #6B6B6B;
+    line-height: 1.7;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* Stats zigzag — full width with consistent side padding */
+  .sleep-easy-stats {
+    position: relative;
+    z-index: 1;
+    padding: 0 7vw;
+    margin-bottom: 80px;
+  }
+  .sleep-easy-row {
+    margin-bottom: 40px;
+  }
+  .sleep-easy-row:last-child { margin-bottom: 0; }
+  .sleep-easy-stat { max-width: 480px; }
+  .sleep-easy-stat-left { margin-right: auto; text-align: left; }
+  .sleep-easy-stat-right { margin-left: auto; text-align: right; }
+  .sleep-easy-stat-right .sleep-easy-stat-deco { display: flex; justify-content: flex-end; }
+  .sleep-easy-stat-deco { margin-bottom: 16px; }
+  .sleep-easy-stat-number {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(44px, 6.5vw, 68px);
+    font-weight: 400;
+    color: #3D5A73;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    text-decoration: underline;
+    text-decoration-color: #3D5A73;
+    text-underline-offset: 10px;
+    text-decoration-thickness: 3.5px;
+  }
+  .sleep-easy-stat-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #2C2C2C;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .sleep-easy-stat-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #999999;
+    line-height: 1.5;
+  }
+
+  /* Bottom CTA */
+  .sleep-easy-bottom {
+    text-align: center;
+    margin-bottom: 72px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .sleep-easy-bottom-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(28px, 4.5vw, 44px);
+    font-weight: 400;
+    color: #2C2C2C;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .sleep-easy-bottom-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    color: #6B6B6B;
+    margin-bottom: 32px;
+  }
+  .sleep-easy-cta {
+    display: inline-block;
+    background: #3D5A73;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 15px 44px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .sleep-easy-cta:hover {
+    background: #2C4156;
+    transform: translateY(-1px);
+  }
+
+  /* Trust pillars */
+  .sleep-easy-pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 52px 24px 0;
+    border-top: 1px solid #E5E2DD;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .sleep-easy-pillar-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 19px;
+    font-weight: 400;
+    color: #2C2C2C;
+    margin-bottom: 4px;
+    font-style: italic;
+  }
+  .sleep-easy-pillar-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin-bottom: 4px;
+  }
+  .sleep-easy-pillar-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: #999999;
+  }
+
+  /* Responsive */
+  @media (max-width: 767px) {
+    .sleep-easy-section { padding: 64px 0 48px; }
+    .sleep-easy-hero { margin-bottom: 64px; }
+    .sleep-easy-illust-main { width: 180px; }
+    .sleep-easy-row { margin-bottom: 36px; }
+    .sleep-easy-stat { max-width: 100%; }
+    .sleep-easy-stat-right { margin-left: 0; }
+    .sleep-easy-stats { padding: 0 5vw; margin-bottom: 48px; }
+    .sleep-easy-traveler { display: none; }
+    .sleep-easy-pillars {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px 8px;
+      padding: 36px 16px 0;
+    }
+    .sleep-easy-pillar-title { font-size: 15px; }
+    .sleep-easy-pillar-subtitle { font-size: 12px; }
+    .sleep-easy-pillar-desc { font-size: 11px; }
+  }
 </style>
 </head>
 <body>
@@ -299,7 +576,7 @@ tailwind.config = {
 </div>
 
 <!-- ========== 3. HERO (Pluto-style: centered, social proof, big CTA) ========== -->
-<section class="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+<section class="hero-section relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden" id="heroSection">
   <!-- Background video — auto-playing sleep scene -->
   <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover scale-[1.02]">
     <source src="public/sleep video.mp4" type="video/mp4">
@@ -347,6 +624,11 @@ tailwind.config = {
     </div>
   </div>
 </section>
+
+<!-- Custom cursor for hero -->
+<div class="hero-cursor" id="heroCursor">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+</div>
 
 <!-- ========== TRUST MARQUEE (below hero) ========== -->
 <section class="bg-primary-dark py-3.5 overflow-hidden">
@@ -415,26 +697,23 @@ tailwind.config = {
             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </a>
-        <div class="flex items-start justify-between gap-2">
-          <div>
-            <p class="text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Best Value</p>
-            <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">J-Shaped Pregnancy Pillow</h3>
-          </div>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Best Value</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">J-Shaped Pregnancy Pillow</h3>
           <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
-        <div class="flex items-center gap-2 mt-1.5">
+        <div class="card-price flex items-center gap-2 mt-1.5">
           <span class="text-txt-muted text-sm line-through">$79.99</span>
           <span class="font-semibold text-[15px] text-txt">$59.99</span>
           <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">25% off</span>
         </div>
-        <div class="flex items-center gap-1.5 mt-2">
+        <div class="card-stars flex items-center gap-1.5 mt-2">
           <div class="flex text-star text-xs">★★★★★</div>
           <span class="text-txt-muted text-xs underline underline-offset-2">(2,847)</span>
         </div>
-        <!-- Color swatches with variant images -->
-        <div class="flex items-center gap-1.5 mt-3">
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
           <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#F5C6D0] cursor-pointer transition" data-img="public/j-1.png" data-hover="public/j-2.png" data-contain="1"></span>
           <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/灰/2.jpg"></span>
           <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/黑灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/黑灰/2.jpg"></span>
@@ -453,22 +732,23 @@ tailwind.config = {
             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </a>
-        <div class="flex items-start justify-between gap-2">
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
           <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">U-Shaped Pregnancy Pillow</h3>
           <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
-        <div class="flex items-center gap-2 mt-1.5">
+        <div class="card-price flex items-center gap-2 mt-1.5">
           <span class="text-txt-muted text-sm line-through">$89.99</span>
           <span class="font-semibold text-[15px] text-txt">$69.99</span>
           <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">22% off</span>
         </div>
-        <div class="flex items-center gap-1.5 mt-2">
+        <div class="card-stars flex items-center gap-1.5 mt-2">
           <div class="flex text-star text-xs">★★★★★</div>
           <span class="text-txt-muted text-xs underline underline-offset-2">(1,523)</span>
         </div>
-        <div class="flex items-center gap-1.5 mt-3">
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
           <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#F5C6D0] cursor-pointer transition" data-img="public/u-1.png" data-hover="public/u-2.png" data-contain="1"></span>
           <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/U型枕/1黑.jpg" data-hover="抱枕独立站材料/六个品套图/U型枕/2黑.jpg"></span>
           <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/U型枕/1灰.jpg" data-hover="抱枕独立站材料/六个品套图/U型枕/2灰.jpg"></span>
@@ -485,22 +765,23 @@ tailwind.config = {
             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </a>
-        <div class="flex items-start justify-between gap-2">
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
           <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Space Capsule Pillow 2-Pack</h3>
           <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
-        <div class="flex items-center gap-2 mt-1.5">
+        <div class="card-price flex items-center gap-2 mt-1.5">
           <span class="text-txt-muted text-sm line-through">$64.99</span>
           <span class="font-semibold text-[15px] text-txt">$49.99</span>
           <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">23% off</span>
         </div>
-        <div class="flex items-center gap-1.5 mt-2">
+        <div class="card-stars flex items-center gap-1.5 mt-2">
           <div class="flex text-star text-xs">★★★★★</div>
           <span class="text-txt-muted text-xs underline underline-offset-2">(986)</span>
         </div>
-        <div class="flex items-center gap-1.5 mt-3">
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
           <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="public/母婴级头枕.png" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/太空舱/2.jpg" data-contain="1"></span>
           <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/零压力/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/零压力/2.jpg"></span>
         </div>
@@ -516,22 +797,23 @@ tailwind.config = {
             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </a>
-        <div class="flex items-start justify-between gap-2">
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
           <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Seahorse Pillow</h3>
           <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition" aria-label="Add to wishlist">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
-        <div class="flex items-center gap-2 mt-1.5">
+        <div class="card-price flex items-center gap-2 mt-1.5">
           <span class="text-txt-muted text-sm line-through">$59.99</span>
           <span class="font-semibold text-[15px] text-txt">$45.99</span>
           <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">23% off</span>
         </div>
-        <div class="flex items-center gap-1.5 mt-2">
+        <div class="card-stars flex items-center gap-1.5 mt-2">
           <div class="flex text-star text-xs">★★★★★</div>
           <span class="text-txt-muted text-xs underline underline-offset-2">(642)</span>
         </div>
-        <div class="flex items-center gap-1.5 mt-3">
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
           <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#E8E0D4] cursor-pointer transition" data-img="public/海马枕.png" data-hover="抱枕独立站材料/六个品套图/海马枕/条纹/2.jpg" data-contain="1"></span>
           <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/海马枕/灰色/1.jpg" data-hover="抱枕独立站材料/六个品套图/海马枕/灰色/2.jpg"></span>
           <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#F5C6D0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/海马枕/粉/1.jpg" data-hover="抱枕独立站材料/六个品套图/海马枕/粉/2.jpg"></span>
@@ -809,14 +1091,282 @@ tailwind.config = {
       </div>
     </div>
     <!-- Right: full-bleed image -->
-    <div class="reveal">
+    <div class="why-img-wrap reveal">
       <img src="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=1000&h=900&fit=crop&q=80" alt="Cozy bedroom with linen bedding and warm light" class="w-full h-full object-cover min-h-[360px] md:min-h-full">
     </div>
   </div>
   </div>
 </section>
 
+<!-- ========== COMFORT HIGHLIGHTS (Sleepgram-style 3-card video section) ========== -->
+<section class="bg-bg py-20 sm:py-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <!-- Header -->
+    <div class="text-center mb-12 sm:mb-16 reveal">
+      <h2 class="font-heading text-3xl sm:text-4xl lg:text-[44px] text-txt leading-tight mb-4">Sleep Is Pure Comfort With WEFANCY</h2>
+      <p class="text-txt-light text-base sm:text-lg">Upgrade your sleep tonight — feel the difference from day one.</p>
+    </div>
 
+    <!-- 3 Cards: swipe on mobile, grid on desktop -->
+    <div class="comfort-cards-track flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 lg:gap-8 sm:overflow-visible sm:pb-0" style="scrollbar-width:none;-ms-overflow-style:none;">
+    <style>.comfort-cards-track::-webkit-scrollbar{display:none;}</style>
+
+      <!-- Card 1 -->
+      <a href="#" class="comfort-card group block reveal reveal-delay-1">
+        <div class="comfort-card-media">
+          <video autoplay muted loop playsinline>
+            <source src="public/sleep video.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="comfort-card-body">
+          <div class="comfort-card-text">
+            <h3 class="font-heading text-xl sm:text-2xl text-txt mb-1.5">Ergonomic Pillows</h3>
+            <p class="text-txt-light text-sm leading-relaxed">Contoured support that cradles your body for deeper, pain-free sleep.</p>
+          </div>
+          <span class="comfort-card-arrow">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="#" class="comfort-card group block reveal reveal-delay-2">
+        <div class="comfort-card-media">
+          <video autoplay muted loop playsinline>
+            <source src="public/sleep video.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="comfort-card-body">
+          <div class="comfort-card-text">
+            <h3 class="font-heading text-xl sm:text-2xl text-txt mb-1.5">Pregnancy Support</h3>
+            <p class="text-txt-light text-sm leading-relaxed">Full-body J &amp; U wraps designed for every stage of your journey.</p>
+          </div>
+          <span class="comfort-card-arrow">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="#" class="comfort-card group block reveal reveal-delay-3">
+        <div class="comfort-card-media">
+          <video autoplay muted loop playsinline>
+            <source src="public/sleep video.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="comfort-card-body">
+          <div class="comfort-card-text">
+            <h3 class="font-heading text-xl sm:text-2xl text-txt mb-1.5">Premium Towels</h3>
+            <p class="text-txt-light text-sm leading-relaxed">Cloud-soft bamboo towels — ultra-absorbent, quick-dry, spa-worthy.</p>
+          </div>
+          <span class="comfort-card-arrow">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLEEP EASY (Casper-style full-width zigzag + scrolling pillow) ========== -->
+<section class="sleep-easy-section" id="sleepEasySection">
+
+  <!-- Scrolling pillow (moves down center as user scrolls) -->
+  <div class="sleep-easy-traveler" id="sleepEasyTraveler">
+    <svg viewBox="0 0 120 60" width="180" height="90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Pillow body -->
+      <ellipse cx="50" cy="38" rx="38" ry="16" fill="#D8D3CC" stroke="#3D5A73" stroke-width="1.2"/>
+      <ellipse cx="50" cy="35" rx="35" ry="14" fill="#FAFAF7" stroke="#3D5A73" stroke-width="1"/>
+      <path d="M20 35q15-6 30-6t30 6" stroke="#3D5A73" stroke-width="0.8" fill="none" opacity="0.3"/>
+      <!-- Little wings/motion lines -->
+      <line x1="90" y1="32" x2="100" y2="28" stroke="#3D5A73" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+      <line x1="92" y1="38" x2="102" y2="36" stroke="#3D5A73" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+      <line x1="88" y1="44" x2="96" y2="43" stroke="#3D5A73" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+      <!-- Zzz -->
+      <text x="96" y="22" font-family="DM Serif Display, serif" font-size="14" fill="#3D5A73" opacity="0.7" font-style="italic" font-weight="400">z</text>
+      <text x="106" y="13" font-family="DM Serif Display, serif" font-size="10" fill="#3D5A73" opacity="0.5" font-style="italic">z</text>
+      <text x="113" y="6" font-family="DM Serif Display, serif" font-size="7" fill="#3D5A73" opacity="0.35" font-style="italic">z</text>
+    </svg>
+  </div>
+
+  <!-- Hero: illustration + heading -->
+  <div class="sleep-easy-hero reveal">
+    <svg class="sleep-easy-illust-main" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Cloud -->
+      <ellipse cx="130" cy="160" rx="70" ry="24" fill="#E5E2DD" opacity="0.5"/>
+      <ellipse cx="110" cy="148" rx="46" ry="20" fill="#FAFAF7"/>
+      <ellipse cx="155" cy="143" rx="55" ry="25" fill="#FAFAF7"/>
+      <ellipse cx="135" cy="154" rx="68" ry="22" fill="#FAFAF7"/>
+      <!-- Moon -->
+      <path d="M210 60c0 42-34 76-76 76a76 76 0 0 1-20-2.7c8-14 13-32 13-50 0-22-7-42-18-56a60 60 0 0 1 58 8c14 12 23 29 23 48z" fill="#3D5A73" opacity="0.15"/>
+      <path d="M200 65c0 38-30 68-68 68a68 68 0 0 1-16-2c7-13 11-28 11-44 0-20-6-38-16-50a54 54 0 0 1 52 7c12 11 20 26 20 43z" fill="#3D5A73" opacity="0.22"/>
+      <!-- Pillow on moon -->
+      <ellipse cx="178" cy="112" rx="22" ry="8" fill="#FAFAF7" transform="rotate(-15 178 112)"/>
+      <ellipse cx="178" cy="110" rx="20" ry="7" fill="#E5E2DD" transform="rotate(-15 178 110)"/>
+      <!-- Zzz -->
+      <text x="208" y="60" font-family="DM Serif Display, serif" font-size="20" fill="#3D5A73" opacity="0.4" font-style="italic">z</text>
+      <text x="224" y="45" font-family="DM Serif Display, serif" font-size="15" fill="#3D5A73" opacity="0.3" font-style="italic">z</text>
+      <text x="236" y="34" font-family="DM Serif Display, serif" font-size="11" fill="#3D5A73" opacity="0.2" font-style="italic">z</text>
+      <!-- Floating pillows (like Casper sheep) -->
+      <g opacity="0.35" transform="translate(90,20) rotate(-10)">
+        <ellipse cx="16" cy="10" rx="14" ry="5" fill="#FAFAF7"/>
+        <ellipse cx="16" cy="9" rx="12" ry="4.5" fill="#E5E2DD"/>
+      </g>
+      <g opacity="0.3" transform="translate(200,15) rotate(8)">
+        <ellipse cx="14" cy="9" rx="12" ry="4.5" fill="#FAFAF7"/>
+        <ellipse cx="14" cy="8" rx="10" ry="4" fill="#E5E2DD"/>
+      </g>
+      <g opacity="0.25" transform="translate(240,80) rotate(-5)">
+        <ellipse cx="12" cy="8" rx="10" ry="4" fill="#FAFAF7"/>
+        <ellipse cx="12" cy="7" rx="8" ry="3.5" fill="#E5E2DD"/>
+      </g>
+      <!-- Stars -->
+      <circle cx="70" cy="40" r="2.5" fill="#C8956C" opacity="0.4"/>
+      <circle cx="260" cy="90" r="2" fill="#C8956C" opacity="0.3"/>
+      <path d="M280 40l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#C8956C" opacity="0.25"/>
+      <path d="M55 15l1.5 3.5 3.5 1.5-3.5 1.5L55 25l-1.5-3.5L50 20l3.5-1.5z" fill="#C8956C" opacity="0.2"/>
+    </svg>
+
+    <h2 class="sleep-easy-title">We make comfort effortless.</h2>
+    <p class="sleep-easy-subtitle">Every pillow is designed, engineered, and tested to solve real sleep needs — but don't just take our word for it.</p>
+  </div>
+
+  <!-- Stat blocks: full-width zigzag -->
+  <div class="sleep-easy-stats">
+
+    <!-- Stat 1: LEFT — Alarm clock -->
+    <div class="sleep-easy-row">
+      <div class="sleep-easy-stat sleep-easy-stat-left reveal">
+        <div class="sleep-easy-stat-deco">
+          <svg viewBox="0 0 100 100" width="100" height="100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Alarm bells -->
+            <path d="M22 28l-10-10" stroke="#3D5A73" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M78 28l10-10" stroke="#3D5A73" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Bell tops -->
+            <circle cx="12" cy="18" r="5" stroke="#3D5A73" stroke-width="2" fill="none"/>
+            <circle cx="88" cy="18" r="5" stroke="#3D5A73" stroke-width="2" fill="none"/>
+            <!-- Clock body -->
+            <circle cx="50" cy="54" r="32" stroke="#3D5A73" stroke-width="2.8" fill="none"/>
+            <circle cx="50" cy="54" r="28" stroke="#3D5A73" stroke-width="1.2" fill="none" opacity="0.2"/>
+            <!-- Clock hands -->
+            <line x1="50" y1="54" x2="50" y2="34" stroke="#3D5A73" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="50" y1="54" x2="64" y2="62" stroke="#3D5A73" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="50" cy="54" r="3" fill="#3D5A73"/>
+            <!-- Legs -->
+            <line x1="35" y1="84" x2="30" y2="94" stroke="#3D5A73" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="65" y1="84" x2="70" y2="94" stroke="#3D5A73" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Zzz -->
+            <text x="72" y="16" font-family="DM Serif Display, serif" font-size="14" fill="#3D5A73" font-style="italic" font-weight="400">z</text>
+            <text x="82" y="8" font-family="DM Serif Display, serif" font-size="11" fill="#3D5A73" opacity="0.7" font-style="italic">z</text>
+            <text x="89" y="2" font-family="DM Serif Display, serif" font-size="8" fill="#3D5A73" opacity="0.45" font-style="italic">z</text>
+          </svg>
+        </div>
+        <h3 class="sleep-easy-stat-number">4 out of 5</h3>
+        <p class="sleep-easy-stat-desc"><strong>customers would recommend<br>WEFANCY to friends and family.*</strong></p>
+        <p class="sleep-easy-stat-tagline">Pillow talk travels fast.</p>
+      </div>
+    </div>
+
+    <!-- Stat 2: RIGHT — Constellation + cloud -->
+    <div class="sleep-easy-row">
+      <div class="sleep-easy-stat sleep-easy-stat-right reveal">
+        <div class="sleep-easy-stat-deco">
+          <svg viewBox="0 0 160 130" width="160" height="130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Cloud -->
+            <ellipse cx="120" cy="22" rx="24" ry="10" fill="#E5E2DD"/>
+            <ellipse cx="115" cy="18" rx="18" ry="9" fill="#FAFAF7" stroke="#3D5A73" stroke-width="1.5"/>
+            <ellipse cx="128" cy="16" rx="22" ry="11" fill="#FAFAF7" stroke="#3D5A73" stroke-width="1.5"/>
+            <ellipse cx="122" cy="22" rx="26" ry="9" fill="#FAFAF7" stroke="#3D5A73" stroke-width="1.5"/>
+            <!-- Sleeping pillow on cloud -->
+            <ellipse cx="125" cy="14" rx="10" ry="4" fill="#E5E2DD" stroke="#3D5A73" stroke-width="1" transform="rotate(-8 125 14)"/>
+            <!-- Zzz from cloud -->
+            <text x="148" y="10" font-family="DM Serif Display, serif" font-size="11" fill="#3D5A73" font-style="italic">z</text>
+            <text x="155" y="3" font-family="DM Serif Display, serif" font-size="8" fill="#3D5A73" opacity="0.6" font-style="italic">z</text>
+            <!-- Constellation lines -->
+            <line x1="28" y1="42" x2="80" y2="34" stroke="#3D5A73" stroke-width="1.8"/>
+            <line x1="80" y1="34" x2="110" y2="60" stroke="#3D5A73" stroke-width="1.8"/>
+            <line x1="110" y1="60" x2="130" y2="100" stroke="#3D5A73" stroke-width="1.8"/>
+            <line x1="28" y1="42" x2="60" y2="80" stroke="#3D5A73" stroke-width="1.8"/>
+            <line x1="60" y1="80" x2="110" y2="60" stroke="#3D5A73" stroke-width="1.8"/>
+            <line x1="60" y1="80" x2="40" y2="110" stroke="#3D5A73" stroke-width="1.8"/>
+            <!-- Constellation dots -->
+            <circle cx="28" cy="42" r="5" fill="#3D5A73"/>
+            <circle cx="80" cy="34" r="4" fill="none" stroke="#3D5A73" stroke-width="2"/>
+            <circle cx="110" cy="60" r="5" fill="#3D5A73"/>
+            <circle cx="130" cy="100" r="4" fill="none" stroke="#3D5A73" stroke-width="2"/>
+            <circle cx="60" cy="80" r="5" fill="#3D5A73"/>
+            <circle cx="40" cy="110" r="4" fill="none" stroke="#3D5A73" stroke-width="2"/>
+            <!-- Sparkle stars -->
+            <path d="M15 70l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z" stroke="#3D5A73" stroke-width="1.5" fill="none"/>
+            <path d="M90 95l2 4.5 4.5 2-4.5 2-2 4.5-2-4.5-4.5-2 4.5-2z" fill="#3D5A73" opacity="0.3"/>
+          </svg>
+        </div>
+        <h3 class="sleep-easy-stat-number">9 out of 10</h3>
+        <p class="sleep-easy-stat-desc"><strong>customers report improved sleep<br>quality after switching to WEFANCY.†</strong></p>
+        <p class="sleep-easy-stat-tagline">Dreams do come true.</p>
+      </div>
+    </div>
+
+    <!-- Stat 3: LEFT — Starburst -->
+    <div class="sleep-easy-row">
+      <div class="sleep-easy-stat sleep-easy-stat-left reveal">
+        <div class="sleep-easy-stat-deco">
+          <svg viewBox="0 0 160 110" width="160" height="110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Big starburst (outlined) -->
+            <path d="M48 10l6 18 18 6-18 6-6 18-6-18-18-6 18-6z" stroke="#3D5A73" stroke-width="2.2" fill="none" stroke-linejoin="round"/>
+            <!-- Medium star (filled) -->
+            <path d="M105 20l4 12 12 4-12 4-4 12-4-12-12-4 12-4z" fill="#3D5A73"/>
+            <!-- Small starburst (outlined) -->
+            <path d="M82 65l3 9 9 3-9 3-3 9-3-9-9-3 9-3z" stroke="#3D5A73" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+            <!-- Tiny filled star -->
+            <path d="M130 55l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5z" fill="#3D5A73" opacity="0.4"/>
+            <!-- Dot -->
+            <circle cx="45" cy="75" r="3.5" fill="#3D5A73" opacity="0.25"/>
+            <!-- Another outlined star rotated -->
+            <path d="M20 80l3.5 8 8 3.5-8 3.5-3.5 8-3.5-8-8-3.5 8-3.5z" stroke="#3D5A73" stroke-width="1.5" fill="none" opacity="0.6"/>
+          </svg>
+        </div>
+        <h3 class="sleep-easy-stat-number">10,000+</h3>
+        <p class="sleep-easy-stat-desc"><strong>5-star reviews from real customers<br>across all product lines.*</strong></p>
+        <p class="sleep-easy-stat-tagline">Read the reviews and see for yourself.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="sleep-easy-bottom reveal">
+    <h3 class="sleep-easy-bottom-title">Better sleep isn't complicated.</h3>
+    <p class="sleep-easy-bottom-text">Learn more about how WEFANCY makes comfort simple.</p>
+    <a href="#bestsellers" class="sleep-easy-cta">Shop Now</a>
+  </div>
+
+  <!-- Trust pillars -->
+  <div class="sleep-easy-pillars reveal">
+    <div class="sleep-easy-pillar">
+      <h4 class="sleep-easy-pillar-title">Rest assured</h4>
+      <p class="sleep-easy-pillar-subtitle">2-Year Warranty</p>
+      <p class="sleep-easy-pillar-desc">Built to last, guaranteed.</p>
+    </div>
+    <div class="sleep-easy-pillar">
+      <h4 class="sleep-easy-pillar-title">Quick &amp; simple</h4>
+      <p class="sleep-easy-pillar-subtitle">Easy Returns</p>
+      <p class="sleep-easy-pillar-desc">No questions asked, no hassle.</p>
+    </div>
+    <div class="sleep-easy-pillar">
+      <h4 class="sleep-easy-pillar-title">Love your sleep</h4>
+      <p class="sleep-easy-pillar-subtitle">100-Night Trial</p>
+      <p class="sleep-easy-pillar-desc">Love it or return it, risk-free.</p>
+    </div>
+    <div class="sleep-easy-pillar">
+      <h4 class="sleep-easy-pillar-title">Free delivery</h4>
+      <p class="sleep-easy-pillar-subtitle">Orders $75+</p>
+      <p class="sleep-easy-pillar-desc">Fast, free shipping to your door.</p>
+    </div>
+  </div>
+
+</section>
 
 <!-- ========== VIDEO STORIES CAROUSEL ========== -->
 <section class="bg-bg py-20 sm:py-24">
@@ -949,9 +1499,10 @@ tailwind.config = {
       </a>
     </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="blog-cards-track flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>.blog-cards-track::-webkit-scrollbar{display:none;}</style>
       <!-- Blog Card 1 -->
-      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal">
+      <a href="#" class="blog-card group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal flex-shrink-0 w-[78vw] snap-start sm:w-auto sm:flex-shrink-1">
         <div class="aspect-[16/10] overflow-hidden">
           <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" alt="Bedroom styling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
         </div>
@@ -968,7 +1519,7 @@ tailwind.config = {
       </a>
 
       <!-- Blog Card 2 -->
-      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-1">
+      <a href="#" class="blog-card group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-1 flex-shrink-0 w-[78vw] snap-start sm:w-auto sm:flex-shrink-1">
         <div class="aspect-[16/10] overflow-hidden">
           <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80" alt="White bedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
         </div>
@@ -985,7 +1536,7 @@ tailwind.config = {
       </a>
 
       <!-- Blog Card 3 -->
-      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-2">
+      <a href="#" class="blog-card group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-2 flex-shrink-0 w-[78vw] snap-start sm:w-auto sm:flex-shrink-1">
         <div class="aspect-[16/10] overflow-hidden">
           <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80" alt="Cozy pillows" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
         </div>
@@ -1013,22 +1564,23 @@ tailwind.config = {
 <!-- ========== 12. COMFORT PROMISE ========== -->
 <section class="bg-primary-dark py-12 sm:py-16">
   <div class="max-w-5xl mx-auto px-4 sm:px-6">
-    <div class="grid sm:grid-cols-3 gap-10 sm:gap-8 text-center">
-      <div class="reveal reveal-delay-1">
+    <div class="promise-track flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-3 sm:gap-8 sm:overflow-visible sm:pb-0 text-center" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>.promise-track::-webkit-scrollbar{display:none;}</style>
+      <div class="reveal reveal-delay-1 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
         <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 class="text-white font-semibold text-[15px] mb-2">Ethically Made</h3>
         <p class="text-white/55 text-[13px] leading-relaxed">Responsibly sourced materials, certified safe for your family.</p>
       </div>
-      <div class="reveal reveal-delay-2">
+      <div class="reveal reveal-delay-2 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
         <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12.75 3.03v.568c0 .334.148.65.405.864a4.5 4.5 0 0 1 0 6.635 .997.997 0 0 0-.405.864v.568m0-9.5a4.49 4.49 0 0 0-3.397 1.549M12.75 3.03V1.5m0 1.53a4.49 4.49 0 0 1 3.397 1.549M3.378 15.18A23.96 23.96 0 0 1 12 13.5a23.96 23.96 0 0 1 8.622 1.68M3.378 15.18A24.078 24.078 0 0 0 2.25 16.5c0 1.68.503 3.246 1.367 4.55A24.006 24.006 0 0 0 12 22.5a24.006 24.006 0 0 0 8.383-1.45A8.457 8.457 0 0 0 21.75 16.5a24.078 24.078 0 0 0-1.128-1.32" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 class="text-white font-semibold text-[15px] mb-2">Sustainable Packaging</h3>
         <p class="text-white/55 text-[13px] leading-relaxed">Recyclable and minimal packaging — because comfort shouldn't cost the earth.</p>
       </div>
-      <div class="reveal reveal-delay-3">
+      <div class="reveal reveal-delay-3 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
         <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
           <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -1164,20 +1716,63 @@ function closeAnnouncementBar() {
   new MutationObserver(syncMega).observe(nav, { attributes: true, attributeFilter: ['style'] });
 })();
 
-// Nav: transparent on hero, solid after scroll
+// Nav: transparent on hero, solid after scroll + hide on scroll down
 (function() {
   const nav = document.getElementById('mainNav');
+  const bar = document.getElementById('announcementBar');
   const heroHeight = window.innerHeight * 0.7;
+  let lastScrollY = 0;
+  let ticking = false;
   function updateNav() {
     const scrollY = window.scrollY || window.pageYOffset;
-    if (scrollY > heroHeight) {
-      nav.dataset.transparent = 'false';
+    // transparent/solid toggle
+    nav.dataset.transparent = scrollY > heroHeight ? 'false' : 'true';
+    // hide on scroll down, show on scroll up (only after passing hero)
+    if (scrollY > 100) {
+      if (scrollY > lastScrollY + 5) {
+        nav.classList.add('hidden-up');
+        if (bar) bar.classList.add('hidden-up');
+      } else if (scrollY < lastScrollY - 5) {
+        nav.classList.remove('hidden-up');
+        if (bar) bar.classList.remove('hidden-up');
+      }
     } else {
-      nav.dataset.transparent = 'true';
+      nav.classList.remove('hidden-up');
+      if (bar) bar.classList.remove('hidden-up');
     }
+    lastScrollY = scrollY;
+    ticking = false;
   }
-  window.addEventListener('scroll', updateNav, { passive: true });
+  window.addEventListener('scroll', function() {
+    if (!ticking) { requestAnimationFrame(updateNav); ticking = true; }
+  }, { passive: true });
   updateNav();
+})();
+
+// Hero custom cursor (V2 style)
+(function() {
+  var hero = document.getElementById('heroSection');
+  var cursor = document.getElementById('heroCursor');
+  if (!hero || !cursor) return;
+  var cursorX = 0, cursorY = 0, targetX = 0, targetY = 0, animId = null;
+  function animate() {
+    cursorX += (targetX - cursorX) * 0.14;
+    cursorY += (targetY - cursorY) * 0.14;
+    cursor.style.left = cursorX + 'px';
+    cursor.style.top = cursorY + 'px';
+    animId = requestAnimationFrame(animate);
+  }
+  hero.addEventListener('mouseenter', function() {
+    cursor.classList.add('visible');
+    animId = requestAnimationFrame(animate);
+  });
+  hero.addEventListener('mouseleave', function() {
+    cursor.classList.remove('visible');
+    if (animId) { cancelAnimationFrame(animId); animId = null; }
+  });
+  hero.addEventListener('mousemove', function(e) {
+    targetX = e.clientX; targetY = e.clientY;
+  });
 })();
 
 // Scroll reveal with Intersection Observer
@@ -1192,6 +1787,20 @@ function closeAnnouncementBar() {
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Sleep Easy stats: stronger fade-in (triggers later, from further below)
+  const deepObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        deepObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -200px 0px' });
+  document.querySelectorAll('.sleep-easy-stat').forEach(el => {
+    el.classList.remove('visible'); // reset in case main observer already fired
+    deepObserver.observe(el);
+  });
 })();
 
 // Best Sellers carousel scroll
@@ -1372,6 +1981,26 @@ function closeMobileMenu() {
   document.body.style.overflow = '';
 }
 document.getElementById('mobileMenuBtn').addEventListener('click', openMobileMenu);
+
+// Sleep Easy — scrolling pillow traveler (Casper sheep effect)
+(function() {
+  var section = document.getElementById('sleepEasySection');
+  var traveler = document.getElementById('sleepEasyTraveler');
+  if (!section || !traveler) return;
+  function updateTraveler() {
+    var rect = section.getBoundingClientRect();
+    var sectionH = section.offsetHeight;
+    // How far through the section we've scrolled (0 at top, 1 at bottom)
+    var progress = Math.max(0, Math.min(1, -rect.top / (sectionH - window.innerHeight)));
+    // Move the pillow from near the top (after hero) down through the stats
+    var startY = 420;
+    var travelDistance = sectionH - 500;
+    var y = startY + progress * travelDistance;
+    traveler.style.top = y + 'px';
+  }
+  window.addEventListener('scroll', updateTraveler, { passive: true });
+  updateTraveler();
+})();
 </script>
 
 </body>
