@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J-Shaped Pregnancy Pillow — WEFANCY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: { DEFAULT: '#3D5A73', light: '#5B7D95', dark: '#2C4156' },
+        accent: { DEFAULT: '#C8956C', light: '#E0B794', dark: '#A67A52' },
+        bg: { DEFAULT: '#FAFAF7', alt: '#F2EFEB' },
+        txt: { DEFAULT: '#2C2C2C', light: '#6B6B6B', muted: '#999999' },
+        border: '#E5E2DD',
+        star: '#E8B44A',
+        sale: '#C45B4A',
+        success: '#5C8A5E',
+      },
+      fontFamily: {
+        heading: ['DM Serif Display', 'Georgia', 'serif'],
+        body: ['DM Sans', '-apple-system', 'sans-serif'],
+      },
+    },
+  },
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; color: #2C2C2C; background: #FAFAF7; -webkit-font-smoothing: antialiased; }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Announcement slider */
+  .announcement-bar .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.6s ease; }
+  .announcement-bar .slide.active { opacity: 1; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Mega menu */
+  .mega-menu { opacity: 0; visibility: hidden; transform: translateY(8px); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .group:hover .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  /* Nav solid (product page — always solid) */
+  #mainNav {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #E5E2DD;
+    transition: all 0.35s ease;
+  }
+  #mainNav .nav-link { color: #2C2C2C; }
+  #mainNav .nav-link:hover { color: #3D5A73; }
+
+  /* Mobile menu */
+  .mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  .mobile-overlay.open { opacity: 1; visibility: visible; }
+
+  /* Hide nav + announcement on scroll down */
+  .announcement-bar { transition: transform 0.35s ease; }
+  .announcement-bar.hidden-up { transform: translateY(-100%); }
+  #mainNav.hidden-up { transform: translateY(-120px); }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #F2EFEB; }
+  ::-webkit-scrollbar-thumb { background: #C8956C; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A67A52; }
+
+  html { scroll-behavior: smooth; }
+
+  /* Feature: scrolling text + sticky image (Casper style) */
+  .feature-img-panel img {
+    transition: opacity 0.4s ease;
+  }
+
+  /* Gallery grid image transitions */
+  .gallery-img-wrap img { transition: opacity 0.2s ease, transform 0.5s ease; }
+  .gallery-img-wrap:hover img { transform: scale(1.03); }
+
+  /* Gallery image fade */
+  .main-image-fade { transition: opacity 0.3s ease; }
+
+  /* Thumbnail active */
+  .thumb-btn { border: 2px solid transparent; border-radius: 8px; overflow: hidden; cursor: pointer; flex-shrink: 0; }
+  .thumb-btn.active { border-color: #3D5A73; }
+
+  /* Color swatch */
+  .color-swatch { width: 32px; height: 32px; border-radius: 4px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+  .color-swatch.active { border-color: #3D5A73; }
+  .color-swatch:hover { border-color: #999; }
+
+  /* Mobile carousel */
+  .mobile-gallery { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .mobile-gallery > div { scroll-snap-align: start; }
+  .dot-indicator { width: 8px; height: 8px; border-radius: 50%; background: #ccc; transition: background 0.3s; }
+  .dot-indicator.active { background: #3D5A73; }
+
+  /* Feature image hover */
+  .feature-img-wrap { overflow: hidden; border-radius: 12px; }
+  .feature-img-wrap img { transition: transform 0.6s ease; }
+  .feature-img-wrap:hover img { transform: scale(1.03); }
+
+  /* Accordion */
+  .accordion-content { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows 0.35s ease, padding 0.35s ease; padding: 0; }
+  .accordion-content > * { overflow: hidden; }
+  .accordion-content.open { grid-template-rows: 1fr; padding-bottom: 1.25rem; }
+
+  /* Comparison table current column */
+  .current-col { background: rgba(61,90,115,0.05); }
+
+  /* Cross-sell card */
+  .cross-card { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+  .cross-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-3px); }
+</style>
+</head>
+<body class="font-body bg-bg">
+
+<!-- ========== SECTION 1: ANNOUNCEMENT BAR ========== -->
+<div class="announcement-bar fixed top-0 left-0 right-0 z-[60] bg-[#FFF9E6] text-txt text-center h-10 overflow-hidden" id="announcementBar">
+  <div class="relative h-full max-w-7xl mx-auto px-4">
+    <div class="slide active" data-slide="0">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">SLEEP WEEK: Free Shipping on All Orders + 100-Night Risk-Free Trial</p>
+    </div>
+    <div class="slide" data-slide="1">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">Bundle &amp; Save 15% — Pillow + Towel Sets</p>
+    </div>
+    <div class="slide" data-slide="2">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">100-Night Comfort Guarantee — Love It or Return It</p>
+    </div>
+    <div class="hidden lg:flex items-center gap-3 absolute right-4 top-1/2 -translate-y-1/2 text-xs text-txt-light">
+      <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> HSA/FSA eligible</span>
+      <a href="#" class="underline underline-offset-2 hover:text-primary transition font-medium">Learn more</a>
+    </div>
+  </div>
+  <button onclick="closeAnnouncementBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-txt/40 hover:text-txt transition text-xl leading-none lg:right-auto lg:left-[calc(50%+280px)]" aria-label="Close announcement">&times;</button>
+</div>
+
+<!-- ========== NAVIGATION (solid white for product page) ========== -->
+<header id="mainNav" class="fixed top-10 left-0 right-0 z-50">
+  <nav class="max-w-[1400px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
+    <!-- Left: Nav Links -->
+    <ul class="hidden lg:flex items-center gap-7">
+      <li class="relative group">
+        <a href="index.html" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase hover:text-primary transition py-5 inline-flex items-center gap-1">
+          Products
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <!-- Mega Menu -->
+        <div class="mega-menu fixed left-0 right-0 bg-white border-b border-border shadow-2xl" id="megaMenu">
+          <div class="max-w-[1400px] mx-auto px-8 py-10">
+            <div class="grid grid-cols-12 gap-8">
+              <div class="col-span-4">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Best Sellers</p>
+                <div class="grid grid-cols-2 gap-4">
+                  <a href="product-j-pillow.html" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/j-1.png" alt="J-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">J-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $59.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/母婴级头枕.png" alt="Space Capsule Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Space Capsule Pillow 2-Pack</p>
+                    <p class="text-xs text-txt-muted mt-1">From $49.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/u-1.png" alt="U-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">U-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $69.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="https://images.unsplash.com/photo-1600369672770-985fd30004eb?w=300&h=300&fit=crop" alt="Cloud Towel Set" class="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Cloud Towel Set (4-Pack)</p>
+                    <p class="text-xs text-txt-muted mt-1">From $45.99</p>
+                  </a>
+                </div>
+              </div>
+              <div class="col-span-3 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Categories</p>
+                <div class="flex flex-col gap-3.5">
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Pregnancy Pillows<svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Functional Pillows<svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Bath Towels<svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Bundles &amp; Sets<svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Gift Cards<svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+                <a href="#" class="inline-block mt-6 text-sm font-semibold text-primary hover:text-primary-dark transition underline underline-offset-4">Shop All →</a>
+              </div>
+              <div class="col-span-5 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Featured</p>
+                <a href="#" class="block rounded-xl overflow-hidden group/promo relative">
+                  <div class="relative aspect-[16/7]">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=350&fit=crop" alt="Bundle & Save" class="w-full h-full object-cover group-hover/promo:scale-[1.03] transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-5 left-6 right-6">
+                      <p class="text-white font-heading text-2xl mb-1">Bundle &amp; Save 15%</p>
+                      <p class="text-white/70 text-sm">Pillow + Towel Sets — curated for comfort</p>
+                      <span class="inline-block mt-3 text-white text-xs font-semibold tracking-[1px] uppercase border-b border-white/50 pb-0.5">Shop Bundles →</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="relative group/explore">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase hover:text-primary transition inline-flex items-center gap-1 py-5">
+          Explore
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="absolute top-full left-0 bg-white rounded-lg shadow-xl py-3 min-w-[180px] opacity-0 invisible group-hover/explore:opacity-100 group-hover/explore:visible transition-all duration-200 z-50">
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">About Us</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Our Story</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Blog</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Contact Us</a>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Center: Logo -->
+    <a href="index.html" class="nav-logo absolute left-1/2 -translate-x-1/2"><img src="public/logo.png" alt="WEFANCY" class="h-8 sm:h-9"></a>
+
+    <!-- Right: Account + Cart -->
+    <div class="hidden lg:flex items-center gap-6">
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase hover:text-primary transition">Account</a>
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase hover:text-primary transition flex items-center gap-1.5">Cart</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <div class="flex lg:hidden items-center gap-3 ml-auto">
+      <button aria-label="Cart" class="nav-link text-txt hover:text-primary transition p-1 relative">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </button>
+      <button id="mobileMenuBtn" aria-label="Menu" class="nav-link text-txt hover:text-primary transition p-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-black/40 z-[70]" onclick="closeMobileMenu()"></div>
+<!-- Mobile Menu Drawer -->
+<div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-[300px] h-full bg-white z-[80] shadow-2xl overflow-y-auto">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-8">
+      <img src="public/logo.png" alt="WEFANCY" class="h-6">
+      <button onclick="closeMobileMenu()" class="text-txt p-1" aria-label="Close menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="flex flex-col gap-5">
+      <a href="index.html" class="text-lg font-medium text-txt hover:text-primary transition">Shop All</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Pregnancy Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Functional Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Towels</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Bundles</a>
+      <hr class="border-border">
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Our Story</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition">Reviews</a>
+      <hr class="border-border">
+      <a href="#" class="text-sm text-txt-light">Account</a>
+      <a href="#" class="text-sm text-txt-light">Help &amp; FAQ</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== SECTION 2: PRODUCT HERO ========== -->
+<section class="pt-[120px] pb-12 sm:pb-20 bg-bg">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
+
+      <!-- LEFT: Image Gallery (Casper-style: 1 large hero + 2 smaller below) -->
+      <div class="w-full lg:w-[55%]">
+        <!-- Desktop gallery: Casper grid layout -->
+        <div class="hidden md:block" id="desktopGallery">
+          <!-- Large hero image -->
+          <div class="rounded-lg bg-[#EDECE8] overflow-hidden mb-3 cursor-pointer gallery-img-wrap" data-index="0" onclick="setMainImage(0)">
+            <img id="heroImg" src="public/j-2.png" alt="J-Shaped Pregnancy Pillow" class="w-full aspect-[4/3] object-cover">
+          </div>
+          <!-- Two smaller images in a row -->
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <div class="rounded-lg bg-[#EDECE8] overflow-hidden cursor-pointer gallery-img-wrap" data-index="1" onclick="setMainImage(1)">
+              <img src="public/j-1.png" alt="Product shot" class="w-full aspect-square object-contain">
+            </div>
+            <div class="rounded-lg bg-[#EDECE8] overflow-hidden cursor-pointer gallery-img-wrap" data-index="2" onclick="setMainImage(2)">
+              <img src="public/j-3.png" alt="Detail" class="w-full aspect-square object-contain">
+            </div>
+          </div>
+          <!-- Two more smaller images -->
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <div class="rounded-lg bg-[#EDECE8] overflow-hidden cursor-pointer gallery-img-wrap" data-index="3" onclick="setMainImage(3)">
+              <img src="抱枕独立站材料/六个品套图/J型枕/粉灰/1.jpg" alt="Lifestyle 1" class="w-full aspect-square object-cover">
+            </div>
+            <div class="rounded-lg bg-[#EDECE8] overflow-hidden cursor-pointer gallery-img-wrap" data-index="4" onclick="setMainImage(4)">
+              <img src="抱枕独立站材料/六个品套图/J型枕/粉灰/2.jpg" alt="Lifestyle 2" class="w-full aspect-square object-cover">
+            </div>
+          </div>
+          <!-- One more wide image -->
+          <div class="rounded-lg bg-[#EDECE8] overflow-hidden cursor-pointer gallery-img-wrap" data-index="5" onclick="setMainImage(5)">
+            <img src="抱枕独立站材料/六个品套图/J型枕/粉灰/3.jpg" alt="Lifestyle 3" class="w-full aspect-[4/3] object-cover">
+          </div>
+        </div>
+
+        <!-- Mobile carousel (unchanged) -->
+        <div class="md:hidden">
+          <div class="mobile-gallery flex overflow-x-auto snap-x snap-mandatory gap-0" id="mobileGallery">
+            <div class="w-full flex-shrink-0 snap-start aspect-square bg-[#EDECE8] rounded-lg overflow-hidden">
+              <img src="public/j-2.png" alt="Product 1" class="w-full h-full object-cover mobile-slide">
+            </div>
+            <div class="w-full flex-shrink-0 snap-start aspect-square bg-[#EDECE8] rounded-lg overflow-hidden">
+              <img src="public/j-1.png" alt="Product 2" class="w-full h-full object-contain mobile-slide">
+            </div>
+            <div class="w-full flex-shrink-0 snap-start aspect-square bg-[#EDECE8] rounded-lg overflow-hidden">
+              <img src="public/j-3.png" alt="Product 3" class="w-full h-full object-contain mobile-slide">
+            </div>
+            <div class="w-full flex-shrink-0 snap-start aspect-square bg-[#EDECE8] rounded-lg overflow-hidden">
+              <img src="抱枕独立站材料/六个品套图/J型枕/粉灰/1.jpg" alt="Product 4" class="w-full h-full object-cover mobile-slide">
+            </div>
+            <div class="w-full flex-shrink-0 snap-start aspect-square bg-[#EDECE8] rounded-lg overflow-hidden">
+              <img src="抱枕独立站材料/六个品套图/J型枕/粉灰/2.jpg" alt="Product 5" class="w-full h-full object-cover mobile-slide">
+            </div>
+            <div class="w-full flex-shrink-0 snap-start aspect-square bg-[#EDECE8] rounded-lg overflow-hidden">
+              <img src="抱枕独立站材料/六个品套图/J型枕/粉灰/3.jpg" alt="Product 6" class="w-full h-full object-cover mobile-slide">
+            </div>
+          </div>
+          <div class="flex justify-center gap-2 mt-3" id="mobileDots">
+            <span class="dot-indicator active"></span>
+            <span class="dot-indicator"></span>
+            <span class="dot-indicator"></span>
+            <span class="dot-indicator"></span>
+            <span class="dot-indicator"></span>
+            <span class="dot-indicator"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Product Info -->
+      <div class="w-full lg:w-[45%] lg:sticky lg:top-[120px] lg:self-start">
+        <p class="text-xs uppercase tracking-[2px] text-txt-muted mb-2">WEFANCY</p>
+        <h1 class="font-heading text-3xl sm:text-4xl text-txt mb-3">J-Shaped Pregnancy Pillow</h1>
+        <span class="inline-block bg-primary text-white text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded mb-4">Best Seller</span>
+
+        <!-- Stars -->
+        <div class="flex items-center gap-2 mb-4">
+          <div class="flex text-star">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <span class="text-sm text-txt-light">(2,847 reviews)</span>
+        </div>
+
+        <!-- Price -->
+        <div class="flex items-center gap-3 mb-5">
+          <span class="line-through text-txt-muted text-lg">$79.99</span>
+          <span class="font-bold text-2xl text-txt">$59.99</span>
+          <span class="text-success bg-success/10 px-2 py-0.5 rounded text-sm font-semibold">25% off</span>
+        </div>
+
+        <!-- Description -->
+        <p class="text-txt-light text-[15px] leading-relaxed mb-6">
+          Our signature J-shaped pregnancy pillow wraps around your entire body, providing 360&deg; support for belly, back, hips, and legs. Crafted with hypoallergenic fill and a removable, machine-washable cover.
+        </p>
+
+        <!-- Why you'll love it -->
+        <div class="mb-6">
+          <p class="font-semibold text-sm uppercase tracking-wide text-txt mb-3">Why you'll love it</p>
+          <div class="flex flex-col gap-2.5">
+            <div class="flex items-start gap-2.5">
+              <svg class="w-5 h-5 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <p class="text-sm text-txt"><span class="font-semibold">360&deg; FULL-BODY SUPPORT</span> — J-shaped design cradles belly, back, hips and legs</p>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <svg class="w-5 h-5 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <p class="text-sm text-txt"><span class="font-semibold">REMOVABLE &amp; WASHABLE COVER</span> — Zippered cotton cover, machine wash friendly</p>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <svg class="w-5 h-5 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <p class="text-sm text-txt"><span class="font-semibold">HYPOALLERGENIC FILL</span> — Premium polyester fiber, safe for sensitive skin</p>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <svg class="w-5 h-5 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <p class="text-sm text-txt"><span class="font-semibold">MULTI-PURPOSE</span> — Sleeping, reading, nursing, and everyday relaxation</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Swatches -->
+        <div class="mb-5">
+          <p class="text-sm font-semibold text-txt mb-2">Color: <span id="colorLabel">Pink</span></p>
+          <div class="flex gap-3" id="colorSwatches">
+            <button class="color-swatch active bg-[#F5C6D0]" data-color="pink"
+              data-img1="public/j-1.png" data-img2="public/j-2.png"
+              data-folder="抱枕独立站材料/六个品套图/J型枕/粉灰/"
+              aria-label="Pink"></button>
+            <button class="color-swatch bg-[#B0B0B0]" data-color="gray"
+              data-img1="抱枕独立站材料/六个品套图/J型枕/灰/1.jpg" data-img2="抱枕独立站材料/六个品套图/J型枕/灰/2.jpg"
+              data-folder="抱枕独立站材料/六个品套图/J型枕/灰/"
+              aria-label="Gray"></button>
+            <button class="color-swatch bg-[#4A4A4A]" data-color="dark-gray"
+              data-img1="抱枕独立站材料/六个品套图/J型枕/黑灰/1.jpg" data-img2="抱枕独立站材料/六个品套图/J型枕/黑灰/2.jpg"
+              data-folder="抱枕独立站材料/六个品套图/J型枕/黑灰/"
+              aria-label="Dark Gray"></button>
+            <button class="color-swatch bg-[#7B93A8]" data-color="blue-gray"
+              data-img1="抱枕独立站材料/六个品套图/J型枕/蓝灰/1.jpg" data-img2="抱枕独立站材料/六个品套图/J型枕/蓝灰/2.jpg"
+              data-folder="抱枕独立站材料/六个品套图/J型枕/蓝灰/"
+              aria-label="Blue Gray"></button>
+            <button class="color-swatch bg-[#D4B896]" data-color="tan"
+              data-img1="抱枕独立站材料/六个品套图/J型枕/粉/1.jpg" data-img2="抱枕独立站材料/六个品套图/J型枕/粉/2.jpg"
+              data-folder="抱枕独立站材料/六个品套图/J型枕/粉/"
+              aria-label="Tan"></button>
+          </div>
+        </div>
+
+        <!-- Size -->
+        <div class="mb-5">
+          <p class="text-sm font-semibold text-txt mb-2">Size</p>
+          <div class="inline-block border-2 border-primary rounded-full px-5 py-2 text-sm font-medium text-primary">
+            Standard — 65" &times; 16" &times; 8"
+          </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="mb-5">
+          <p class="text-sm font-semibold text-txt mb-2">Quantity</p>
+          <div class="inline-flex items-center border border-border rounded-full overflow-hidden">
+            <button onclick="changeQty(-1)" class="w-10 h-10 flex items-center justify-center text-txt hover:bg-bg-alt transition text-lg font-medium">&minus;</button>
+            <span id="qtyDisplay" class="w-10 h-10 flex items-center justify-center text-sm font-semibold">1</span>
+            <button onclick="changeQty(1)" class="w-10 h-10 flex items-center justify-center text-txt hover:bg-bg-alt transition text-lg font-medium">&plus;</button>
+          </div>
+        </div>
+
+        <!-- Add to Cart -->
+        <button class="w-full bg-accent hover:bg-accent-dark text-white font-semibold rounded-full py-4 uppercase tracking-wide text-sm transition mb-4">
+          Add to Cart
+        </button>
+
+        <!-- Upsell: Pairs best with -->
+        <div class="mt-6 mb-6">
+          <p class="text-sm font-semibold text-txt mb-3">Pairs best with:</p>
+          <div class="space-y-3">
+            <!-- Upsell 1 -->
+            <label class="flex items-center gap-3 border border-border rounded-xl p-3 cursor-pointer hover:border-primary/40 transition group">
+              <input type="checkbox" class="sr-only peer">
+              <div class="w-5 h-5 rounded border-2 border-border flex-shrink-0 flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition group-has-[:checked]:bg-primary group-has-[:checked]:border-primary">
+                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="w-14 h-14 rounded-lg bg-[#EDECE8] overflow-hidden flex-shrink-0">
+                <img src="public/母婴级头枕.png" alt="Space Capsule Pillow" class="w-full h-full object-contain">
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-txt leading-snug">Space Capsule Pillow 2-Pack</p>
+                <p class="text-xs text-txt-muted mt-0.5"><span class="line-through">$64.99</span> <span class="text-txt font-semibold">$49.99</span></p>
+              </div>
+              <span class="text-xs font-semibold text-accent flex-shrink-0">+ Add</span>
+            </label>
+            <!-- Upsell 2 -->
+            <label class="flex items-center gap-3 border border-border rounded-xl p-3 cursor-pointer hover:border-primary/40 transition group">
+              <input type="checkbox" class="sr-only peer">
+              <div class="w-5 h-5 rounded border-2 border-border flex-shrink-0 flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition group-has-[:checked]:bg-primary group-has-[:checked]:border-primary">
+                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="w-14 h-14 rounded-lg bg-[#EDECE8] overflow-hidden flex-shrink-0">
+                <img src="public/海马枕.png" alt="Seahorse Pillow" class="w-full h-full object-contain">
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-txt leading-snug">Seahorse Pillow</p>
+                <p class="text-xs text-txt-muted mt-0.5"><span class="line-through">$59.99</span> <span class="text-txt font-semibold">$45.99</span></p>
+              </div>
+              <span class="text-xs font-semibold text-accent flex-shrink-0">+ Add</span>
+            </label>
+            <!-- Upsell 3 -->
+            <label class="flex items-center gap-3 border border-border rounded-xl p-3 cursor-pointer hover:border-primary/40 transition group">
+              <input type="checkbox" class="sr-only peer">
+              <div class="w-5 h-5 rounded border-2 border-border flex-shrink-0 flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition group-has-[:checked]:bg-primary group-has-[:checked]:border-primary">
+                <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="w-14 h-14 rounded-lg bg-[#EDECE8] overflow-hidden flex-shrink-0">
+                <img src="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=200&q=80" alt="Cloud Towel Set" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-txt leading-snug">Cloud Towel Set (4-Pack)</p>
+                <p class="text-xs text-txt-muted mt-0.5"><span class="line-through">$59.99</span> <span class="text-txt font-semibold">$45.99</span></p>
+              </div>
+              <span class="text-xs font-semibold text-accent flex-shrink-0">+ Add</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Trust line -->
+        <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm text-txt-light mb-3">
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4 text-success" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Free Shipping
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4 text-success" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            100-Night Trial
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4 text-success" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            2-Year Warranty
+          </span>
+        </div>
+
+        <!-- Shipping -->
+        <div class="flex items-center justify-center gap-2 text-sm text-txt-light">
+          <span class="w-2.5 h-2.5 bg-success rounded-full inline-block"></span>
+          In stock — ships in 1-2 business days
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== SECTION 3: FEATURE HIGHLIGHTS (Casper sticky-text + scrolling-images) ========== -->
+
+<!-- Mobile: stacked cards (horizontal scroll) -->
+<section class="lg:hidden bg-white py-12">
+  <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory px-4 pb-4" style="scrollbar-width:none;-ms-overflow-style:none;">
+    <style>.lg\:hidden .snap-start::-webkit-scrollbar{display:none;}</style>
+    <div class="flex-shrink-0 w-[85vw] snap-start">
+      <img src="抱枕独立站材料/六个品套图/J型枕/粉灰/5.jpg" alt="Full-body support" class="w-full aspect-[4/3] object-cover rounded-xl mb-4">
+      <div class="flex items-center gap-3 mb-3"><span class="w-8 h-[2px] bg-primary inline-block"></span><span class="font-heading text-sm text-primary font-bold">01</span></div>
+      <h3 class="font-heading text-xl text-txt mb-2">Full-body support, all night long.</h3>
+      <p class="text-txt-light text-sm leading-relaxed">Our signature J-shape wraps around your entire body — supporting belly, back, hips, and legs simultaneously. No more stacking multiple pillows.</p>
+    </div>
+    <div class="flex-shrink-0 w-[85vw] snap-start">
+      <img src="public/j-3.png" alt="Breathable" class="w-full aspect-[4/3] object-cover rounded-xl mb-4">
+      <div class="flex items-center gap-3 mb-3"><span class="w-8 h-[2px] bg-primary inline-block"></span><span class="font-heading text-sm text-primary font-bold">02</span></div>
+      <h3 class="font-heading text-xl text-txt mb-2">Breathable &amp; hypoallergenic.</h3>
+      <p class="text-txt-light text-sm leading-relaxed">Premium polyester microfiber fill mimics down softness while staying cool and allergy-friendly. The cotton cover promotes airflow all night long.</p>
+    </div>
+    <div class="flex-shrink-0 w-[85vw] snap-start">
+      <img src="抱枕独立站材料/六个品套图/J型枕/蓝灰/3.jpg" alt="Easy care" class="w-full aspect-[4/3] object-cover rounded-xl mb-4">
+      <div class="flex items-center gap-3 mb-3"><span class="w-8 h-[2px] bg-primary inline-block"></span><span class="font-heading text-sm text-primary font-bold">03</span></div>
+      <h3 class="font-heading text-xl text-txt mb-2">Easy care, lasting comfort.</h3>
+      <p class="text-txt-light text-sm leading-relaxed">The removable zippered cover is fully machine washable. The resilient fill resists clumping and flattening, staying fluffy wash after wash.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Desktop: scrolling text left + sticky image right -->
+<section class="hidden lg:block bg-white" id="featureScrollSection">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex gap-14">
+
+      <!-- LEFT: Scrolling text column -->
+      <div class="w-[42%] py-20" id="featureTextCol">
+        <!-- Text block 01 -->
+        <div class="feature-text-block min-h-[70vh] flex items-start pt-16" data-feature="0">
+          <div>
+            <div class="flex items-center gap-3 mb-5">
+              <span class="w-10 h-[2px] bg-primary inline-block"></span>
+              <span class="font-heading text-base text-primary font-bold">01</span>
+            </div>
+            <h2 class="font-heading text-3xl lg:text-[36px] text-txt leading-[1.15] mb-5">Full-body support, all night long.</h2>
+            <p class="text-txt-light text-[15px] leading-relaxed">Our signature J-shape wraps around your entire body — supporting belly, back, hips, and legs simultaneously. No more stacking multiple pillows. Just slip in and drift off.</p>
+          </div>
+        </div>
+        <!-- Text block 02 -->
+        <div class="feature-text-block min-h-[70vh] flex items-start pt-16" data-feature="1">
+          <div>
+            <div class="flex items-center gap-3 mb-5">
+              <span class="w-10 h-[2px] bg-primary inline-block"></span>
+              <span class="font-heading text-base text-primary font-bold">02</span>
+            </div>
+            <h2 class="font-heading text-3xl lg:text-[36px] text-txt leading-[1.15] mb-5">Breathable &amp; hypoallergenic.</h2>
+            <p class="text-txt-light text-[15px] leading-relaxed">Premium polyester microfiber fill mimics down softness while staying cool and allergy-friendly. The cotton cover promotes airflow all night long.</p>
+          </div>
+        </div>
+        <!-- Text block 03 -->
+        <div class="feature-text-block min-h-[70vh] flex items-start pt-16" data-feature="2">
+          <div>
+            <div class="flex items-center gap-3 mb-5">
+              <span class="w-10 h-[2px] bg-primary inline-block"></span>
+              <span class="font-heading text-base text-primary font-bold">03</span>
+            </div>
+            <h2 class="font-heading text-3xl lg:text-[36px] text-txt leading-[1.15] mb-5">Easy care, lasting comfort.</h2>
+            <p class="text-txt-light text-[15px] leading-relaxed">The removable zippered cover is fully machine washable. The resilient fill resists clumping and flattening, staying fluffy wash after wash.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Sticky image column -->
+      <div class="w-[58%] py-20">
+        <div class="sticky top-[140px]" id="featureStickyImg">
+          <div class="feature-img-panel rounded-xl overflow-hidden">
+            <img id="featureActiveImg" src="抱枕独立站材料/六个品套图/J型枕/粉灰/5.jpg" alt="Feature" class="w-full aspect-[4/3] object-cover transition-opacity duration-500">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== SECTION 4: SLEEP POSITION COMPATIBILITY ========== -->
+<section class="bg-bg-alt py-16 sm:py-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <h2 class="font-heading text-3xl sm:text-4xl text-center text-txt mb-12 reveal">Designed for how you actually sleep.</h2>
+
+    <!-- Desktop: 3-col grid / Mobile: horizontal scroll -->
+    <div class="hidden sm:grid sm:grid-cols-3 gap-8">
+      <div class="bg-white rounded-xl p-8 text-center reveal reveal-delay-1">
+        <div class="w-16 h-16 mx-auto mb-5 text-primary">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="20" cy="22" r="6"/>
+            <path d="M14 32c0-3 3-5 6-5s6 2 6 5"/>
+            <path d="M26 32c4 2 10 4 14 4h8"/>
+            <path d="M26 32v10c0 2-1 4-3 5l-8 4"/>
+            <line x1="10" y1="36" x2="54" y2="36" stroke-width="1.5" stroke-dasharray="3 3"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-xl text-txt mb-3">Side Sleepers</h3>
+        <p class="text-sm text-txt-light leading-relaxed">The J-curve perfectly fills the gap between your knees and supports your growing belly.</p>
+      </div>
+      <div class="bg-white rounded-xl p-8 text-center reveal reveal-delay-2">
+        <div class="w-16 h-16 mx-auto mb-5 text-primary">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="32" cy="18" r="6"/>
+            <path d="M26 28h12"/>
+            <path d="M32 28v14"/>
+            <path d="M32 42l-8 10"/>
+            <path d="M32 42l8 10"/>
+            <line x1="10" y1="56" x2="54" y2="56" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M28 32h8v4h-8z" fill="none"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-xl text-txt mb-3">Back Sleepers</h3>
+        <p class="text-sm text-txt-light leading-relaxed">Prop yourself at a gentle incline for comfortable back sleeping during pregnancy.</p>
+      </div>
+      <div class="bg-white rounded-xl p-8 text-center reveal reveal-delay-3">
+        <div class="w-16 h-16 mx-auto mb-5 text-primary">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 32a12 12 0 0 1 24 0"/>
+            <path d="M44 32a12 12 0 0 1-24 0"/>
+            <polyline points="38 18 44 12 50 18"/>
+            <polyline points="26 46 20 52 14 46"/>
+            <circle cx="32" cy="32" r="3" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-xl text-txt mb-3">Combination Sleepers</h3>
+        <p class="text-sm text-txt-light leading-relaxed">Easily reposition throughout the night — the pillow moves with you.</p>
+      </div>
+    </div>
+    <!-- Mobile: horizontal scroll -->
+    <div class="sm:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <div class="flex-shrink-0 w-[75vw] snap-start bg-white rounded-xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-4 text-primary">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="20" cy="22" r="6"/><path d="M14 32c0-3 3-5 6-5s6 2 6 5"/><path d="M26 32c4 2 10 4 14 4h8"/><path d="M26 32v10c0 2-1 4-3 5l-8 4"/><line x1="10" y1="36" x2="54" y2="36" stroke-width="1.5" stroke-dasharray="3 3"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-lg text-txt mb-2">Side Sleepers</h3>
+        <p class="text-sm text-txt-light leading-relaxed">The J-curve perfectly fills the gap between your knees and supports your growing belly.</p>
+      </div>
+      <div class="flex-shrink-0 w-[75vw] snap-start bg-white rounded-xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-4 text-primary">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="32" cy="18" r="6"/><path d="M26 28h12"/><path d="M32 28v14"/><path d="M32 42l-8 10"/><path d="M32 42l8 10"/><line x1="10" y1="56" x2="54" y2="56" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M28 32h8v4h-8z" fill="none"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-lg text-txt mb-2">Back Sleepers</h3>
+        <p class="text-sm text-txt-light leading-relaxed">Prop yourself at a gentle incline for comfortable back sleeping during pregnancy.</p>
+      </div>
+      <div class="flex-shrink-0 w-[75vw] snap-start bg-white rounded-xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-4 text-primary">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 32a12 12 0 0 1 24 0"/><path d="M44 32a12 12 0 0 1-24 0"/><polyline points="38 18 44 12 50 18"/><polyline points="26 46 20 52 14 46"/><circle cx="32" cy="32" r="3" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-lg text-txt mb-2">Combination Sleepers</h3>
+        <p class="text-sm text-txt-light leading-relaxed">Easily reposition throughout the night — the pillow moves with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== SECTION 5: PRODUCT COMPARISON TABLE ========== -->
+<section class="bg-white py-16 sm:py-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <h2 class="font-heading text-3xl sm:text-4xl text-center text-txt mb-3 reveal">See how our pillows stack up.</h2>
+    <p class="text-center text-txt-light text-[15px] mb-10 reveal">Compare our pillows side by side to see which is right for you.</p>
+
+    <div class="overflow-x-auto reveal">
+      <table class="w-full min-w-[600px] text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="py-4 px-4 text-left font-semibold text-txt-muted text-xs uppercase tracking-wide"></th>
+            <th class="py-4 px-4 text-center current-col rounded-t-lg relative">
+              <span class="inline-block bg-primary text-white text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded mb-2">You're viewing</span>
+              <br>
+              <span class="font-semibold text-txt">J-Shaped Pillow</span>
+            </th>
+            <th class="py-4 px-4 text-center font-semibold text-txt">U-Shaped Pillow</th>
+            <th class="py-4 px-4 text-center font-semibold text-txt">Seahorse Pillow</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-border">
+            <td class="py-4 px-4 text-txt-muted font-medium">Image</td>
+            <td class="py-4 px-4 text-center current-col"><img src="public/j-1.png" alt="J-Shaped" class="w-20 h-20 object-contain mx-auto"></td>
+            <td class="py-4 px-4 text-center"><img src="public/u-1.png" alt="U-Shaped" class="w-20 h-20 object-contain mx-auto"></td>
+            <td class="py-4 px-4 text-center"><img src="public/海马枕.png" alt="Seahorse" class="w-20 h-20 object-contain mx-auto"></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="py-4 px-4 text-txt-muted font-medium">Construction</td>
+            <td class="py-4 px-4 text-center current-col text-txt">Hypoallergenic Polyester</td>
+            <td class="py-4 px-4 text-center text-txt">Hypoallergenic Polyester</td>
+            <td class="py-4 px-4 text-center text-txt">Hypoallergenic Polyester</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="py-4 px-4 text-txt-muted font-medium">Feel</td>
+            <td class="py-4 px-4 text-center current-col text-txt">Medium Soft</td>
+            <td class="py-4 px-4 text-center text-txt">Medium</td>
+            <td class="py-4 px-4 text-center text-txt">Medium Soft</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="py-4 px-4 text-txt-muted font-medium">Best For</td>
+            <td class="py-4 px-4 text-center current-col text-txt">Pregnancy &amp; Side Sleepers</td>
+            <td class="py-4 px-4 text-center text-txt">Full-Body Support</td>
+            <td class="py-4 px-4 text-center text-txt">Compact Support</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="py-4 px-4 text-txt-muted font-medium">Size</td>
+            <td class="py-4 px-4 text-center current-col text-txt">65" &times; 16" &times; 8"</td>
+            <td class="py-4 px-4 text-center text-txt">49" &times; 28"</td>
+            <td class="py-4 px-4 text-center text-txt">47" &times; 15"</td>
+          </tr>
+          <tr>
+            <td class="py-4 px-4 text-txt-muted font-medium">Price</td>
+            <td class="py-4 px-4 text-center current-col rounded-b-lg font-bold text-txt">$59.99</td>
+            <td class="py-4 px-4 text-center font-bold text-txt">$69.99</td>
+            <td class="py-4 px-4 text-center font-bold text-txt">$45.99</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== SECTION 6: FAQ (ACCORDION — CASPER STYLE) ========== -->
+<section class="bg-white py-16 sm:py-24">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <h2 class="font-heading text-3xl sm:text-5xl text-center text-txt mb-12 reveal">Frequently Asked Questions</h2>
+
+    <div class="bg-[#EEF0F8] rounded-2xl px-6 sm:px-10 py-4">
+      <!-- FAQ 1 -->
+      <div class="border-b border-[#D5D8E8] accordion-panel">
+        <button class="w-full flex items-center justify-between py-5 text-left" onclick="toggleAccordion(this)">
+          <span class="font-medium text-txt text-base">What are the dimensions and weight?</span>
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5D8E8] flex items-center justify-center ml-4">
+            <svg class="w-4 h-4 text-txt-muted accordion-icon transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="accordion-content">
+          <p class="text-sm text-txt-light leading-relaxed">The J-Shaped Pregnancy Pillow measures 65" &times; 16" &times; 8" and weighs approximately 7.5 lbs. It's designed to fit comfortably on a standard queen or king bed.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="border-b border-[#D5D8E8] accordion-panel">
+        <button class="w-full flex items-center justify-between py-5 text-left" onclick="toggleAccordion(this)">
+          <span class="font-medium text-txt text-base">How do I wash the pillow?</span>
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5D8E8] flex items-center justify-center ml-4">
+            <svg class="w-4 h-4 text-txt-muted accordion-icon transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="accordion-content">
+          <p class="text-sm text-txt-light leading-relaxed">The removable zippered cover is 100% cotton and fully machine washable. Wash cold on a gentle cycle and tumble dry low. The inner pillow can be spot-cleaned as needed.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="border-b border-[#D5D8E8] accordion-panel">
+        <button class="w-full flex items-center justify-between py-5 text-left" onclick="toggleAccordion(this)">
+          <span class="font-medium text-txt text-base">Is this pillow safe for people with allergies?</span>
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5D8E8] flex items-center justify-center ml-4">
+            <svg class="w-4 h-4 text-txt-muted accordion-icon transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="accordion-content">
+          <p class="text-sm text-txt-light leading-relaxed">Yes. The fill is made from hypoallergenic polyester microfiber, which is resistant to dust mites, mold, and mildew. It's safe for sensitive skin and allergy sufferers.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="border-b border-[#D5D8E8] accordion-panel">
+        <button class="w-full flex items-center justify-between py-5 text-left" onclick="toggleAccordion(this)">
+          <span class="font-medium text-txt text-base">Can I use this pillow after pregnancy?</span>
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5D8E8] flex items-center justify-center ml-4">
+            <svg class="w-4 h-4 text-txt-muted accordion-icon transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="accordion-content">
+          <p class="text-sm text-txt-light leading-relaxed">Absolutely. Many customers continue using it for nursing support, reading in bed, recovering from surgery, or simply as a body pillow for everyday comfort.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="border-b border-[#D5D8E8] accordion-panel">
+        <button class="w-full flex items-center justify-between py-5 text-left" onclick="toggleAccordion(this)">
+          <span class="font-medium text-txt text-base">What is your return policy?</span>
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5D8E8] flex items-center justify-center ml-4">
+            <svg class="w-4 h-4 text-txt-muted accordion-icon transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="accordion-content">
+          <p class="text-sm text-txt-light leading-relaxed">We offer a 100-night risk-free trial. If you're not completely satisfied, return it within 100 nights for a full refund — no questions asked. All orders also come with a 2-year limited warranty and free shipping on orders over $75.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="accordion-panel">
+        <button class="w-full flex items-center justify-between py-5 text-left" onclick="toggleAccordion(this)">
+          <span class="font-medium text-txt text-base">How long does shipping take?</span>
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[#D5D8E8] flex items-center justify-center ml-4">
+            <svg class="w-4 h-4 text-txt-muted accordion-icon transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="accordion-content">
+          <p class="text-sm text-txt-light leading-relaxed">Orders ship within 1–2 business days. Standard delivery takes 3–7 business days depending on your location. Free shipping is included on all orders over $75.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== SECTION 7: CROSS-SELL + FOOTER ========== -->
+<section class="bg-white py-16 sm:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <h2 class="font-heading text-3xl sm:text-4xl text-center text-txt mb-10 reveal">Pairs best with</h2>
+
+    <!-- Desktop: 3-col grid / Mobile: horizontal scroll -->
+    <div class="hidden sm:grid sm:grid-cols-3 gap-6">
+      <div class="cross-card bg-white rounded-xl overflow-hidden reveal reveal-delay-1">
+        <div class="aspect-square bg-[#EDECE8] overflow-hidden">
+          <img src="public/u-1.png" alt="U-Shaped Pregnancy Pillow" class="w-full h-full object-contain">
+        </div>
+        <div class="p-4">
+          <h3 class="font-medium text-txt text-sm mb-1">U-Shaped Pregnancy Pillow</h3>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="line-through text-txt-muted text-sm">$89.99</span>
+            <span class="font-bold text-txt">$69.99</span>
+          </div>
+          <button class="w-full border border-primary text-primary hover:bg-primary hover:text-white font-semibold rounded-full py-2.5 text-sm transition">+ Add</button>
+        </div>
+      </div>
+      <div class="cross-card bg-white rounded-xl overflow-hidden reveal reveal-delay-2">
+        <div class="aspect-square bg-[#EDECE8] overflow-hidden">
+          <img src="public/母婴级头枕.png" alt="Space Capsule Pillow 2-Pack" class="w-full h-full object-contain">
+        </div>
+        <div class="p-4">
+          <h3 class="font-medium text-txt text-sm mb-1">Space Capsule Pillow 2-Pack</h3>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="line-through text-txt-muted text-sm">$64.99</span>
+            <span class="font-bold text-txt">$49.99</span>
+          </div>
+          <button class="w-full border border-primary text-primary hover:bg-primary hover:text-white font-semibold rounded-full py-2.5 text-sm transition">+ Add</button>
+        </div>
+      </div>
+      <div class="cross-card bg-white rounded-xl overflow-hidden reveal reveal-delay-3">
+        <div class="aspect-square bg-[#EDECE8] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=500&q=80" alt="Cloud Towel Set" class="w-full h-full object-cover">
+        </div>
+        <div class="p-4">
+          <h3 class="font-medium text-txt text-sm mb-1">Cloud Towel Set (4-Pack)</h3>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="line-through text-txt-muted text-sm">$59.99</span>
+            <span class="font-bold text-txt">$45.99</span>
+          </div>
+          <button class="w-full border border-primary text-primary hover:bg-primary hover:text-white font-semibold rounded-full py-2.5 text-sm transition">+ Add</button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile: horizontal scroll -->
+    <div class="sm:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <div class="flex-shrink-0 w-[72vw] snap-start cross-card bg-white rounded-xl overflow-hidden">
+        <div class="aspect-square bg-[#EDECE8] overflow-hidden">
+          <img src="public/u-1.png" alt="U-Shaped Pregnancy Pillow" class="w-full h-full object-contain">
+        </div>
+        <div class="p-4">
+          <h3 class="font-medium text-txt text-sm mb-1">U-Shaped Pregnancy Pillow</h3>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="line-through text-txt-muted text-sm">$89.99</span>
+            <span class="font-bold text-txt">$69.99</span>
+          </div>
+          <button class="w-full border border-primary text-primary font-semibold rounded-full py-2.5 text-sm transition">+ Add</button>
+        </div>
+      </div>
+      <div class="flex-shrink-0 w-[72vw] snap-start cross-card bg-white rounded-xl overflow-hidden">
+        <div class="aspect-square bg-[#EDECE8] overflow-hidden">
+          <img src="public/母婴级头枕.png" alt="Space Capsule Pillow 2-Pack" class="w-full h-full object-contain">
+        </div>
+        <div class="p-4">
+          <h3 class="font-medium text-txt text-sm mb-1">Space Capsule Pillow 2-Pack</h3>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="line-through text-txt-muted text-sm">$64.99</span>
+            <span class="font-bold text-txt">$49.99</span>
+          </div>
+          <button class="w-full border border-primary text-primary font-semibold rounded-full py-2.5 text-sm transition">+ Add</button>
+        </div>
+      </div>
+      <div class="flex-shrink-0 w-[72vw] snap-start cross-card bg-white rounded-xl overflow-hidden">
+        <div class="aspect-square bg-[#EDECE8] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=500&q=80" alt="Cloud Towel Set" class="w-full h-full object-cover">
+        </div>
+        <div class="p-4">
+          <h3 class="font-medium text-txt text-sm mb-1">Cloud Towel Set (4-Pack)</h3>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="line-through text-txt-muted text-sm">$59.99</span>
+            <span class="font-bold text-txt">$45.99</span>
+          </div>
+          <button class="w-full border border-primary text-primary font-semibold rounded-full py-2.5 text-sm transition">+ Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-bg-alt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-16 pb-8">
+    <div class="mb-10"><a href="/"><img src="public/logo.png" alt="WEFANCY" class="h-7"></a></div>
+    <hr class="border-border mb-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <div><h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Shop</h4><div class="flex flex-col gap-2.5"><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Pregnancy Pillows</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Functional Pillows</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Premium Towels</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Bundles</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Gift Cards</a><a href="#" class="text-[13px] text-sale font-medium hover:text-sale/80 transition">Sale</a></div></div>
+      <div><h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Help</h4><div class="flex flex-col gap-2.5"><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">FAQ</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Shipping &amp; Returns</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Care Guide</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Size Guide</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Track Order</a></div></div>
+      <div><h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">About</h4><div class="flex flex-col gap-2.5"><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Our Story</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Reviews</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Press</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Careers</a><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Blog</a></div></div>
+      <div><h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Get In Touch</h4><div class="flex flex-col gap-2.5"><a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Contact Us</a><p class="text-[13px] text-txt-light">hello@wefancy.com</p></div><div class="flex gap-3 mt-5"><a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Instagram"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a><a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Facebook"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a><a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Pinterest"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"/></svg></a><a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="TikTok"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a></div></div>
+    </div>
+    <hr class="border-border mb-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-txt-muted"><span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">VISA</span><span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">MC</span><span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">AMEX</span><span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">PayPal</span><span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Apple Pay</span><span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Shop Pay</span></div>
+      <p class="text-txt-muted text-[11px]">&copy; 2026 WEFANCY. All rights reserved.</p>
+      <div class="flex gap-4"><a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Terms of Service</a><a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Privacy Policy</a><a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Accessibility</a></div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+// ---- Gallery images data per color ----
+var galleryData = {
+  pink: [
+    'public/j-2.png',
+    'public/j-1.png',
+    'public/j-3.png',
+    '抱枕独立站材料/六个品套图/J型枕/粉灰/1.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/粉灰/2.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/粉灰/3.jpg'
+  ],
+  gray: [
+    '抱枕独立站材料/六个品套图/J型枕/灰/1.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/灰/2.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/灰/3.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/灰/4.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/灰/5.jpg',
+    'public/j-3.png'
+  ],
+  'dark-gray': [
+    '抱枕独立站材料/六个品套图/J型枕/黑灰/1.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/黑灰/2.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/黑灰/3.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/黑灰/4.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/黑灰/5.jpg',
+    'public/j-3.png'
+  ],
+  'blue-gray': [
+    '抱枕独立站材料/六个品套图/J型枕/蓝灰/1.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/蓝灰/2.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/蓝灰/3.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/蓝灰/4.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/蓝灰/5.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/蓝灰/6.jpg'
+  ],
+  tan: [
+    '抱枕独立站材料/六个品套图/J型枕/粉/1.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/粉/2.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/粉/3.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/粉/4.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/粉/5.jpg',
+    '抱枕独立站材料/六个品套图/J型枕/粉/6.jpg'
+  ]
+};
+
+var colorLabels = {
+  pink: 'Pink',
+  gray: 'Gray',
+  'dark-gray': 'Dark Gray',
+  'blue-gray': 'Blue Gray',
+  tan: 'Tan'
+};
+
+var currentColor = 'pink';
+
+// ---- Set main image (no-op for grid layout, kept for compatibility) ----
+function setMainImage(index) {}
+
+// ---- Color swatch click ----
+document.querySelectorAll('#colorSwatches .color-swatch').forEach(function(swatch) {
+  swatch.addEventListener('click', function() {
+    var color = this.dataset.color;
+    currentColor = color;
+
+    // Update active swatch
+    document.querySelectorAll('#colorSwatches .color-swatch').forEach(function(s) { s.classList.remove('active'); });
+    this.classList.add('active');
+
+    // Update label
+    document.getElementById('colorLabel').textContent = colorLabels[color];
+
+    // Update desktop gallery grid images
+    var imgs = galleryData[color];
+    var galleryImgs = document.querySelectorAll('#desktopGallery .gallery-img-wrap img');
+    galleryImgs.forEach(function(img, i) {
+      if (imgs[i]) {
+        img.style.opacity = '0';
+        setTimeout(function() {
+          img.src = imgs[i];
+          img.style.opacity = '1';
+        }, 120);
+      }
+    });
+
+    // Update mobile gallery
+    var mobileSlides = document.querySelectorAll('.mobile-slide');
+    mobileSlides.forEach(function(s, i) {
+      if (imgs[i]) s.src = imgs[i];
+    });
+  });
+});
+
+// ---- Quantity ----
+var qty = 1;
+function changeQty(delta) {
+  qty = Math.min(10, Math.max(1, qty + delta));
+  document.getElementById('qtyDisplay').textContent = qty;
+}
+
+// ---- Mobile gallery dots ----
+(function() {
+  var gallery = document.getElementById('mobileGallery');
+  var dots = document.querySelectorAll('#mobileDots .dot-indicator');
+  if (!gallery || !dots.length) return;
+
+  gallery.addEventListener('scroll', function() {
+    var scrollLeft = gallery.scrollLeft;
+    var width = gallery.offsetWidth;
+    var index = Math.round(scrollLeft / width);
+    dots.forEach(function(d, i) {
+      d.classList.toggle('active', i === index);
+    });
+  }, { passive: true });
+})();
+
+// ---- Accordion ----
+function toggleAccordion(btn) {
+  var panel = btn.closest('.accordion-panel');
+  var content = panel.querySelector('.accordion-content');
+  var icon = panel.querySelector('.accordion-icon');
+  var isOpen = content.classList.contains('open');
+
+  // Close all panels
+  document.querySelectorAll('.accordion-panel').forEach(function(p) {
+    p.querySelector('.accordion-content').classList.remove('open');
+    p.querySelector('.accordion-icon').classList.remove('rotate-180');
+  });
+
+  // Open clicked if it was closed
+  if (!isOpen) {
+    content.classList.add('open');
+    icon.classList.add('rotate-180');
+  }
+}
+
+// ---- Feature scroll: scrolling text switches sticky image ----
+(function() {
+  var textBlocks = document.querySelectorAll('.feature-text-block');
+  var stickyImg = document.getElementById('featureActiveImg');
+  if (!textBlocks.length || !stickyImg) return;
+
+  var featureImages = [
+    '抱枕独立站材料/六个品套图/J型枕/粉灰/5.jpg',
+    'public/j-3.png',
+    '抱枕独立站材料/六个品套图/J型枕/蓝灰/3.jpg'
+  ];
+  var currentFeature = 0;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var idx = parseInt(entry.target.dataset.feature, 10);
+        if (idx !== currentFeature) {
+          currentFeature = idx;
+          stickyImg.style.opacity = '0';
+          setTimeout(function() {
+            stickyImg.src = featureImages[idx];
+            stickyImg.style.opacity = '1';
+          }, 200);
+        }
+      }
+    });
+  }, { threshold: 0.4, rootMargin: '-10% 0px -40% 0px' });
+
+  textBlocks.forEach(function(block) { observer.observe(block); });
+})();
+
+// ---- Upsell checkbox toggle ----
+document.querySelectorAll('.group label').forEach(function(label) {
+  var checkbox = label.querySelector('input[type="checkbox"]');
+  var checkIcon = label.querySelector('svg');
+  var checkBox = label.querySelector('.w-5.h-5');
+  if (!checkbox || !checkIcon || !checkBox) return;
+  label.addEventListener('click', function(e) {
+    e.preventDefault();
+    checkbox.checked = !checkbox.checked;
+    if (checkbox.checked) {
+      checkBox.style.background = '#3D5A73';
+      checkBox.style.borderColor = '#3D5A73';
+      checkIcon.style.display = 'block';
+      label.style.borderColor = '#3D5A73';
+    } else {
+      checkBox.style.background = '';
+      checkBox.style.borderColor = '';
+      checkIcon.style.display = 'none';
+      label.style.borderColor = '';
+    }
+  });
+});
+
+// ---- Announcement bar rotation ----
+(function() {
+  var slides = document.querySelectorAll('.announcement-bar .slide');
+  var current = 0;
+  if (slides.length > 1) {
+    setInterval(function() {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 5000);
+  }
+})();
+
+// ---- Close announcement bar ----
+function closeAnnouncementBar() {
+  var bar = document.getElementById('announcementBar');
+  bar.style.transform = 'translateY(-100%)';
+  bar.style.transition = 'transform 0.3s ease';
+  setTimeout(function() { bar.style.display = 'none'; }, 300);
+  document.getElementById('mainNav').style.top = '0';
+}
+
+// ---- Mega menu sync ----
+(function() {
+  var nav = document.getElementById('mainNav');
+  var mega = document.getElementById('megaMenu');
+  if (!nav || !mega) return;
+  function syncMega() {
+    mega.style.top = (nav.offsetTop + nav.offsetHeight) + 'px';
+  }
+  syncMega();
+  window.addEventListener('scroll', syncMega, { passive: true });
+  new MutationObserver(syncMega).observe(nav, { attributes: true, attributeFilter: ['style'] });
+})();
+
+// ---- Nav hide on scroll down, show on scroll up ----
+(function() {
+  var nav = document.getElementById('mainNav');
+  var bar = document.getElementById('announcementBar');
+  var lastScrollY = 0;
+  var ticking = false;
+
+  function updateNav() {
+    var scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > 100) {
+      if (scrollY > lastScrollY + 5) {
+        nav.classList.add('hidden-up');
+        if (bar) bar.classList.add('hidden-up');
+      } else if (scrollY < lastScrollY - 5) {
+        nav.classList.remove('hidden-up');
+        if (bar) bar.classList.remove('hidden-up');
+      }
+    } else {
+      nav.classList.remove('hidden-up');
+      if (bar) bar.classList.remove('hidden-up');
+    }
+    lastScrollY = scrollY;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!ticking) { requestAnimationFrame(updateNav); ticking = true; }
+  }, { passive: true });
+  updateNav();
+})();
+
+// ---- Mobile menu ----
+document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.getElementById('mobileOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('mobileOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ---- Scroll reveal ----
+(function() {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>
