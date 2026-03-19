@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Products — WEFANCY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: { DEFAULT: '#3D5A73', light: '#5B7D95', dark: '#2C4156' },
+        accent: { DEFAULT: '#C8956C', light: '#E0B794', dark: '#A67A52' },
+        bg: { DEFAULT: '#FAFAF7', alt: '#F2EFEB' },
+        txt: { DEFAULT: '#2C2C2C', light: '#6B6B6B', muted: '#999999' },
+        border: '#E5E2DD',
+        star: '#E8B44A',
+        sale: '#C45B4A',
+        success: '#5C8A5E',
+      },
+      fontFamily: {
+        heading: ['DM Serif Display', 'Georgia', 'serif'],
+        body: ['DM Sans', '-apple-system', 'sans-serif'],
+      },
+    },
+  },
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; color: #2C2C2C; background: #FAFAF7; -webkit-font-smoothing: antialiased; }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Announcement slider */
+  .announcement-bar .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.6s ease; }
+  .announcement-bar .slide.active { opacity: 1; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.05s; }
+  .reveal-delay-2 { transition-delay: 0.1s; }
+  .reveal-delay-3 { transition-delay: 0.15s; }
+  .reveal-delay-4 { transition-delay: 0.2s; }
+
+  /* Mega menu */
+  .mega-menu { opacity: 0; visibility: hidden; transform: translateY(8px); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .group:hover .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  /* Nav: solid on collection pages */
+  #mainNav {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #E5E2DD;
+    transition: all 0.35s ease;
+  }
+
+  /* Hide nav + announcement on scroll down */
+  .announcement-bar { transition: transform 0.35s ease; }
+  #mainNav.hidden-up { transform: translateY(-120px); }
+  .announcement-bar.hidden-up { transform: translateY(-100%); }
+
+  /* Mobile menu */
+  .mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  .mobile-overlay.open { opacity: 1; visibility: visible; }
+
+  /* Product card */
+  .product-card { transition: box-shadow 0.3s ease, transform 0.3s ease; display: flex; flex-direction: column; border-radius: 12px; padding: 8px 8px 12px; margin: -8px -8px -12px; }
+  .product-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); transform: translateY(-4px); background: #fff; }
+  .product-card .card-label { min-height: 20px; }
+  .product-card .card-title { min-height: 40px; }
+  .product-card .card-price { min-height: 24px; }
+  .product-card .card-stars { min-height: 20px; }
+  .product-card .card-swatches { min-height: 28px; }
+
+  /* Active swatch */
+  .variant-swatch.active { border-width: 2px; border-color: #3D5A73; }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #F2EFEB; }
+  ::-webkit-scrollbar-thumb { background: #C8956C; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A67A52; }
+
+  /* Smooth scroll */
+  html { scroll-behavior: smooth; }
+
+  /* Filter tag active */
+  .filter-tag.active { background: #3D5A73; color: #fff; border-color: #3D5A73; }
+
+  /* Sort dropdown */
+  .sort-dropdown { display: none; }
+  .sort-dropdown.open { display: block; }
+
+  /* Mobile filter drawer */
+  .filter-drawer { transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .filter-drawer.open { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ========== 1. ANNOUNCEMENT BAR ========== -->
+<div class="announcement-bar fixed top-0 left-0 right-0 z-[60] bg-[#FFF9E6] text-txt text-center h-10 overflow-hidden" id="announcementBar">
+  <div class="relative h-full max-w-7xl mx-auto px-4">
+    <div class="slide active" data-slide="0">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">SLEEP WEEK: Free Shipping on All Orders + 100-Night Risk-Free Trial</p>
+    </div>
+    <div class="slide" data-slide="1">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">Bundle &amp; Save 15% — Pillow + Towel Sets</p>
+    </div>
+    <div class="slide" data-slide="2">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">100-Night Comfort Guarantee — Love It or Return It</p>
+    </div>
+    <div class="hidden lg:flex items-center gap-3 absolute right-4 top-1/2 -translate-y-1/2 text-xs text-txt-light">
+      <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> HSA/FSA eligible</span>
+      <a href="#" class="underline underline-offset-2 hover:text-primary transition font-medium">Learn more</a>
+    </div>
+  </div>
+  <button onclick="closeAnnouncementBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-txt/40 hover:text-txt transition text-xl leading-none lg:right-auto lg:left-[calc(50%+280px)]" aria-label="Close announcement">&times;</button>
+</div>
+
+<!-- ========== 2. NAVIGATION (solid on collection page) ========== -->
+<header id="mainNav" class="fixed top-10 left-0 right-0 z-50">
+  <nav class="max-w-[1400px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
+    <!-- Left: Nav Links -->
+    <ul class="hidden lg:flex items-center gap-7">
+      <li class="relative group">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition py-5 inline-flex items-center gap-1">
+          Products
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <!-- Mega Menu -->
+        <div class="mega-menu fixed left-0 right-0 bg-white border-b border-border shadow-2xl" id="megaMenu">
+          <div class="max-w-[1400px] mx-auto px-8 py-10">
+            <div class="grid grid-cols-12 gap-8">
+              <div class="col-span-4">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Best Sellers</p>
+                <div class="grid grid-cols-2 gap-4">
+                  <a href="product-j-pillow.html" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/j-1.png" alt="J-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">J-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $59.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/u-1.png" alt="U-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">U-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $69.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/母婴级头枕.png" alt="Space Capsule Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Space Capsule Pillow 2-Pack</p>
+                    <p class="text-xs text-txt-muted mt-1">From $49.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/海马枕.png" alt="Seahorse Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Seahorse Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $45.99</p>
+                  </a>
+                </div>
+              </div>
+              <div class="col-span-3 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Categories</p>
+                <div class="flex flex-col gap-3.5">
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Pregnancy Pillows
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Functional Pillows
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Bath Towels
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Bundles &amp; Sets
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">
+                    Gift Cards
+                    <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                </div>
+                <a href="collections.html" class="inline-block mt-6 text-sm font-semibold text-primary hover:text-primary-dark transition underline underline-offset-4">Shop All →</a>
+              </div>
+              <div class="col-span-5 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Featured</p>
+                <a href="#" class="block rounded-xl overflow-hidden group/promo relative">
+                  <div class="relative aspect-[16/7]">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=350&fit=crop" alt="Bundle & Save" class="w-full h-full object-cover group-hover/promo:scale-[1.03] transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-5 left-6 right-6">
+                      <p class="text-white font-heading text-2xl mb-1">Bundle &amp; Save 15%</p>
+                      <p class="text-white/70 text-sm">Pillow + Towel Sets — curated for comfort</p>
+                      <span class="inline-block mt-3 text-white text-xs font-semibold tracking-[1px] uppercase border-b border-white/50 pb-0.5">Shop Bundles →</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="relative group/explore">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition inline-flex items-center gap-1 py-5">
+          Explore
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="absolute top-full left-0 bg-white rounded-lg shadow-xl py-3 min-w-[180px] opacity-0 invisible group-hover/explore:opacity-100 group-hover/explore:visible transition-all duration-200 z-50">
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">About Us</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Our Story</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Blog</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Contact Us</a>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Center: Logo -->
+    <a href="/" class="nav-logo absolute left-1/2 -translate-x-1/2"><img src="public/logo.png" alt="WEFANCY" class="h-8 sm:h-9"></a>
+
+    <!-- Right: Account + Cart -->
+    <div class="hidden lg:flex items-center gap-6">
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Account</a>
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition flex items-center gap-1.5">Cart</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <div class="flex lg:hidden items-center gap-3 ml-auto">
+      <button aria-label="Cart" class="nav-link text-txt hover:text-primary transition p-1 relative">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </button>
+      <button id="mobileMenuBtn" aria-label="Menu" class="nav-link text-txt hover:text-primary transition p-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-black/40 z-[70]" onclick="closeMobileMenu()"></div>
+<!-- Mobile Menu Drawer -->
+<div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-[300px] h-full bg-white z-[80] shadow-2xl overflow-y-auto">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-8">
+      <img src="public/logo.png" alt="WEFANCY" class="h-7">
+      <button onclick="closeMobileMenu()" class="text-txt p-1" aria-label="Close menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="flex flex-col gap-1">
+      <a href="collections.html" class="text-lg font-medium text-primary transition py-2">Shop All</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Pregnancy Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Functional Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Bath Towels</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Bundles</a>
+      <hr class="border-border my-4">
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">About Us</a>
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Our Story</a>
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Blog</a>
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Contact Us</a>
+      <hr class="border-border my-4">
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Account</a>
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Help &amp; FAQ</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 3. COLLECTION HERO ========== -->
+<section class="pt-[110px] pb-0">
+  <!-- Breadcrumb -->
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 pt-4 pb-6">
+    <nav class="flex items-center gap-2 text-xs text-txt-muted">
+      <a href="/" class="hover:text-primary transition">Home</a>
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="text-txt font-medium">All Products</span>
+    </nav>
+  </div>
+
+  <!-- Collection Banner -->
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="relative rounded-2xl overflow-hidden bg-primary">
+      <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=1400&h=400&fit=crop" alt="Collection banner" class="w-full h-full object-cover opacity-30">
+      </div>
+      <div class="relative px-8 sm:px-12 py-12 sm:py-16 text-center">
+        <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl text-white mb-3">All Products</h1>
+        <p class="text-white/70 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">Premium pillows &amp; towels designed for every stage of life — from pregnancy support to everyday cloud-like comfort.</p>
+        <div class="flex items-center justify-center gap-6 mt-6 text-white/60 text-xs sm:text-sm">
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Free Shipping
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            100-Night Trial
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Easy Returns
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. FILTER BAR + SORT ========== -->
+<section class="bg-bg">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="flex items-center justify-between h-14 gap-4">
+      <!-- Category filter tags (desktop) -->
+      <div class="hidden sm:flex items-center gap-2 overflow-x-auto" id="filterTags">
+        <button class="filter-tag active text-xs font-medium px-4 py-1.5 rounded-full border border-border transition-all duration-200 whitespace-nowrap" data-category="all">All Products</button>
+        <button class="filter-tag text-xs font-medium px-4 py-1.5 rounded-full border border-border text-txt-light hover:text-txt hover:border-txt transition-all duration-200 whitespace-nowrap" data-category="pregnancy">Pregnancy Pillows</button>
+        <button class="filter-tag text-xs font-medium px-4 py-1.5 rounded-full border border-border text-txt-light hover:text-txt hover:border-txt transition-all duration-200 whitespace-nowrap" data-category="functional">Functional Pillows</button>
+        <button class="filter-tag text-xs font-medium px-4 py-1.5 rounded-full border border-border text-txt-light hover:text-txt hover:border-txt transition-all duration-200 whitespace-nowrap" data-category="towels">Bath Towels</button>
+        <button class="filter-tag text-xs font-medium px-4 py-1.5 rounded-full border border-border text-txt-light hover:text-txt hover:border-txt transition-all duration-200 whitespace-nowrap" data-category="bundles">Bundles</button>
+      </div>
+
+      <!-- Mobile filter button -->
+      <button class="sm:hidden flex items-center gap-2 text-sm font-medium text-txt" onclick="openFilterDrawer()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Filter
+      </button>
+
+      <!-- Right side: count + sort -->
+      <div class="flex items-center gap-4">
+        <span class="text-xs text-txt-muted whitespace-nowrap" id="productCount">19 products</span>
+        <div class="relative">
+          <button class="flex items-center gap-1.5 text-xs font-medium text-txt hover:text-primary transition whitespace-nowrap" onclick="toggleSort()">
+            Sort by
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div id="sortDropdown" class="sort-dropdown absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-border py-2 min-w-[180px] z-50">
+            <button class="block w-full text-left px-4 py-2 text-sm text-txt hover:text-primary hover:bg-bg transition" onclick="sortProducts('featured')">Featured</button>
+            <button class="block w-full text-left px-4 py-2 text-sm text-txt hover:text-primary hover:bg-bg transition" onclick="sortProducts('price-low')">Price: Low to High</button>
+            <button class="block w-full text-left px-4 py-2 text-sm text-txt hover:text-primary hover:bg-bg transition" onclick="sortProducts('price-high')">Price: High to Low</button>
+            <button class="block w-full text-left px-4 py-2 text-sm text-txt hover:text-primary hover:bg-bg transition" onclick="sortProducts('rating')">Best Rating</button>
+            <button class="block w-full text-left px-4 py-2 text-sm text-txt hover:text-primary hover:bg-bg transition" onclick="sortProducts('newest')">Newest</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mobile Filter Drawer -->
+<div id="filterOverlay" class="fixed inset-0 bg-black/40 z-[90] opacity-0 invisible transition-all duration-300" onclick="closeFilterDrawer()"></div>
+<div id="filterDrawer" class="filter-drawer fixed bottom-0 left-0 right-0 bg-white z-[100] rounded-t-2xl shadow-2xl max-h-[60vh]">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-heading text-xl text-txt">Filter</h3>
+      <button onclick="closeFilterDrawer()" class="text-txt-muted hover:text-txt transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="flex flex-col gap-2" id="mobileFilterTags">
+      <button class="filter-tag-mobile active text-left text-sm font-medium px-4 py-3 rounded-lg border border-border transition-all duration-200" data-category="all">All Products</button>
+      <button class="filter-tag-mobile text-left text-sm font-medium px-4 py-3 rounded-lg border border-border text-txt-light transition-all duration-200" data-category="pregnancy">Pregnancy Pillows</button>
+      <button class="filter-tag-mobile text-left text-sm font-medium px-4 py-3 rounded-lg border border-border text-txt-light transition-all duration-200" data-category="functional">Functional Pillows</button>
+      <button class="filter-tag-mobile text-left text-sm font-medium px-4 py-3 rounded-lg border border-border text-txt-light transition-all duration-200" data-category="towels">Bath Towels</button>
+      <button class="filter-tag-mobile text-left text-sm font-medium px-4 py-3 rounded-lg border border-border text-txt-light transition-all duration-200" data-category="bundles">Bundles</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 5. PRODUCT GRID ========== -->
+<section class="py-10 sm:py-14">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10">
+
+      <!-- Product 1: J-Shaped Pregnancy Pillow -->
+      <div class="product-card group reveal reveal-delay-1" data-category="pregnancy" data-price="59.99" data-rating="4.9" data-order="1">
+        <a href="product-j-pillow.html" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-primary text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Best Seller</span>
+          <img src="public/j-1.png" alt="J-Shaped Pregnancy Pillow" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="public/j-2.png" alt="J-Shaped Pregnancy Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Best Value</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">J-Shaped Pregnancy Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$79.99</span>
+          <span class="font-semibold text-[15px] text-txt">$59.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">25% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(2,847)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#F5C6D0] cursor-pointer transition" data-img="public/j-1.png" data-hover="public/j-2.png" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/灰/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/黑灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/黑灰/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#7B93A8] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/蓝灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/蓝灰/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#D4B896] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/J型枕/粉灰/1.jpg" data-hover="抱枕独立站材料/六个品套图/J型枕/粉灰/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 2: U-Shaped Pregnancy Pillow -->
+      <div class="product-card group reveal reveal-delay-2" data-category="pregnancy" data-price="69.99" data-rating="4.8" data-order="2">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-primary text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Best Seller</span>
+          <img src="public/u-1.png" alt="U-Shaped Pregnancy Pillow" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="public/u-2.png" alt="U-Shaped Pregnancy Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">U-Shaped Pregnancy Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$89.99</span>
+          <span class="font-semibold text-[15px] text-txt">$69.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">22% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(1,523)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#F5C6D0] cursor-pointer transition" data-img="public/u-1.png" data-hover="public/u-2.png" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/U型枕/1黑.jpg" data-hover="抱枕独立站材料/六个品套图/U型枕/2黑.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/U型枕/1灰.jpg" data-hover="抱枕独立站材料/六个品套图/U型枕/2灰.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 3: Seahorse Pillow -->
+      <div class="product-card group reveal reveal-delay-3" data-category="pregnancy" data-price="45.99" data-rating="4.7" data-order="3">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-success text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">New</span>
+          <img src="public/海马枕.png" alt="Seahorse Pillow" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/海马枕/条纹/2.jpg" alt="Seahorse Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Seahorse Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$59.99</span>
+          <span class="font-semibold text-[15px] text-txt">$45.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">23% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(642)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#E8E0D4] cursor-pointer transition" data-img="public/海马枕.png" data-hover="抱枕独立站材料/六个品套图/海马枕/条纹/2.jpg" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/海马枕/灰色/1.jpg" data-hover="抱枕独立站材料/六个品套图/海马枕/灰色/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#F5C6D0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/海马枕/粉/1.jpg" data-hover="抱枕独立站材料/六个品套图/海马枕/粉/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 4: Single-Leg Pregnancy Pillow -->
+      <div class="product-card group reveal reveal-delay-4" data-category="pregnancy" data-price="39.99" data-rating="4.6" data-order="4">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/单腿孕妇枕/灰色/1.jpg" alt="Single-Leg Pregnancy Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/单腿孕妇枕/灰色/2.jpg" alt="Single-Leg Pregnancy Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Single-Leg Pregnancy Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$49.99</span>
+          <span class="font-semibold text-[15px] text-txt">$39.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">20% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★<span class="text-border">★</span></div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(318)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#B0B0B0] cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/单腿孕妇枕/灰色/1.jpg" data-hover="抱枕独立站材料/六个品套图/单腿孕妇枕/灰色/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/单腿孕妇枕/黑色/1.jpg" data-hover="抱枕独立站材料/六个品套图/单腿孕妇枕/黑色/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- PROMO CARD: Bundle & Save -->
+      <a href="#" class="group reveal reveal-delay-1 block" data-category="all" data-order="5" style="border-radius:12px; padding:8px 8px 12px; margin:-8px -8px -12px; display:flex; flex-direction:column; transition: box-shadow 0.3s ease, transform 0.3s ease;">
+        <div class="relative rounded-lg overflow-hidden flex-1 flex flex-col justify-end">
+          <img src="https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=640&h=900&fit=crop" alt="Bundle & Save" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div class="absolute inset-0 bg-black/10"></div>
+          <div class="relative p-5 sm:p-7 flex flex-col justify-end flex-1">
+            <span class="inline-block w-fit text-accent-light text-[11px] font-semibold tracking-[2px] uppercase mb-3">Limited Time</span>
+            <h3 class="font-heading text-xl sm:text-2xl text-white leading-tight mb-2">Bundle &amp; Save<br>Up to 15% Off</h3>
+            <p class="text-white/60 text-xs sm:text-sm leading-relaxed mb-5 max-w-[220px]">Pair any pillow with our premium towel set for extra savings.</p>
+            <span class="inline-flex items-center gap-1.5 text-white text-xs font-semibold tracking-[1px] uppercase border-b border-white/40 pb-0.5 w-fit group-hover:border-white transition">
+              Shop Bundles
+              <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Product 5: Space Capsule Pillow 2-Pack -->
+      <div class="product-card group reveal reveal-delay-2" data-category="functional" data-price="49.99" data-rating="4.8" data-order="5">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-success text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">New</span>
+          <img src="public/母婴级头枕.png" alt="Space Capsule Pillow 2-Pack" class="product-img absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/太空舱/2.jpg" alt="Space Capsule Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Space Capsule Pillow 2-Pack</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$64.99</span>
+          <span class="font-semibold text-[15px] text-txt">$49.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">23% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(986)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="public/母婴级头枕.png" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/太空舱/2.jpg" data-contain="1"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/零压力/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/零压力/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 6: Mugwort Pillow -->
+      <div class="product-card group reveal reveal-delay-2" data-category="functional" data-price="39.99" data-rating="4.7" data-order="6">
+        <a href="product-mugwort-pillow.html" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-accent text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Popular</span>
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/艾草小半圆/1.jpg" alt="Mugwort Cervical Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/艾草小半圆/2.jpg" alt="Mugwort Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Natural Relief</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Mugwort Cervical Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$49.99</span>
+          <span class="font-semibold text-[15px] text-txt">$39.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">20% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(521)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#E8E0D4] cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/艾草小半圆/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/艾草小半圆/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 7: Detachable Beauty Pillow -->
+      <div class="product-card group reveal reveal-delay-3" data-category="functional" data-price="54.99" data-rating="4.6" data-order="7">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/可拆卸美颜枕/11.jpg" alt="Detachable Beauty Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/可拆卸美颜枕/22.jpg" alt="Detachable Beauty Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">3-in-1 Beauty Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$69.99</span>
+          <span class="font-semibold text-[15px] text-txt">$54.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">21% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★<span class="text-border">★</span></div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(287)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/可拆卸美颜枕/11.jpg" data-hover="抱枕独立站材料/六个品套图/可拆卸美颜枕/22.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 8: Zero-Pressure Pillow -->
+      <div class="product-card group reveal reveal-delay-4" data-category="functional" data-price="44.99" data-rating="4.7" data-order="8">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/零压力/1.jpg" alt="Zero-Pressure Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/零压力/2.jpg" alt="Zero-Pressure Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Zero-Pressure Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$59.99</span>
+          <span class="font-semibold text-[15px] text-txt">$44.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">25% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(412)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/零压力/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/零压力/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 9: Traction Pillow -->
+      <div class="product-card group reveal reveal-delay-1" data-category="functional" data-price="42.99" data-rating="4.5" data-order="9">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/牵引枕/1.jpg" alt="Traction Cervical Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/牵引枕/2.jpg" alt="Traction Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Traction Cervical Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$54.99</span>
+          <span class="font-semibold text-[15px] text-txt">$42.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">22% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★<span class="text-border">★</span></div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(198)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/牵引枕/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/牵引枕/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 10: Cloud Towel Set (4-Pack) -->
+      <div class="product-card group reveal reveal-delay-2" data-category="towels" data-price="45.99" data-rating="4.8" data-order="10">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-accent text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Popular</span>
+          <img src="public/100-1.jpg" alt="Cloud Towel Set" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="public/100-2.jpg" alt="Cloud Towel Set - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Best Value</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Cloud Towel Set (4-Pack)</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$59.99</span>
+          <span class="font-semibold text-[15px] text-txt">$45.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">23% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(1,245)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="public/100-1.jpg" data-hover="public/100-2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#D4B896] cursor-pointer hover:border-txt transition" data-img="public/100-3.jpg" data-hover="public/100-4.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 11: Bamboo Towel Set (3-Pack) -->
+      <div class="product-card group reveal reveal-delay-3" data-category="towels" data-price="39.99" data-rating="4.7" data-order="11">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="public/100-3.jpg" alt="Bamboo Towel Set" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="public/100-4.jpg" alt="Bamboo Towel Set - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Bamboo Towel Set (3-Pack)</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$49.99</span>
+          <span class="font-semibold text-[15px] text-txt">$39.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">20% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(876)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#D4B896] cursor-pointer transition" data-img="public/100-3.jpg" data-hover="public/100-4.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-white cursor-pointer hover:border-txt transition" data-img="public/100-1.jpg" data-hover="public/100-2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 12: Pillow + Towel Bundle -->
+      <div class="product-card group reveal reveal-delay-4" data-category="bundles" data-price="89.99" data-rating="4.9" data-order="12">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-accent text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Bundle</span>
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=640&h=640&fit=crop" alt="Pillow + Towel Bundle" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=640&h=640&fit=crop" alt="Pillow + Towel Bundle - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Save 15%</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Pillow + Towel Bundle</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$105.98</span>
+          <span class="font-semibold text-[15px] text-txt">$89.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">15% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(534)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#F5C6D0] cursor-pointer transition"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#B0B0B0] cursor-pointer hover:border-txt transition"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition"></span>
+        </div>
+      </div>
+
+      <!-- Product 13: Cloud Capsule Pillow -->
+      <div class="product-card group reveal reveal-delay-1" data-category="functional" data-price="46.99" data-rating="4.7" data-order="13">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/云端舱/1.jpg" alt="Cloud Capsule Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/云端舱/2.jpg" alt="Cloud Capsule Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Cloud Capsule Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$59.99</span>
+          <span class="font-semibold text-[15px] text-txt">$46.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">22% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(374)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/云端舱/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/云端舱/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 14: 5-Star Hotel Pillow -->
+      <div class="product-card group reveal reveal-delay-2" data-category="functional" data-price="52.99" data-rating="4.8" data-order="14">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-primary text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">Best Seller</span>
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/星级酒店/1.jpg" alt="5-Star Hotel Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/星级酒店/2.jpg" alt="5-Star Hotel Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Luxury Feel</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">5-Star Hotel Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$69.99</span>
+          <span class="font-semibold text-[15px] text-txt">$52.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">24% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(1,102)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/星级酒店/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/星级酒店/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 15: Cooling Silk Pillow -->
+      <div class="product-card group reveal reveal-delay-3" data-category="functional" data-price="47.99" data-rating="4.6" data-order="15">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <span class="absolute top-3 left-3 z-10 bg-success text-white text-[11px] font-semibold tracking-[0.5px] uppercase px-3 py-1.5 rounded">New</span>
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/凉感丝吊带/1.jpg" alt="Cooling Silk Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/凉感丝吊带/2.jpg" alt="Cooling Silk Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Cooling Silk Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$62.99</span>
+          <span class="font-semibold text-[15px] text-txt">$47.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">24% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★<span class="text-border">★</span></div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(256)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/凉感丝吊带/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/凉感丝吊带/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 16: 3D Bead Pillow -->
+      <div class="product-card group reveal reveal-delay-4" data-category="functional" data-price="43.99" data-rating="4.7" data-order="16">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/凉豆豆立体/1.jpg" alt="3D Bead Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/凉豆豆立体/2.jpg" alt="3D Bead Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">3D Bead Cooling Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$54.99</span>
+          <span class="font-semibold text-[15px] text-txt">$43.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">20% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(489)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/凉豆豆立体/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/凉豆豆立体/2.jpg"></span>
+          <span class="variant-swatch w-7 h-7 rounded-sm border border-border bg-[#4A4A4A] cursor-pointer hover:border-txt transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/豆枕黑/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/豆枕黑/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 17: Green Fiber Pillow -->
+      <div class="product-card group reveal reveal-delay-1" data-category="functional" data-price="38.99" data-rating="4.5" data-order="17">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/绿色纤维/1.jpg" alt="Green Fiber Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/绿色纤维/2.jpg" alt="Green Fiber Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">✦ Eco-Friendly</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Green Fiber Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$49.99</span>
+          <span class="font-semibold text-[15px] text-txt">$38.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">22% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★<span class="text-border">★</span></div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(213)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-[#E8F0E8] cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/绿色纤维/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/绿色纤维/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 18: 3-in-1 Beauty Neck Pillow -->
+      <div class="product-card group reveal reveal-delay-2" data-category="functional" data-price="48.99" data-rating="4.6" data-order="18">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/三合一美颜枕/1.jpg" alt="3-in-1 Beauty Neck Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/三合一美颜枕/2.jpg" alt="3-in-1 Beauty Neck Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">3-in-1 Beauty Neck Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$59.99</span>
+          <span class="font-semibold text-[15px] text-txt">$48.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">18% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★<span class="text-border">★</span></div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(341)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/三合一美颜枕/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/三合一美颜枕/2.jpg"></span>
+        </div>
+      </div>
+
+      <!-- Product 19: Knit White Pillow -->
+      <div class="product-card group reveal reveal-delay-3" data-category="functional" data-price="41.99" data-rating="4.7" data-order="19">
+        <a href="#" class="block relative aspect-square rounded-lg overflow-hidden bg-[#EDECE8] mb-4">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/白针织/1.jpg" alt="Knit White Pillow" class="product-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0">
+          <img src="抱枕独立站材料/六个品套图/母婴级头枕/白针织/2.jpg" alt="Knit White Pillow - Scene" class="product-hover-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100">
+          <button class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-txt-muted hover:text-sale transition opacity-0 group-hover:opacity-100" aria-label="Add to wishlist" onclick="event.preventDefault();">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </a>
+        <p class="card-label text-xs font-semibold text-accent tracking-[0.5px] uppercase mb-1">&nbsp;</p>
+        <div class="card-title flex items-start justify-between gap-2">
+          <h3 class="font-body font-semibold text-[15px] sm:text-base text-txt leading-snug">Knit White Pillow</h3>
+          <button class="flex-shrink-0 mt-0.5 text-txt-muted hover:text-sale transition hidden sm:block" aria-label="Add to wishlist">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="card-price flex items-center gap-2 mt-1.5">
+          <span class="text-txt-muted text-sm line-through">$52.99</span>
+          <span class="font-semibold text-[15px] text-txt">$41.99</span>
+          <span class="text-xs font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded">21% off</span>
+        </div>
+        <div class="card-stars flex items-center gap-1.5 mt-2">
+          <div class="flex text-star text-xs">★★★★★</div>
+          <span class="text-txt-muted text-xs underline underline-offset-2">(567)</span>
+        </div>
+        <div class="card-swatches flex items-center gap-1.5 mt-3">
+          <span class="variant-swatch active w-7 h-7 rounded-sm border-2 border-primary bg-white cursor-pointer transition" data-img="抱枕独立站材料/六个品套图/母婴级头枕/白针织/1.jpg" data-hover="抱枕独立站材料/六个品套图/母婴级头枕/白针织/2.jpg"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty state (hidden by default) -->
+    <div id="emptyState" class="hidden text-center py-16">
+      <svg class="w-16 h-16 text-border mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h3 class="font-heading text-xl text-txt mb-2">No products found</h3>
+      <p class="text-txt-muted text-sm mb-6">Try selecting a different category.</p>
+      <button onclick="filterByCategory('all')" class="inline-block bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-6 py-2.5 rounded-full transition">View All Products</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 6. BLOG / FROM THE JOURNAL ========== -->
+<section class="bg-bg py-20 sm:py-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <h2 class="font-heading text-3xl sm:text-4xl text-txt">From the Journal</h2>
+        <p class="text-txt-light text-[15px] mt-2">Tips, science, and stories to help you sleep better.</p>
+      </div>
+      <a href="#" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">View All
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+
+    <div class="blog-cards-track flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>.blog-cards-track::-webkit-scrollbar{display:none;}</style>
+      <a href="#" class="blog-card group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal flex-shrink-0 w-[78vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" alt="Bedroom styling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Sleep Science</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">The Perfect Bedroom Temperature for Deep Sleep</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">Research shows the ideal sleeping temperature is between 60-67°F. Here's how to optimize your bedroom environment.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Mar 5, 2026</span>
+            <span>·</span>
+            <span>4 min read</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="blog-card group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-1 flex-shrink-0 w-[78vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80" alt="White bedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Buying Guide</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">Cotton vs. Bamboo Sheets: Which Is Right for You?</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">We break down the feel, breathability, and durability of the two most popular sheet materials on the market.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Feb 28, 2026</span>
+            <span>·</span>
+            <span>6 min read</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="blog-card group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-2 flex-shrink-0 w-[78vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80" alt="Cozy pillows" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Wellness</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">5 Evening Rituals That Actually Improve Sleep Quality</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">From pillow mists to weighted blankets — simple habits backed by sleep experts to wind down your night.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Feb 20, 2026</span>
+            <span>·</span>
+            <span>5 min read</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="sm:hidden text-center mt-8">
+      <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">View All Articles
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 7. COMFORT PROMISE ========== -->
+<section class="bg-primary-dark py-12 sm:py-16">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="promise-track flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-3 sm:gap-8 sm:overflow-visible sm:pb-0 text-center" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>.promise-track::-webkit-scrollbar{display:none;}</style>
+      <div class="reveal reveal-delay-1 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Ethically Made</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Responsibly sourced materials, certified safe for your family.</p>
+      </div>
+      <div class="reveal reveal-delay-2 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12.75 3.03v.568c0 .334.148.65.405.864a4.5 4.5 0 0 1 0 6.635 .997.997 0 0 0-.405.864v.568m0-9.5a4.49 4.49 0 0 0-3.397 1.549M12.75 3.03V1.5m0 1.53a4.49 4.49 0 0 1 3.397 1.549M3.378 15.18A23.96 23.96 0 0 1 12 13.5a23.96 23.96 0 0 1 8.622 1.68M3.378 15.18A24.078 24.078 0 0 0 2.25 16.5c0 1.68.503 3.246 1.367 4.55A24.006 24.006 0 0 0 12 22.5a24.006 24.006 0 0 0 8.383-1.45A8.457 8.457 0 0 0 21.75 16.5a24.078 24.078 0 0 0-1.128-1.32" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Sustainable Packaging</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Recyclable and minimal packaging — because comfort shouldn't cost the earth.</p>
+      </div>
+      <div class="reveal reveal-delay-3 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Designed with Care</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Every product is tested by real families before it reaches yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 7. FOOTER ========== -->
+<footer class="bg-bg-alt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-16 pb-8">
+    <div class="mb-10">
+      <a href="/"><img src="public/logo.png" alt="WEFANCY" class="h-7"></a>
+    </div>
+    <hr class="border-border mb-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Shop</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="collections.html" class="text-[13px] text-txt-light hover:text-primary transition">All Products</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Pregnancy Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Functional Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Premium Towels</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Bundles</a>
+          <a href="#" class="text-[13px] text-sale font-medium hover:text-sale/80 transition">Sale</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Help</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">FAQ</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Shipping &amp; Returns</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Care Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Size Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Track Order</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">About</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Our Story</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Reviews</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Press</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Careers</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Blog</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Get In Touch</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Contact Us</a>
+          <p class="text-[13px] text-txt-light">hello@wefancy.com</p>
+        </div>
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Instagram">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Facebook">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Pinterest">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="TikTok">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <hr class="border-border mb-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-txt-muted">
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">VISA</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">MC</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">AMEX</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">PayPal</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Apple Pay</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Shop Pay</span>
+      </div>
+      <p class="text-txt-muted text-[11px]">&copy; 2026 WEFANCY. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Terms of Service</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Privacy Policy</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+// Announcement bar rotation
+(function() {
+  const slides = document.querySelectorAll('.announcement-bar .slide');
+  let current = 0;
+  if (slides.length > 1) {
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 5000);
+  }
+})();
+
+// Close announcement bar
+function closeAnnouncementBar() {
+  const bar = document.getElementById('announcementBar');
+  bar.style.transform = 'translateY(-100%)';
+  bar.style.transition = 'transform 0.3s ease';
+  setTimeout(() => { bar.style.display = 'none'; }, 300);
+  document.getElementById('mainNav').style.top = '0';
+}
+
+// Mega menu: keep top aligned to nav bottom
+(function() {
+  var nav = document.getElementById('mainNav');
+  var mega = document.getElementById('megaMenu');
+  if (!nav || !mega) return;
+  function syncMega() {
+    mega.style.top = (nav.offsetTop + nav.offsetHeight) + 'px';
+  }
+  syncMega();
+  window.addEventListener('scroll', syncMega, { passive: true });
+  new MutationObserver(syncMega).observe(nav, { attributes: true, attributeFilter: ['style'] });
+})();
+
+// Nav: hide on scroll down, show on scroll up
+(function() {
+  const nav = document.getElementById('mainNav');
+  const bar = document.getElementById('announcementBar');
+  let lastScrollY = 0;
+  let ticking = false;
+  function updateNav() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > 100) {
+      if (scrollY > lastScrollY + 5) {
+        nav.classList.add('hidden-up');
+        if (bar) bar.classList.add('hidden-up');
+      } else if (scrollY < lastScrollY - 5) {
+        nav.classList.remove('hidden-up');
+        if (bar) bar.classList.remove('hidden-up');
+      }
+    } else {
+      nav.classList.remove('hidden-up');
+      if (bar) bar.classList.remove('hidden-up');
+    }
+    lastScrollY = scrollY;
+    ticking = false;
+  }
+  window.addEventListener('scroll', function() {
+    if (!ticking) { requestAnimationFrame(updateNav); ticking = true; }
+  }, { passive: true });
+  updateNav();
+})();
+
+// Scroll reveal with Intersection Observer
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// Variant swatch click — switch product images
+(function() {
+  document.querySelectorAll('.variant-swatch').forEach(function(swatch) {
+    swatch.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var card = this.closest('.product-card');
+      if (!card) return;
+      card.querySelectorAll('.variant-swatch').forEach(function(s) {
+        s.classList.remove('active');
+        s.style.borderWidth = '1px';
+        s.style.borderColor = '#E5E2DD';
+      });
+      this.classList.add('active');
+      this.style.borderWidth = '2px';
+      this.style.borderColor = '#3D5A73';
+      var img = card.querySelector('.product-img');
+      var hoverImg = card.querySelector('.product-hover-img');
+      if (img && this.dataset.img) {
+        img.src = this.dataset.img;
+        if (this.dataset.contain) {
+          img.style.objectFit = 'contain';
+        } else {
+          img.style.objectFit = 'cover';
+        }
+      }
+      if (hoverImg && this.dataset.hover) hoverImg.src = this.dataset.hover;
+    });
+  });
+})();
+
+// Mobile menu
+function openMobileMenu() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.getElementById('mobileOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('mobileOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('mobileMenuBtn').addEventListener('click', openMobileMenu);
+
+// Category filter
+function filterByCategory(category) {
+  var cards = document.querySelectorAll('#productGrid .product-card');
+  var promoCards = document.querySelectorAll('#productGrid [data-category="all"]');
+  var visibleCount = 0;
+
+  cards.forEach(function(card) {
+    if (category === 'all' || card.dataset.category === category) {
+      card.style.display = '';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Show promo cards only in "all" view
+  promoCards.forEach(function(promo) {
+    if (category === 'all') {
+      promo.style.display = '';
+    } else {
+      promo.style.display = 'none';
+    }
+  });
+
+  // Update product count
+  document.getElementById('productCount').textContent = visibleCount + ' product' + (visibleCount !== 1 ? 's' : '');
+
+  // Show/hide empty state
+  document.getElementById('emptyState').classList.toggle('hidden', visibleCount > 0);
+  document.getElementById('productGrid').classList.toggle('hidden', visibleCount === 0);
+
+  // Update active tag (desktop)
+  document.querySelectorAll('.filter-tag').forEach(function(tag) {
+    if (tag.dataset.category === category) {
+      tag.classList.add('active');
+    } else {
+      tag.classList.remove('active');
+    }
+  });
+
+  // Update active tag (mobile)
+  document.querySelectorAll('.filter-tag-mobile').forEach(function(tag) {
+    if (tag.dataset.category === category) {
+      tag.classList.add('active');
+      tag.style.background = '#3D5A73';
+      tag.style.color = '#fff';
+      tag.style.borderColor = '#3D5A73';
+    } else {
+      tag.classList.remove('active');
+      tag.style.background = '';
+      tag.style.color = '';
+      tag.style.borderColor = '';
+    }
+  });
+}
+
+// Desktop filter tag clicks
+document.querySelectorAll('.filter-tag').forEach(function(tag) {
+  tag.addEventListener('click', function() {
+    filterByCategory(this.dataset.category);
+  });
+});
+
+// Mobile filter tag clicks
+document.querySelectorAll('.filter-tag-mobile').forEach(function(tag) {
+  tag.addEventListener('click', function() {
+    filterByCategory(this.dataset.category);
+    closeFilterDrawer();
+  });
+});
+
+// Sort
+function toggleSort() {
+  document.getElementById('sortDropdown').classList.toggle('open');
+}
+
+// Close sort dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.sort-dropdown') && !e.target.closest('[onclick="toggleSort()"]')) {
+    document.getElementById('sortDropdown').classList.remove('open');
+  }
+});
+
+function sortProducts(sortBy) {
+  var grid = document.getElementById('productGrid');
+  var cards = Array.from(grid.querySelectorAll('.product-card'));
+
+  cards.sort(function(a, b) {
+    switch (sortBy) {
+      case 'price-low':
+        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+      case 'price-high':
+        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+      case 'rating':
+        return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+      case 'newest':
+        return parseInt(b.dataset.order) - parseInt(a.dataset.order);
+      default: // featured
+        return parseInt(a.dataset.order) - parseInt(b.dataset.order);
+    }
+  });
+
+  cards.forEach(function(card) {
+    grid.appendChild(card);
+  });
+
+  document.getElementById('sortDropdown').classList.remove('open');
+}
+
+// Mobile filter drawer
+function openFilterDrawer() {
+  document.getElementById('filterDrawer').classList.add('open');
+  document.getElementById('filterOverlay').style.opacity = '1';
+  document.getElementById('filterOverlay').style.visibility = 'visible';
+  document.body.style.overflow = 'hidden';
+}
+function closeFilterDrawer() {
+  document.getElementById('filterDrawer').classList.remove('open');
+  document.getElementById('filterOverlay').style.opacity = '0';
+  document.getElementById('filterOverlay').style.visibility = 'hidden';
+  document.body.style.overflow = '';
+}
+</script>
+
+</body>
+</html>

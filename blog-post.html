@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Perfect Bedroom Temperature for Deep Sleep — WEFANCY Journal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: { DEFAULT: '#3D5A73', light: '#5B7D95', dark: '#2C4156' },
+        accent: { DEFAULT: '#C8956C', light: '#E0B794', dark: '#A67A52' },
+        bg: { DEFAULT: '#FAFAF7', alt: '#F2EFEB' },
+        txt: { DEFAULT: '#2C2C2C', light: '#6B6B6B', muted: '#999999' },
+        border: '#E5E2DD',
+        star: '#E8B44A',
+        sale: '#C45B4A',
+        success: '#5C8A5E',
+      },
+      fontFamily: {
+        heading: ['DM Serif Display', 'Georgia', 'serif'],
+        body: ['DM Sans', '-apple-system', 'sans-serif'],
+      },
+    },
+  },
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; color: #2C2C2C; background: #FAFAF7; -webkit-font-smoothing: antialiased; }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .announcement-bar .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.6s ease; }
+  .announcement-bar .slide.active { opacity: 1; }
+
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.05s; }
+  .reveal-delay-2 { transition-delay: 0.1s; }
+  .reveal-delay-3 { transition-delay: 0.15s; }
+
+  .mega-menu { opacity: 0; visibility: hidden; transform: translateY(8px); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .group:hover .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  #mainNav {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #E5E2DD;
+    transition: all 0.35s ease;
+  }
+
+  .announcement-bar { transition: transform 0.35s ease; }
+  #mainNav.hidden-up { transform: translateY(-120px); }
+  .announcement-bar.hidden-up { transform: translateY(-100%); }
+
+  .mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  .mobile-overlay.open { opacity: 1; visibility: visible; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #F2EFEB; }
+  ::-webkit-scrollbar-thumb { background: #C8956C; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A67A52; }
+
+  html { scroll-behavior: smooth; }
+
+  /* Article prose styling */
+  .prose p { font-size: 16px; line-height: 1.8; color: #2C2C2C; margin-bottom: 1.5em; }
+  .prose h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: 28px; color: #2C2C2C; margin-top: 2.5em; margin-bottom: 0.8em; line-height: 1.3; }
+  .prose h3 { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 18px; color: #2C2C2C; margin-top: 2em; margin-bottom: 0.6em; }
+  .prose ul, .prose ol { margin-bottom: 1.5em; padding-left: 1.5em; }
+  .prose li { font-size: 16px; line-height: 1.8; color: #2C2C2C; margin-bottom: 0.5em; }
+  .prose a { color: #3D5A73; text-decoration: underline; text-underline-offset: 3px; }
+  .prose a:hover { color: #2C4156; }
+  .prose blockquote { border-left: 3px solid #C8956C; padding: 1em 0 1em 1.5em; margin: 2em 0; }
+  .prose blockquote p { font-family: 'DM Serif Display', Georgia, serif; font-size: 22px; line-height: 1.5; color: #3D5A73; font-style: italic; margin-bottom: 0; }
+
+  /* Reading progress bar */
+  #readingProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: #C8956C;
+    z-index: 9998;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+</style>
+</head>
+<body>
+
+<!-- Reading progress bar -->
+<div id="readingProgress"></div>
+
+<!-- ========== 1. ANNOUNCEMENT BAR ========== -->
+<div class="announcement-bar fixed top-0 left-0 right-0 z-[60] bg-[#FFF9E6] text-txt text-center h-10 overflow-hidden" id="announcementBar">
+  <div class="relative h-full max-w-7xl mx-auto px-4">
+    <div class="slide active" data-slide="0">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">SLEEP WEEK: Free Shipping on All Orders + 100-Night Risk-Free Trial</p>
+    </div>
+    <div class="slide" data-slide="1">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">Bundle &amp; Save 15% — Pillow + Towel Sets</p>
+    </div>
+    <div class="slide" data-slide="2">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">100-Night Comfort Guarantee — Love It or Return It</p>
+    </div>
+    <div class="hidden lg:flex items-center gap-3 absolute right-4 top-1/2 -translate-y-1/2 text-xs text-txt-light">
+      <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> HSA/FSA eligible</span>
+      <a href="#" class="underline underline-offset-2 hover:text-primary transition font-medium">Learn more</a>
+    </div>
+  </div>
+  <button onclick="closeAnnouncementBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-txt/40 hover:text-txt transition text-xl leading-none lg:right-auto lg:left-[calc(50%+280px)]" aria-label="Close announcement">&times;</button>
+</div>
+
+<!-- ========== 2. NAVIGATION ========== -->
+<header id="mainNav" class="fixed top-10 left-0 right-0 z-50">
+  <nav class="max-w-[1400px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
+    <ul class="hidden lg:flex items-center gap-7">
+      <li><a href="collections.html" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition py-5">Products</a></li>
+      <li><a href="blog.html" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-primary transition py-5">Blog</a></li>
+    </ul>
+    <a href="/" class="nav-logo absolute left-1/2 -translate-x-1/2"><img src="public/logo.png" alt="WEFANCY" class="h-8 sm:h-9"></a>
+    <div class="hidden lg:flex items-center gap-6">
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Account</a>
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Cart</a>
+    </div>
+    <div class="flex lg:hidden items-center gap-3 ml-auto">
+      <button aria-label="Cart" class="text-txt hover:text-primary transition p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+      <button id="mobileMenuBtn" aria-label="Menu" class="text-txt hover:text-primary transition p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg></button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu -->
+<div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-black/40 z-[70]" onclick="closeMobileMenu()"></div>
+<div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-[300px] h-full bg-white z-[80] shadow-2xl overflow-y-auto">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-8">
+      <img src="public/logo.png" alt="WEFANCY" class="h-7">
+      <button onclick="closeMobileMenu()" class="text-txt p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="flex flex-col gap-1">
+      <a href="collections.html" class="text-lg font-medium text-txt hover:text-primary transition py-2">Shop All</a>
+      <a href="blog.html" class="text-lg font-medium text-primary transition py-2">Blog</a>
+      <hr class="border-border my-4">
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">About Us</a>
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Contact Us</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 3. ARTICLE HEADER ========== -->
+<article id="articleContent">
+<section class="pt-[110px]">
+  <div class="max-w-3xl mx-auto px-5 sm:px-8 pt-6 pb-8 text-center">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center justify-center gap-2 text-xs text-txt-muted mb-8">
+      <a href="/" class="hover:text-primary transition">Home</a>
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a href="blog.html" class="hover:text-primary transition">Journal</a>
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="text-txt font-medium">Sleep Science</span>
+    </nav>
+
+    <a href="blog.html" class="inline-block text-[11px] font-semibold uppercase tracking-wider text-accent hover:text-accent-dark transition mb-4">Sleep Science</a>
+    <h1 class="font-heading text-3xl sm:text-4xl lg:text-[44px] text-txt leading-[1.15] mb-5">The Perfect Bedroom Temperature for Deep Sleep</h1>
+    <p class="text-txt-light text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-6">Research shows the ideal sleeping temperature is between 60-67°F. Here's how to optimize your bedroom environment for the deepest, most restorative rest.</p>
+
+    <!-- Meta -->
+    <div class="flex items-center justify-center gap-4 text-[13px] text-txt-muted">
+      <span>Mar 5, 2026</span>
+      <span class="w-1 h-1 rounded-full bg-border"></span>
+      <span>8 min read</span>
+      <span class="w-1 h-1 rounded-full bg-border"></span>
+      <span>By WEFANCY Team</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. HERO IMAGE ========== -->
+<section class="pb-12 sm:pb-16">
+  <div class="max-w-[1100px] mx-auto px-5 sm:px-8">
+    <div class="aspect-[16/9] sm:aspect-[2/1] rounded-2xl overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80" alt="Perfectly styled bedroom" class="w-full h-full object-cover">
+    </div>
+    <p class="text-xs text-txt-muted text-center mt-3 italic">A well-designed bedroom is the foundation of great sleep.</p>
+  </div>
+</section>
+
+<!-- ========== 5. ARTICLE BODY ========== -->
+<section class="pb-16">
+  <div class="max-w-[680px] mx-auto px-5 sm:px-8 prose">
+
+    <p>We spend roughly a third of our lives sleeping — yet most of us rarely think about the environment we sleep in. While a good pillow and quality bedding matter enormously, there's one factor that science consistently points to as the single most impactful variable for sleep quality: <strong>temperature</strong>.</p>
+
+    <h2>Why Temperature Matters</h2>
+
+    <p>Your body's core temperature naturally drops by 1-2°F as you fall asleep. This isn't a coincidence — it's a critical biological signal. When your core temperature drops, it triggers the release of melatonin, the hormone that tells your brain it's time to rest.</p>
+
+    <p>If your bedroom is too warm, your body can't initiate this cooling process efficiently. The result? You toss, turn, and spend more time in light sleep stages rather than the deep, restorative phases your body craves.</p>
+
+    <blockquote>
+      <p>The bedroom should feel slightly cool when you first get in — that initial chill is actually your body's invitation to sleep.</p>
+    </blockquote>
+
+    <h2>The Science-Backed Sweet Spot</h2>
+
+    <p>Multiple studies from the National Sleep Foundation and leading sleep labs converge on the same range: <strong>60-67°F (15.5-19.4°C)</strong>. Within this window, most adults fall asleep faster, stay asleep longer, and spend more time in REM and deep sleep cycles.</p>
+
+    <p>Here's how it breaks down:</p>
+
+    <ul>
+      <li><strong>Below 60°F</strong> — Too cold for most. Your body expends energy trying to stay warm, which disrupts sleep.</li>
+      <li><strong>60-64°F</strong> — Ideal for hot sleepers and those who use heavy duvets or pregnancy pillows that trap body heat.</li>
+      <li><strong>64-67°F</strong> — The comfortable middle ground for most people.</li>
+      <li><strong>Above 70°F</strong> — Significantly impairs sleep onset and quality for the majority of adults.</li>
+    </ul>
+
+  </div>
+</section>
+
+<!-- ========== 6. FULL-WIDTH IMAGE BREAK ========== -->
+<section class="pb-16">
+  <div class="max-w-[1100px] mx-auto px-5 sm:px-8">
+    <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
+      <div class="aspect-[4/3] rounded-xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80" alt="White linen bedding" class="w-full h-full object-cover">
+      </div>
+      <div class="aspect-[4/3] rounded-xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600&q=80" alt="Cozy bedroom morning light" class="w-full h-full object-cover">
+      </div>
+    </div>
+    <p class="text-xs text-txt-muted text-center mt-3 italic">Breathable fabrics and lighter layers help regulate temperature naturally.</p>
+  </div>
+</section>
+
+<!-- ========== 7. ARTICLE BODY CONTINUED ========== -->
+<section class="pb-16">
+  <div class="max-w-[680px] mx-auto px-5 sm:px-8 prose">
+
+    <h2>5 Ways to Optimize Your Sleep Temperature</h2>
+
+    <h3>1. Choose breathable bedding</h3>
+    <p>Natural fibers like cotton, bamboo, and linen wick moisture away from your body. Our <a href="collections.html">Cloud Towel fabric</a> uses the same principle — bamboo fibers that stay cool to the touch even in warm rooms.</p>
+
+    <h3>2. Layer strategically</h3>
+    <p>Instead of one heavy comforter, use multiple thinner layers. This lets you adjust throughout the night without fully waking up. A light sheet plus a throw blanket gives you maximum flexibility.</p>
+
+    <h3>3. Consider your pillow's thermal properties</h3>
+    <p>Memory foam pillows trap significantly more heat than down-alternative or cotton-filled options. If you run hot, look for pillows with ventilation channels or cooling gel layers — like our <a href="#">Zero-Pressure Pillow</a> with its open-cell structure.</p>
+
+    <h3>4. Time your thermostat</h3>
+    <p>Program your thermostat to begin cooling your bedroom 30 minutes before your usual bedtime. A smart thermostat that drops the temperature gradually (rather than all at once) mimics your body's natural cooling curve.</p>
+
+    <h3>5. The warm bath trick</h3>
+    <p>It sounds counterintuitive, but taking a warm bath 1-2 hours before bed actually helps you cool down faster. The warm water dilates blood vessels near your skin's surface, allowing heat to escape more rapidly once you step out. Your core temperature drops — and your body interprets this as a sleep signal.</p>
+
+    <blockquote>
+      <p>Sleep isn't just about the hours you log. It's about the environment you create — and temperature is the silent architect of deep rest.</p>
+    </blockquote>
+
+    <h2>Special Considerations for Pregnancy</h2>
+
+    <p>Pregnant women naturally run warmer due to increased blood volume and metabolic rate. If you're expecting, aim for the lower end of the range (60-64°F) and choose a pregnancy pillow made with breathable fill. Our <a href="product-j-pillow.html">J-Shaped Pregnancy Pillow</a> uses hypoallergenic polyester fiber that allows airflow — so you get full-body support without overheating.</p>
+
+    <p>Postpartum, your thermoregulation normalizes gradually. Many new moms find that keeping the temperature cool also helps with nighttime feedings — you're less groggy when the room is fresh.</p>
+
+    <h2>The Bottom Line</h2>
+
+    <p>Temperature is the easiest, cheapest sleep upgrade most people overlook. Before investing in a new mattress or blackout curtains, try simply turning down your thermostat tonight. Pair it with breathable bedding and the right pillow, and you might be surprised how much better you sleep.</p>
+
+    <p>Sweet dreams.</p>
+
+  </div>
+</section>
+
+<!-- ========== 8. SHARE + TAGS ========== -->
+<section class="pb-12">
+  <div class="max-w-[680px] mx-auto px-5 sm:px-8">
+    <hr class="border-border mb-8">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <!-- Tags -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <a href="blog.html" class="text-xs font-medium px-3 py-1 rounded-full border border-border text-txt-light hover:text-txt hover:border-txt transition">Sleep Science</a>
+        <a href="blog.html" class="text-xs font-medium px-3 py-1 rounded-full border border-border text-txt-light hover:text-txt hover:border-txt transition">Bedtime Routines</a>
+        <a href="blog.html" class="text-xs font-medium px-3 py-1 rounded-full border border-border text-txt-light hover:text-txt hover:border-txt transition">Wellness</a>
+      </div>
+      <!-- Share -->
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-txt-muted font-medium">Share</span>
+        <a href="#" class="w-8 h-8 rounded-full border border-border flex items-center justify-center text-txt-muted hover:text-primary hover:border-primary transition" aria-label="Share on Facebook">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="#" class="w-8 h-8 rounded-full border border-border flex items-center justify-center text-txt-muted hover:text-primary hover:border-primary transition" aria-label="Share on Pinterest">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"/></svg>
+        </a>
+        <button onclick="navigator.clipboard.writeText(window.location.href)" class="w-8 h-8 rounded-full border border-border flex items-center justify-center text-txt-muted hover:text-primary hover:border-primary transition" aria-label="Copy link">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m9.86-2.54a4.5 4.5 0 0 0-1.242-7.244l-4.5-4.5a4.5 4.5 0 0 0-6.364 6.364l1.757 1.757" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 9. PRODUCT CTA ========== -->
+<section class="pb-16">
+  <div class="max-w-[900px] mx-auto px-5 sm:px-8">
+    <div class="bg-bg-alt rounded-2xl p-6 sm:p-10">
+      <div class="grid sm:grid-cols-2 gap-6 items-center">
+        <div class="aspect-square rounded-xl overflow-hidden bg-[#EDECE8]">
+          <img src="public/j-1.png" alt="J-Shaped Pregnancy Pillow" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <p class="text-[11px] font-semibold tracking-[1.5px] uppercase text-accent mb-2">Featured in This Article</p>
+          <h3 class="font-heading text-2xl text-txt mb-3">J-Shaped Pregnancy Pillow</h3>
+          <p class="text-txt-light text-[15px] leading-relaxed mb-4">Breathable hypoallergenic fill with full-body support — designed to stay cool all night, every trimester and beyond.</p>
+          <div class="flex items-center gap-3 mb-5">
+            <div class="flex text-star text-sm">★★★★★</div>
+            <span class="text-txt-muted text-xs">(2,847 reviews)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-txt-muted text-sm line-through">$79.99</span>
+            <span class="font-semibold text-lg text-txt">$59.99</span>
+          </div>
+          <a href="product-j-pillow.html" class="inline-block mt-5 bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-8 py-3 rounded-full transition-all duration-300">Shop Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</article>
+
+<!-- ========== 10. RELATED POSTS ========== -->
+<section class="bg-bg-alt py-16 sm:py-20">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <h2 class="font-heading text-2xl sm:text-3xl text-txt">Keep Reading</h2>
+        <p class="text-txt-light text-[15px] mt-1">More from the WEFANCY Journal.</p>
+      </div>
+      <a href="blog.html" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">View All
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=80" alt="White bedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Buying Guide</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">Cotton vs. Bamboo Sheets: Which Is Right for You?</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">We break down the feel, breathability, and durability of the two most popular sheet materials.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Feb 28, 2026</span>
+            <span>·</span>
+            <span>6 min read</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-1">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80" alt="Cozy pillows" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Wellness</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">5 Evening Rituals That Actually Improve Sleep Quality</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">From pillow mists to weighted blankets — simple habits backed by sleep experts.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Feb 20, 2026</span>
+            <span>·</span>
+            <span>5 min read</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="group block bg-white rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow duration-300 reveal reveal-delay-2">
+        <div class="aspect-[16/10] overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=80" alt="Bedroom with plants" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 sm:p-6">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-accent">Learn</span>
+          <h3 class="font-heading text-lg sm:text-xl text-txt mt-2 mb-2 group-hover:text-primary transition-colors">Your Pillow Matters More Than Your Mattress</h3>
+          <p class="text-txt-light text-[13px] leading-relaxed line-clamp-2">The science behind cervical alignment and why upgrading your pillow is the best sleep investment.</p>
+          <div class="flex items-center gap-2 mt-4 text-[12px] text-txt-muted">
+            <span>Feb 15, 2026</span>
+            <span>·</span>
+            <span>7 min read</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="sm:hidden text-center mt-8">
+      <a href="blog.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">View All Articles
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 11. COMFORT PROMISE ========== -->
+<section class="bg-primary-dark py-12 sm:py-16">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="promise-track flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-3 sm:gap-8 sm:overflow-visible sm:pb-0 text-center" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>.promise-track::-webkit-scrollbar{display:none;}</style>
+      <div class="reveal flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Ethically Made</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Responsibly sourced materials, certified safe for your family.</p>
+      </div>
+      <div class="reveal reveal-delay-1 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12.75 3.03v.568c0 .334.148.65.405.864a4.5 4.5 0 0 1 0 6.635 .997.997 0 0 0-.405.864v.568m0-9.5a4.49 4.49 0 0 0-3.397 1.549M12.75 3.03V1.5m0 1.53a4.49 4.49 0 0 1 3.397 1.549M3.378 15.18A23.96 23.96 0 0 1 12 13.5a23.96 23.96 0 0 1 8.622 1.68M3.378 15.18A24.078 24.078 0 0 0 2.25 16.5c0 1.68.503 3.246 1.367 4.55A24.006 24.006 0 0 0 12 22.5a24.006 24.006 0 0 0 8.383-1.45A8.457 8.457 0 0 0 21.75 16.5a24.078 24.078 0 0 0-1.128-1.32" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Sustainable Packaging</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Recyclable and minimal packaging — because comfort shouldn't cost the earth.</p>
+      </div>
+      <div class="reveal reveal-delay-2 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Designed with Care</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Every product is tested by real families before it reaches yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 12. FOOTER ========== -->
+<footer class="bg-bg-alt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-16 pb-8">
+    <div class="mb-10"><a href="/"><img src="public/logo.png" alt="WEFANCY" class="h-7"></a></div>
+    <hr class="border-border mb-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Shop</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="collections.html" class="text-[13px] text-txt-light hover:text-primary transition">All Products</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Pregnancy Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Functional Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Premium Towels</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Bundles</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Help</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">FAQ</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Shipping &amp; Returns</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Care Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Track Order</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">About</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Our Story</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Reviews</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Press</a>
+          <a href="blog.html" class="text-[13px] text-txt-light hover:text-primary transition">Blog</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Get In Touch</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Contact Us</a>
+          <p class="text-[13px] text-txt-light">hello@wefancy.com</p>
+        </div>
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Instagram"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Facebook"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="TikTok"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <hr class="border-border mb-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-txt-muted">
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">VISA</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">MC</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">AMEX</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">PayPal</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Apple Pay</span>
+      </div>
+      <p class="text-txt-muted text-[11px]">&copy; 2026 WEFANCY. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Terms of Service</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+// Announcement bar rotation
+(function() {
+  const slides = document.querySelectorAll('.announcement-bar .slide');
+  let current = 0;
+  if (slides.length > 1) setInterval(() => { slides[current].classList.remove('active'); current = (current + 1) % slides.length; slides[current].classList.add('active'); }, 5000);
+})();
+
+function closeAnnouncementBar() {
+  const bar = document.getElementById('announcementBar');
+  bar.style.transform = 'translateY(-100%)';
+  bar.style.transition = 'transform 0.3s ease';
+  setTimeout(() => { bar.style.display = 'none'; }, 300);
+  document.getElementById('mainNav').style.top = '0';
+}
+
+// Nav hide on scroll
+(function() {
+  const nav = document.getElementById('mainNav');
+  const bar = document.getElementById('announcementBar');
+  let lastScrollY = 0, ticking = false;
+  function updateNav() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > 100) {
+      if (scrollY > lastScrollY + 5) { nav.classList.add('hidden-up'); if (bar) bar.classList.add('hidden-up'); }
+      else if (scrollY < lastScrollY - 5) { nav.classList.remove('hidden-up'); if (bar) bar.classList.remove('hidden-up'); }
+    } else { nav.classList.remove('hidden-up'); if (bar) bar.classList.remove('hidden-up'); }
+    lastScrollY = scrollY; ticking = false;
+  }
+  window.addEventListener('scroll', function() { if (!ticking) { requestAnimationFrame(updateNav); ticking = true; } }, { passive: true });
+})();
+
+// Reading progress bar
+(function() {
+  const bar = document.getElementById('readingProgress');
+  const article = document.getElementById('articleContent');
+  if (!bar || !article) return;
+  window.addEventListener('scroll', function() {
+    const rect = article.getBoundingClientRect();
+    const articleTop = rect.top + window.scrollY;
+    const articleHeight = article.offsetHeight;
+    const scrollY = window.scrollY;
+    const windowH = window.innerHeight;
+    const progress = Math.max(0, Math.min(100, ((scrollY - articleTop + windowH * 0.3) / articleHeight) * 100));
+    bar.style.width = progress + '%';
+  }, { passive: true });
+})();
+
+// Scroll reveal
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// Mobile menu
+function openMobileMenu() { document.getElementById('mobileMenu').classList.add('open'); document.getElementById('mobileOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.getElementById('mobileOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('mobileMenuBtn').addEventListener('click', openMobileMenu);
+</script>
+
+</body>
+</html>
