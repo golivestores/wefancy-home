@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story — WEFANCY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: { DEFAULT: '#3D5A73', light: '#5B7D95', dark: '#2C4156' },
+        accent: { DEFAULT: '#C8956C', light: '#E0B794', dark: '#A67A52' },
+        bg: { DEFAULT: '#FAFAF7', alt: '#F2EFEB' },
+        txt: { DEFAULT: '#2C2C2C', light: '#6B6B6B', muted: '#999999' },
+        border: '#E5E2DD',
+        star: '#E8B44A',
+        sale: '#C45B4A',
+        success: '#5C8A5E',
+      },
+      fontFamily: {
+        heading: ['DM Serif Display', 'Georgia', 'serif'],
+        body: ['DM Sans', '-apple-system', 'sans-serif'],
+      },
+    },
+  },
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; color: #2C2C2C; background: #FAFAF7; -webkit-font-smoothing: antialiased; }
+  body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .announcement-bar .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.6s ease; }
+  .announcement-bar .slide.active { opacity: 1; }
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .mega-menu { opacity: 0; visibility: hidden; transform: translateY(8px); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .group:hover .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+  #mainNav { background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid #E5E2DD; transition: all 0.35s ease; }
+  .announcement-bar { transition: transform 0.35s ease; }
+  #mainNav.hidden-up { transform: translateY(-120px); }
+  .announcement-bar.hidden-up { transform: translateY(-100%); }
+  .mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+  .mobile-overlay.open { opacity: 1; visibility: visible; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #F2EFEB; }
+  ::-webkit-scrollbar-thumb { background: #C8956C; border-radius: 4px; }
+  html { scroll-behavior: smooth; }
+  .stat-number { font-variant-numeric: tabular-nums; }
+  #brandStatement .word { display: inline-block; opacity: 0.12; transition: opacity 0.4s ease; }
+  #brandStatement .word.lit { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ========== 1. ANNOUNCEMENT BAR ========== -->
+<div class="announcement-bar fixed top-0 left-0 right-0 z-[60] bg-[#FFF9E6] text-txt text-center h-10 overflow-hidden" id="announcementBar">
+  <div class="relative h-full max-w-7xl mx-auto px-4">
+    <div class="slide active" data-slide="0"><p class="text-xs sm:text-sm font-medium tracking-wide">SLEEP WEEK: Free Shipping on All Orders + 100-Night Risk-Free Trial</p></div>
+    <div class="slide" data-slide="1"><p class="text-xs sm:text-sm font-medium tracking-wide">Bundle &amp; Save 15% — Pillow + Towel Sets</p></div>
+    <div class="slide" data-slide="2"><p class="text-xs sm:text-sm font-medium tracking-wide">100-Night Comfort Guarantee — Love It or Return It</p></div>
+    <div class="hidden lg:flex items-center gap-3 absolute right-4 top-1/2 -translate-y-1/2 text-xs text-txt-light">
+      <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> HSA/FSA eligible</span>
+    </div>
+  </div>
+  <button onclick="closeAnnouncementBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-txt/40 hover:text-txt transition text-xl leading-none lg:right-auto lg:left-[calc(50%+280px)]" aria-label="Close">&times;</button>
+</div>
+
+<!-- ========== 2. NAVIGATION ========== -->
+<header id="mainNav" class="fixed top-10 left-0 right-0 z-50">
+  <nav class="max-w-[1400px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
+    <ul class="hidden lg:flex items-center gap-7">
+      <li class="relative group">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition py-5 inline-flex items-center gap-1">Products <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="mega-menu fixed left-0 right-0 bg-white border-b border-border shadow-2xl" id="megaMenu">
+          <div class="max-w-[1400px] mx-auto px-8 py-10">
+            <div class="grid grid-cols-12 gap-8">
+              <div class="col-span-4">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Best Sellers</p>
+                <div class="grid grid-cols-2 gap-4">
+                  <a href="product-j-pillow.html" class="group/item block"><div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3"><img src="public/j-1.png" alt="J-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300"></div><p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">J-Shaped Pregnancy Pillow</p><p class="text-xs text-txt-muted mt-1">From $59.99</p></a>
+                  <a href="#" class="group/item block"><div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3"><img src="public/u-1.png" alt="U-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300"></div><p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">U-Shaped Pregnancy Pillow</p><p class="text-xs text-txt-muted mt-1">From $69.99</p></a>
+                  <a href="#" class="group/item block"><div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3"><img src="public/母婴级头枕.png" alt="Space Capsule Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300"></div><p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Space Capsule Pillow 2-Pack</p><p class="text-xs text-txt-muted mt-1">From $49.99</p></a>
+                  <a href="#" class="group/item block"><div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3"><img src="public/海马枕.png" alt="Seahorse Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300"></div><p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Seahorse Pillow</p><p class="text-xs text-txt-muted mt-1">From $45.99</p></a>
+                </div>
+              </div>
+              <div class="col-span-3 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Categories</p>
+                <div class="flex flex-col gap-3.5">
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition">Pregnancy Pillows</a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition">Functional Pillows</a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition">Bath Towels</a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition">Bundles &amp; Sets</a>
+                </div>
+                <a href="collections.html" class="inline-block mt-6 text-sm font-semibold text-primary hover:text-primary-dark transition underline underline-offset-4">Shop All →</a>
+              </div>
+              <div class="col-span-5 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Featured</p>
+                <a href="#" class="block rounded-xl overflow-hidden group/promo relative"><div class="relative aspect-[16/7]"><img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=350&fit=crop" alt="Bundle & Save" class="w-full h-full object-cover group-hover/promo:scale-[1.03] transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent"></div><div class="absolute bottom-5 left-6 right-6"><p class="text-white font-heading text-2xl mb-1">Bundle &amp; Save 15%</p><p class="text-white/70 text-sm">Pillow + Towel Sets — curated for comfort</p></div></div></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="relative group/explore">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition inline-flex items-center gap-1 py-5">Explore <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="absolute top-full left-0 bg-white rounded-lg shadow-xl py-3 min-w-[180px] opacity-0 invisible group-hover/explore:opacity-100 group-hover/explore:visible transition-all duration-200 z-50">
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">About Us</a>
+          <a href="our-story-v2.html" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Our Story</a>
+          <a href="blog.html" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Blog</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Contact Us</a>
+        </div>
+      </li>
+    </ul>
+    <a href="/" class="nav-logo absolute left-1/2 -translate-x-1/2"><img src="public/logo.png" alt="WEFANCY" class="h-8 sm:h-9"></a>
+    <div class="hidden lg:flex items-center gap-6">
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Account</a>
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Cart</a>
+    </div>
+    <div class="flex lg:hidden items-center gap-3 ml-auto">
+      <button aria-label="Cart" class="text-txt hover:text-primary transition p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+      <button id="mobileMenuBtn" aria-label="Menu" class="text-txt hover:text-primary transition p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg></button>
+    </div>
+  </nav>
+</header>
+<div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-black/40 z-[70]" onclick="closeMobileMenu()"></div>
+<div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-[300px] h-full bg-white z-[80] shadow-2xl overflow-y-auto">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-8"><img src="public/logo.png" alt="WEFANCY" class="h-7"><button onclick="closeMobileMenu()" class="text-txt p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <div class="flex flex-col gap-1">
+      <a href="collections.html" class="text-lg font-medium text-txt hover:text-primary transition py-2">Shop All</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Pregnancy Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Functional Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Bath Towels</a>
+      <hr class="border-border my-4">
+      <a href="our-story-v2.html" class="text-base text-primary transition py-2">Our Story</a>
+      <a href="blog.html" class="text-base text-txt-light hover:text-primary transition py-2">Blog</a>
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Contact Us</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 3. HERO — Full-screen video bg + centered text (Parachute exact layout) ========== -->
+<section class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+  <!-- Video background -->
+  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+    <source src="public/sleep video.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/35"></div>
+  <!-- Centered text -->
+  <div class="relative text-center z-10 px-5">
+    <p class="reveal text-[13px] sm:text-sm font-bold tracking-[3px] uppercase text-white mb-5">About Us</p>
+    <h1 class="reveal reveal-delay-1 font-heading italic text-4xl sm:text-5xl lg:text-[52px] text-white leading-[1.15] mb-5">Comfort for easy living.</h1>
+    <p class="reveal reveal-delay-2 text-white/75 text-[15px] sm:text-base font-normal">Because better days start with better sleep.</p>
+  </div>
+</section>
+
+<!-- ========== 4. BRAND PHILOSOPHY — 3-column asymmetric (Parachute layout) ========== -->
+<section style="background:rgb(242,239,235);">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 pt-16 pb-20">
+    <div class="grid grid-cols-1 lg:grid-cols-[18%_30%_1fr] gap-0 lg:gap-5 items-stretch">
+
+      <!-- Left column: two stacked images with gap, stretch to match center height -->
+      <div class="hidden lg:flex flex-col gap-4 reveal">
+        <div class="overflow-hidden flex-1">
+          <img src="https://images.unsplash.com/photo-1600369672770-985fd30004eb?w=400&h=400&fit=crop" alt="Soft towel closeup" class="w-full h-full object-cover">
+        </div>
+        <div class="overflow-hidden flex-[1.4]">
+          <img src="https://images.unsplash.com/photo-1631049552057-403cdb8f0658?w=400&h=580&fit=crop" alt="Linen fabric textures" class="w-full h-full object-cover">
+        </div>
+      </div>
+
+      <!-- Center column: one tall lifestyle image, stretch to match left column height -->
+      <div class="hidden lg:block overflow-hidden reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600&h=900&fit=crop" alt="Morning bedroom routine" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Mobile: show a single image -->
+      <div class="lg:hidden mb-8">
+        <div class="aspect-[16/9] rounded-xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=800&h=450&fit=crop" alt="Morning bedroom routine" class="w-full h-full object-cover">
+        </div>
+      </div>
+
+      <!-- Right column: text, vertically centered -->
+      <div class="flex items-center lg:pl-8 xl:pl-14 lg:pr-4 xl:pr-8 lg:pb-8">
+        <div>
+          <h2 id="brandStatement" class="reveal font-heading italic text-[26px] sm:text-[32px] lg:text-[38px] text-txt leading-[1.35] mb-8 lg:mb-10" data-text="Pioneers of purposeful comfort in the bedroom and bath. Experts in support. Our signature pillows are designed with care and made with love by craftspeople who believe that rest is the foundation of wellness."></h2>
+          <p class="reveal reveal-delay-1 text-txt-light text-[15px] sm:text-base leading-[1.75] max-w-lg">We believe that sleep is the truest form of self-care. That the right pillow can change a pregnancy, ease chronic pain, or simply make tomorrow feel possible. So we've spent years perfecting the full-body support pillow, the cloud-soft towel, the cervical pillow that actually works. To get back to the basics of restful living. To be your key to better days ahead.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== 6. DESIGN ORIGIN — Left text + right scrollable images (Parachute style) ========== -->
+<section style="background:rgb(232,226,219);" class="overflow-hidden">
+  <div class="grid grid-cols-1 lg:grid-cols-[33%_1fr] min-h-[85vh]">
+
+    <!-- Left: text block -->
+    <div class="flex items-center px-8 sm:px-12 lg:px-16 py-16 lg:py-24">
+      <div>
+        <h2 class="reveal font-heading text-3xl sm:text-4xl lg:text-[42px] text-txt leading-[1.2] mb-8">Thoughtfully designed for every body.</h2>
+        <p class="reveal reveal-delay-1 text-txt text-[15px] leading-[1.75] mb-2">"I approach designing each piece with a clean, modern aesthetic — quality is always at the heart and versatility the goal."</p>
+        <p class="reveal reveal-delay-1 text-txt font-medium text-[15px]">— WEFANCY Design Team</p>
+      </div>
+    </div>
+
+    <!-- Right: horizontally scrollable tall images (overscroll-y disables vertical trap) -->
+    <div id="craftCarousel" class="flex gap-4 overflow-x-auto overflow-y-hidden overscroll-y-auto snap-x snap-mandatory h-full" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>#craftCarousel::-webkit-scrollbar{display:none}</style>
+
+      <div class="flex-shrink-0 w-[65vw] sm:w-[45vw] lg:w-[32vw] snap-start h-full overflow-hidden reveal">
+        <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=600&h=900&fit=crop" alt="Textile weaving loom" class="w-full h-full object-cover">
+      </div>
+      <div class="flex-shrink-0 w-[65vw] sm:w-[45vw] lg:w-[32vw] snap-start h-full overflow-hidden reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600&h=900&fit=crop" alt="Fabric rolls in factory" class="w-full h-full object-cover">
+      </div>
+      <div class="flex-shrink-0 w-[65vw] sm:w-[45vw] lg:w-[32vw] snap-start h-full overflow-hidden reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1631049552057-403cdb8f0658?w=600&h=900&fit=crop" alt="Linen fabric closeup" class="w-full h-full object-cover">
+      </div>
+      <div class="flex-shrink-0 w-[65vw] sm:w-[45vw] lg:w-[32vw] snap-start h-full overflow-hidden reveal reveal-delay-3">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=900&fit=crop" alt="Cotton towel textures" class="w-full h-full object-cover">
+      </div>
+      <div class="flex-shrink-0 w-[65vw] sm:w-[45vw] lg:w-[32vw] snap-start h-full overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1600369672770-985fd30004eb?w=600&h=900&fit=crop" alt="Sewing craftsmanship" class="w-full h-full object-cover">
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== 8. REVIEW QUOTES ON IMAGES (Parachute style) ========== -->
+<section class="bg-bg pt-6 sm:pt-10 pb-4 sm:pb-6">
+  <div class="max-w-[1500px] mx-auto px-5 sm:px-8">
+    <div class="grid grid-cols-1 sm:grid-cols-[1.8fr_1fr] gap-4 sm:gap-5" style="height:85vh;min-height:500px;max-height:820px;">
+
+      <!-- Left — large image -->
+      <div class="relative overflow-hidden group reveal h-full">
+        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=900&h=1100&fit=crop" alt="Warm linen bedding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        <div class="absolute inset-0 bg-black/15"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <div class="flex gap-1 mb-4">
+            <span class="text-white text-sm">★</span><span class="text-white text-sm">★</span><span class="text-white text-sm">★</span><span class="text-white text-sm">★</span><span class="text-white text-sm">★</span>
+          </div>
+          <p class="font-heading italic text-white text-2xl sm:text-3xl lg:text-[38px] leading-[1.25] mb-4">"Perfect color<br>and texture."</p>
+          <span class="text-white/80 text-[13px] font-semibold tracking-[3px] uppercase">Amanda R.</span>
+        </div>
+      </div>
+
+      <!-- Right — smaller image -->
+      <div class="relative overflow-hidden group reveal reveal-delay-1 h-full">
+        <img src="https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600&h=900&fit=crop" alt="Cozy bedroom morning" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        <div class="absolute inset-0 bg-black/15"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <div class="flex gap-1 mb-4">
+            <span class="text-white text-sm">★</span><span class="text-white text-sm">★</span><span class="text-white text-sm">★</span><span class="text-white text-sm">★</span><span class="text-white text-sm">★</span>
+          </div>
+          <p class="font-heading italic text-white text-2xl sm:text-3xl lg:text-[38px] leading-[1.25] mb-4">"Softest pillow<br>of my entire life."</p>
+          <span class="text-white/80 text-[13px] font-semibold tracking-[3px] uppercase">Jennifer L.</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- READ ALL REVIEWS — right aligned -->
+    <div class="text-right mt-5 reveal">
+      <a href="#" class="text-[12px] font-semibold tracking-[2px] uppercase text-txt border-b border-txt pb-0.5 hover:text-primary hover:border-primary transition">Read All Reviews</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 9. VALUE PROPS — Dark dual panels (Parachute style) ========== -->
+<section>
+  <div class="grid md:grid-cols-2" style="height:100vh;min-height:550px;max-height:900px;">
+
+    <!-- Left panel -->
+    <div class="relative overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&h=1000&fit=crop" alt="Fabric stitching detail" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-8 sm:p-12">
+        <div class="max-w-md text-center">
+          <h3 class="reveal font-heading italic text-2xl sm:text-3xl lg:text-[38px] text-white leading-[1.25] mb-5">Only the highest-quality materials, period.</h3>
+          <p class="reveal reveal-delay-1 text-white/55 text-[15px] leading-relaxed">We source hypoallergenic, OEKO-TEX certified fibers — from premium polyester fill for our pillows to ultra-absorbent bamboo for our towels. What touches your skin matters.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Right panel -->
+    <div class="relative overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=800&h=1000&fit=crop" alt="Hand sewing craftsmanship" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-8 sm:p-12">
+        <div class="max-w-md text-center">
+          <h3 class="reveal font-heading italic text-2xl sm:text-3xl lg:text-[38px] text-white leading-[1.25] mb-5">Made with love by the world's best.</h3>
+          <p class="reveal reveal-delay-1 text-white/70 text-[15px] leading-relaxed">From experienced textile artisans to quality engineers who test every stitch — our partners bring our home essentials to life with care, not by algorithm.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== 10. BY THE NUMBERS (NEW) ========== -->
+<section class="bg-bg py-20 sm:py-28">
+  <div class="max-w-[1100px] mx-auto px-5 sm:px-8">
+    <div class="text-center mb-14 reveal">
+      <p class="text-[11px] font-semibold tracking-[2px] uppercase text-accent mb-3">By the Numbers</p>
+      <h2 class="font-heading text-3xl sm:text-4xl text-txt">The impact of better rest.</h2>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
+      <div class="text-center reveal">
+        <p class="stat-number font-heading text-4xl sm:text-5xl text-primary mb-2" data-target="150000">0</p>
+        <p class="text-sm font-semibold text-txt mb-1">Families Served</p>
+        <p class="text-xs text-txt-muted leading-relaxed">Across the United States and counting.</p>
+      </div>
+      <div class="text-center reveal reveal-delay-1">
+        <p class="stat-number font-heading text-4xl sm:text-5xl text-primary mb-2" data-target="48000">0</p>
+        <p class="text-sm font-semibold text-txt mb-1">5-Star Reviews</p>
+        <p class="text-xs text-txt-muted leading-relaxed">Real feedback from real sleepers.</p>
+      </div>
+      <div class="text-center reveal reveal-delay-2">
+        <p class="stat-number font-heading text-4xl sm:text-5xl text-primary mb-2" data-target="47">0</p>
+        <p class="text-sm font-semibold text-txt mb-1">Prototypes Tested</p>
+        <p class="text-xs text-txt-muted leading-relaxed">Before we shipped a single pillow.</p>
+      </div>
+      <div class="text-center reveal reveal-delay-3">
+        <p class="stat-number font-heading text-4xl sm:text-5xl text-primary mb-2" data-target="100">0</p>
+        <p class="text-sm font-semibold text-txt mb-1">Night Trial</p>
+        <p class="text-xs text-txt-muted leading-relaxed">Love it or return it — no questions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 11. VISIT US CTA (replaces Parachute "Visit a Store") ========== -->
+<section class="bg-bg-alt py-14 sm:py-20">
+  <div class="max-w-3xl mx-auto px-5 sm:px-8 text-center">
+    <h2 class="reveal font-heading text-3xl sm:text-4xl text-txt leading-snug mb-4">We'd love to<br>hear from you.</h2>
+    <p class="reveal reveal-delay-1 text-txt-light text-[15px] leading-relaxed mb-8 max-w-md mx-auto">Whether you have a question about sizing, need help choosing the right pillow, or simply want to say hello — our team is here for you.</p>
+    <a href="#" class="reveal reveal-delay-2 inline-block text-[11px] font-semibold tracking-[2px] uppercase text-primary hover:text-primary-dark transition border-b-2 border-primary/30 hover:border-primary pb-1">Contact Us →</a>
+  </div>
+</section>
+
+<!-- ========== 12. COMFORT PROMISE ========== -->
+<section class="bg-primary-dark py-12 sm:py-16">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="promise-track flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-3 sm:gap-8 sm:overflow-visible sm:pb-0 text-center" style="scrollbar-width:none;-ms-overflow-style:none;">
+      <style>.promise-track::-webkit-scrollbar{display:none;}</style>
+      <div class="reveal flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center"><svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Ethically Made</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Responsibly sourced materials, certified safe for your family.</p>
+      </div>
+      <div class="reveal reveal-delay-1 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center"><svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12.75 3.03v.568c0 .334.148.65.405.864a4.5 4.5 0 0 1 0 6.635 .997.997 0 0 0-.405.864v.568m0-9.5a4.49 4.49 0 0 0-3.397 1.549M12.75 3.03V1.5m0 1.53a4.49 4.49 0 0 1 3.397 1.549M3.378 15.18A23.96 23.96 0 0 1 12 13.5a23.96 23.96 0 0 1 8.622 1.68" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Sustainable Packaging</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Recyclable and minimal packaging — comfort shouldn't cost the earth.</p>
+      </div>
+      <div class="reveal reveal-delay-2 flex-shrink-0 w-[70vw] snap-start sm:w-auto sm:flex-shrink-1">
+        <div class="w-12 h-12 mx-auto mb-4 rounded-full border border-white/20 flex items-center justify-center"><svg class="w-5 h-5 text-accent-light" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 class="text-white font-semibold text-[15px] mb-2">Designed with Care</h3>
+        <p class="text-white/55 text-[13px] leading-relaxed">Every product is tested by real families before it reaches yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 13. FOOTER ========== -->
+<footer class="bg-bg-alt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-16 pb-8">
+    <div class="mb-10"><a href="/"><img src="public/logo.png" alt="WEFANCY" class="h-7"></a></div>
+    <hr class="border-border mb-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Shop</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="collections.html" class="text-[13px] text-txt-light hover:text-primary transition">All Products</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Pregnancy Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Functional Pillows</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Premium Towels</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Bundles</a>
+          <a href="#" class="text-[13px] text-sale font-medium hover:text-sale/80 transition">Sale</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Help</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">FAQ</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Shipping &amp; Returns</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Care Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Size Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Track Order</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">About</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="our-story-v2.html" class="text-[13px] text-txt-light hover:text-primary transition">Our Story</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Reviews</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Press</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Careers</a>
+          <a href="blog.html" class="text-[13px] text-txt-light hover:text-primary transition">Blog</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[13px] font-semibold tracking-[1px] uppercase text-txt mb-4">Get In Touch</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Contact Us</a>
+          <p class="text-[13px] text-txt-light">hello@wefancy.com</p>
+        </div>
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Instagram"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Facebook"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Pinterest"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="TikTok"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <hr class="border-border mb-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-txt-muted">
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">VISA</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">MC</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">AMEX</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">PayPal</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Apple Pay</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Shop Pay</span>
+      </div>
+      <p class="text-txt-muted text-[11px]">&copy; 2026 WEFANCY. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Terms of Service</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Privacy Policy</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+// Announcement bar
+(function() {
+  const slides = document.querySelectorAll('.announcement-bar .slide');
+  let current = 0;
+  if (slides.length > 1) setInterval(() => { slides[current].classList.remove('active'); current = (current + 1) % slides.length; slides[current].classList.add('active'); }, 5000);
+})();
+function closeAnnouncementBar() {
+  const bar = document.getElementById('announcementBar');
+  bar.style.transform = 'translateY(-100%)'; bar.style.transition = 'transform 0.3s ease';
+  setTimeout(() => { bar.style.display = 'none'; }, 300);
+  document.getElementById('mainNav').style.top = '0';
+}
+
+// Mega menu sync
+(function() {
+  var nav = document.getElementById('mainNav'), mega = document.getElementById('megaMenu');
+  if (!nav || !mega) return;
+  function syncMega() { mega.style.top = (nav.offsetTop + nav.offsetHeight) + 'px'; }
+  syncMega();
+  window.addEventListener('scroll', syncMega, { passive: true });
+  new MutationObserver(syncMega).observe(nav, { attributes: true, attributeFilter: ['style'] });
+})();
+
+// Nav hide on scroll
+(function() {
+  const nav = document.getElementById('mainNav'), bar = document.getElementById('announcementBar');
+  let lastScrollY = 0, ticking = false;
+  function updateNav() {
+    const scrollY = window.scrollY;
+    if (scrollY > 100) {
+      if (scrollY > lastScrollY + 5) { nav.classList.add('hidden-up'); if (bar) bar.classList.add('hidden-up'); }
+      else if (scrollY < lastScrollY - 5) { nav.classList.remove('hidden-up'); if (bar) bar.classList.remove('hidden-up'); }
+    } else { nav.classList.remove('hidden-up'); if (bar) bar.classList.remove('hidden-up'); }
+    lastScrollY = scrollY; ticking = false;
+  }
+  window.addEventListener('scroll', function() { if (!ticking) { requestAnimationFrame(updateNav); ticking = true; } }, { passive: true });
+})();
+
+// Scroll reveal
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// Word-by-word scroll reveal
+(function() {
+  var el = document.getElementById('brandStatement');
+  if (!el) return;
+  var text = el.dataset.text;
+  el.innerHTML = text.split(' ').map(function(w) { return '<span class="word">' + w + '</span>'; }).join(' ');
+  var wordEls = el.querySelectorAll('.word');
+  var totalWords = wordEls.length;
+  function update() {
+    var rect = el.getBoundingClientRect();
+    var winH = window.innerHeight;
+    var progress = Math.max(0, Math.min(1, (winH - rect.top) / (winH * 0.6 + rect.height * 0.4)));
+    var litCount = Math.round(progress * totalWords);
+    wordEls.forEach(function(w, i) { w.classList.toggle('lit', i < litCount); });
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// Counter animation
+(function() {
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target, target = parseInt(el.dataset.target), duration = 2000, start = performance.now();
+      function format(n) { return n >= 1000 ? n.toLocaleString('en-US') : n.toString(); }
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = format(Math.round(eased * target)) + (target >= 1000 ? '+' : '');
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      statObserver.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-number').forEach(el => statObserver.observe(el));
+})();
+
+// Mobile menu
+function openMobileMenu() { document.getElementById('mobileMenu').classList.add('open'); document.getElementById('mobileOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.getElementById('mobileOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('mobileMenuBtn').addEventListener('click', openMobileMenu);
+</script>
+</body>
+</html>

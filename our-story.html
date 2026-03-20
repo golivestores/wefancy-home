@@ -80,6 +80,16 @@ tailwind.config = {
 
   /* Counter animation */
   .stat-number { font-variant-numeric: tabular-nums; }
+
+  /* Word-by-word reveal */
+  #brandStatement .word {
+    display: inline-block;
+    opacity: 0.12;
+    transition: opacity 0.4s ease;
+  }
+  #brandStatement .word.lit {
+    opacity: 1;
+  }
 </style>
 </head>
 <body>
@@ -87,45 +97,159 @@ tailwind.config = {
 <!-- ========== 1. ANNOUNCEMENT BAR ========== -->
 <div class="announcement-bar fixed top-0 left-0 right-0 z-[60] bg-[#FFF9E6] text-txt text-center h-10 overflow-hidden" id="announcementBar">
   <div class="relative h-full max-w-7xl mx-auto px-4">
-    <div class="slide active" data-slide="0"><p class="text-xs sm:text-sm font-medium tracking-wide">SLEEP WEEK: Free Shipping on All Orders + 100-Night Risk-Free Trial</p></div>
-    <div class="slide" data-slide="1"><p class="text-xs sm:text-sm font-medium tracking-wide">Bundle &amp; Save 15% — Pillow + Towel Sets</p></div>
-    <div class="slide" data-slide="2"><p class="text-xs sm:text-sm font-medium tracking-wide">100-Night Comfort Guarantee — Love It or Return It</p></div>
+    <div class="slide active" data-slide="0">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">SLEEP WEEK: Free Shipping on All Orders + 100-Night Risk-Free Trial</p>
+    </div>
+    <div class="slide" data-slide="1">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">Bundle &amp; Save 15% — Pillow + Towel Sets</p>
+    </div>
+    <div class="slide" data-slide="2">
+      <p class="text-xs sm:text-sm font-medium tracking-wide">100-Night Comfort Guarantee — Love It or Return It</p>
+    </div>
+    <div class="hidden lg:flex items-center gap-3 absolute right-4 top-1/2 -translate-y-1/2 text-xs text-txt-light">
+      <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> HSA/FSA eligible</span>
+      <a href="#" class="underline underline-offset-2 hover:text-primary transition font-medium">Learn more</a>
+    </div>
   </div>
-  <button onclick="closeAnnouncementBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-txt/40 hover:text-txt transition text-xl leading-none" aria-label="Close">&times;</button>
+  <button onclick="closeAnnouncementBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-txt/40 hover:text-txt transition text-xl leading-none lg:right-auto lg:left-[calc(50%+280px)]" aria-label="Close announcement">&times;</button>
 </div>
 
-<!-- ========== 2. NAVIGATION ========== -->
+<!-- ========== 2. NAVIGATION (solid) ========== -->
 <header id="mainNav" class="fixed top-10 left-0 right-0 z-50">
   <nav class="max-w-[1400px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
+    <!-- Left: Nav Links -->
     <ul class="hidden lg:flex items-center gap-7">
-      <li><a href="collections.html" class="font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition py-5">Products</a></li>
-      <li><a href="blog.html" class="font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition py-5">Blog</a></li>
-      <li><a href="our-story.html" class="font-body font-medium text-[13px] tracking-[1px] uppercase text-primary transition py-5">Our Story</a></li>
+      <li class="relative group">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition py-5 inline-flex items-center gap-1">
+          Products
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <!-- Mega Menu -->
+        <div class="mega-menu fixed left-0 right-0 bg-white border-b border-border shadow-2xl" id="megaMenu">
+          <div class="max-w-[1400px] mx-auto px-8 py-10">
+            <div class="grid grid-cols-12 gap-8">
+              <div class="col-span-4">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Best Sellers</p>
+                <div class="grid grid-cols-2 gap-4">
+                  <a href="product-j-pillow.html" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/j-1.png" alt="J-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">J-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $59.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/u-1.png" alt="U-Shaped Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">U-Shaped Pregnancy Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $69.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/母婴级头枕.png" alt="Space Capsule Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Space Capsule Pillow 2-Pack</p>
+                    <p class="text-xs text-txt-muted mt-1">From $49.99</p>
+                  </a>
+                  <a href="#" class="group/item block">
+                    <div class="aspect-square rounded-lg bg-bg-alt overflow-hidden mb-3">
+                      <img src="public/海马枕.png" alt="Seahorse Pillow" class="w-full h-full object-contain group-hover/item:scale-105 transition-transform duration-300">
+                    </div>
+                    <p class="text-sm font-medium text-txt group-hover/item:text-primary transition leading-snug">Seahorse Pillow</p>
+                    <p class="text-xs text-txt-muted mt-1">From $45.99</p>
+                  </a>
+                </div>
+              </div>
+              <div class="col-span-3 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Categories</p>
+                <div class="flex flex-col gap-3.5">
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Pregnancy Pillows <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Functional Pillows <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Bath Towels <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Bundles &amp; Sets <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <a href="#" class="text-[15px] text-txt hover:text-primary transition flex items-center justify-between group/cat">Gift Cards <svg class="w-4 h-4 text-txt-muted opacity-0 group-hover/cat:opacity-100 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+                <a href="collections.html" class="inline-block mt-6 text-sm font-semibold text-primary hover:text-primary-dark transition underline underline-offset-4">Shop All →</a>
+              </div>
+              <div class="col-span-5 pl-8 border-l border-border">
+                <p class="text-[11px] font-semibold tracking-[2px] uppercase text-txt-muted mb-5">Featured</p>
+                <a href="#" class="block rounded-xl overflow-hidden group/promo relative">
+                  <div class="relative aspect-[16/7]">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=350&fit=crop" alt="Bundle & Save" class="w-full h-full object-cover group-hover/promo:scale-[1.03] transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-5 left-6 right-6">
+                      <p class="text-white font-heading text-2xl mb-1">Bundle &amp; Save 15%</p>
+                      <p class="text-white/70 text-sm">Pillow + Towel Sets — curated for comfort</p>
+                      <span class="inline-block mt-3 text-white text-xs font-semibold tracking-[1px] uppercase border-b border-white/50 pb-0.5">Shop Bundles →</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="relative group/explore">
+        <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition inline-flex items-center gap-1 py-5">
+          Explore
+          <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="absolute top-full left-0 bg-white rounded-lg shadow-xl py-3 min-w-[180px] opacity-0 invisible group-hover/explore:opacity-100 group-hover/explore:visible transition-all duration-200 z-50">
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">About Us</a>
+          <a href="our-story.html" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Our Story</a>
+          <a href="blog.html" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Blog</a>
+          <a href="#" class="block px-5 py-2.5 text-sm text-txt hover:text-primary hover:bg-bg transition">Contact Us</a>
+        </div>
+      </li>
     </ul>
+
+    <!-- Center: Logo -->
     <a href="/" class="nav-logo absolute left-1/2 -translate-x-1/2"><img src="public/logo.png" alt="WEFANCY" class="h-8 sm:h-9"></a>
+
+    <!-- Right: Account + Cart -->
     <div class="hidden lg:flex items-center gap-6">
-      <a href="#" class="font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Account</a>
-      <a href="#" class="font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Cart</a>
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition">Account</a>
+      <a href="#" class="nav-link font-body font-medium text-[13px] tracking-[1px] uppercase text-txt hover:text-primary transition flex items-center gap-1.5">Cart</a>
     </div>
+
+    <!-- Mobile hamburger -->
     <div class="flex lg:hidden items-center gap-3 ml-auto">
-      <button id="mobileMenuBtn" aria-label="Menu" class="text-txt hover:text-primary transition p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg></button>
+      <button aria-label="Cart" class="nav-link text-txt hover:text-primary transition p-1 relative">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </button>
+      <button id="mobileMenuBtn" aria-label="Menu" class="nav-link text-txt hover:text-primary transition p-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </nav>
 </header>
 
+<!-- Mobile Menu Overlay -->
 <div id="mobileOverlay" class="mobile-overlay fixed inset-0 bg-black/40 z-[70]" onclick="closeMobileMenu()"></div>
+<!-- Mobile Menu Drawer -->
 <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-[300px] h-full bg-white z-[80] shadow-2xl overflow-y-auto">
   <div class="p-6">
     <div class="flex items-center justify-between mb-8">
       <img src="public/logo.png" alt="WEFANCY" class="h-7">
-      <button onclick="closeMobileMenu()" class="text-txt p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button onclick="closeMobileMenu()" class="text-txt p-1" aria-label="Close menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
     <div class="flex flex-col gap-1">
       <a href="collections.html" class="text-lg font-medium text-txt hover:text-primary transition py-2">Shop All</a>
-      <a href="blog.html" class="text-lg font-medium text-txt hover:text-primary transition py-2">Blog</a>
-      <a href="our-story.html" class="text-lg font-medium text-primary transition py-2">Our Story</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Pregnancy Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Functional Pillows</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Bath Towels</a>
+      <a href="#" class="text-lg font-medium text-txt hover:text-primary transition py-2">Bundles</a>
       <hr class="border-border my-4">
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">About Us</a>
+      <a href="our-story.html" class="text-base text-txt-light hover:text-primary transition py-2">Our Story</a>
+      <a href="blog.html" class="text-base text-txt-light hover:text-primary transition py-2">Blog</a>
       <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Contact Us</a>
+      <hr class="border-border my-4">
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Account</a>
+      <a href="#" class="text-base text-txt-light hover:text-primary transition py-2">Help &amp; FAQ</a>
     </div>
   </div>
 </div>
@@ -138,22 +262,18 @@ tailwind.config = {
   </div>
   <div class="relative max-w-[1400px] mx-auto px-5 sm:px-8 w-full pt-[120px] pb-16 sm:pb-20">
     <div class="max-w-xl">
-      <p class="text-[11px] font-semibold tracking-[3px] uppercase text-accent-light mb-5">About Us</p>
-      <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl text-white leading-[1.1] mb-6"><em>Comfort designed</em><br>for real life.</h1>
-      <p class="text-white/65 text-base sm:text-lg leading-relaxed max-w-md mb-8">Because rest isn't a luxury — it's the foundation of everything. We design pillows and home textiles that support the moments that matter most.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="collections.html" class="inline-block bg-white text-primary-dark text-sm font-semibold px-7 py-3 rounded-full hover:bg-bg-alt transition-all duration-300">Shop Pillows</a>
-        <a href="collections.html" class="inline-block border border-white/40 text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-white/10 transition-all duration-300">Shop Towels</a>
-      </div>
+      <p class="reveal text-[11px] font-semibold tracking-[3px] uppercase text-accent-light mb-5">About Us</p>
+      <h1 class="reveal reveal-delay-1 font-heading text-4xl sm:text-5xl lg:text-6xl text-white leading-[1.1] mb-6"><em>Comfort designed</em><br>for real life.</h1>
+      <p class="reveal reveal-delay-2 text-white/65 text-base sm:text-lg leading-relaxed max-w-md">Because rest isn't a luxury — it's the foundation of everything. We design pillows and home textiles that support the moments that matter most.</p>
     </div>
   </div>
 </section>
 
-<!-- ========== 4. BRAND STATEMENT — Centered serif ========== -->
+<!-- ========== 4. BRAND STATEMENT — Centered serif, word-by-word reveal ========== -->
 <section class="bg-bg py-20 sm:py-28">
-  <div class="max-w-3xl mx-auto px-5 sm:px-8 text-center reveal">
-    <p class="font-heading italic text-2xl sm:text-3xl lg:text-[34px] text-txt leading-[1.5] sm:leading-[1.55]">We started WEFANCY with a simple belief: the things closest to your body should be the things you care about most. Our pillows are designed in-house and made with love by craftspeople who understand that softness is a form of strength.</p>
-    <div class="w-12 h-px bg-accent mx-auto mt-10"></div>
+  <div class="max-w-3xl mx-auto px-5 sm:px-8 text-center">
+    <p id="brandStatement" class="font-heading italic text-2xl sm:text-3xl lg:text-[34px] text-txt leading-[1.5] sm:leading-[1.55]" data-text="We started WEFANCY with a simple belief: the things closest to your body should be the things you care about most. Our pillows are designed in-house and made with love by craftspeople who understand that softness is a form of strength."></p>
+    <div class="w-12 h-px bg-accent mx-auto mt-10 reveal"></div>
   </div>
 </section>
 
@@ -162,12 +282,12 @@ tailwind.config = {
   <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
     <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
       <!-- Left: Text -->
-      <div class="reveal">
-        <p class="text-[11px] font-semibold tracking-[2px] uppercase text-accent mb-5">Our Beginning</p>
-        <h2 class="font-heading text-3xl sm:text-4xl text-txt leading-snug mb-6">Designed with purpose.<br>Made for every body.</h2>
-        <p class="text-txt-light text-[15px] leading-relaxed mb-5">It started with a problem we knew too well: during pregnancy, there was no pillow that actually worked. The ones on the market were either too bulky, too hot, or fell apart in weeks. We set out to build something better.</p>
-        <p class="text-txt-light text-[15px] leading-relaxed mb-8">Three years, 47 prototypes, and hundreds of conversations with real moms later — we had our answer. A pillow that supports you in every position, stays cool all night, and lasts well beyond those nine months.</p>
-        <blockquote class="border-l-[3px] border-accent pl-5 py-1">
+      <div>
+        <p class="reveal text-[11px] font-semibold tracking-[2px] uppercase text-accent mb-5">Our Beginning</p>
+        <h2 class="reveal reveal-delay-1 font-heading text-3xl sm:text-4xl text-txt leading-snug mb-6">Designed with purpose.<br>Made for every body.</h2>
+        <p class="reveal reveal-delay-2 text-txt-light text-[15px] leading-relaxed mb-5">It started with a problem we knew too well: during pregnancy, there was no pillow that actually worked. The ones on the market were either too bulky, too hot, or fell apart in weeks. We set out to build something better.</p>
+        <p class="reveal reveal-delay-2 text-txt-light text-[15px] leading-relaxed mb-8">Three years, 47 prototypes, and hundreds of conversations with real moms later — we had our answer. A pillow that supports you in every position, stays cool all night, and lasts well beyond those nine months.</p>
+        <blockquote class="reveal reveal-delay-3 border-l-[3px] border-accent pl-5 py-1">
           <p class="font-heading italic text-xl text-primary leading-relaxed mb-2">"We didn't want to make another pillow. We wanted to rethink what comfort means — from the inside out."</p>
           <cite class="text-txt-muted text-sm not-italic font-medium">— WEFANCY Founding Team</cite>
         </blockquote>
@@ -214,7 +334,7 @@ tailwind.config = {
         </div>
       </div>
     </div>
-    <div class="text-center mt-8 mb-8">
+    <div class="text-center mt-8 mb-8 reveal">
       <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-dark transition">Read All Reviews
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
       </a>
@@ -226,26 +346,26 @@ tailwind.config = {
 <section class="bg-primary-dark">
   <div class="grid md:grid-cols-2">
     <!-- Panel 1 -->
-    <div class="relative reveal">
+    <div class="relative">
       <div class="aspect-[4/3] md:aspect-auto md:h-full">
         <img src="https://images.unsplash.com/photo-1631049552057-403cdb8f0658?w=700&q=80" alt="Linen fabric closeup" class="w-full h-full object-cover opacity-40">
       </div>
       <div class="absolute inset-0 flex items-center justify-center p-8 sm:p-12">
         <div class="max-w-sm text-center">
-          <h3 class="font-heading text-2xl sm:text-3xl text-white leading-snug mb-4">Only the highest-quality materials, period.</h3>
-          <p class="text-white/55 text-[15px] leading-relaxed">We source only with suppliers who meet our standards for softness, durability, and safety. Every fiber is hypoallergenic and OEKO-TEX certified — because what touches your skin matters.</p>
+          <h3 class="reveal font-heading text-2xl sm:text-3xl text-white leading-snug mb-4">Only the highest-quality materials, period.</h3>
+          <p class="reveal reveal-delay-1 text-white/55 text-[15px] leading-relaxed">We source only with suppliers who meet our standards for softness, durability, and safety. Every fiber is hypoallergenic and OEKO-TEX certified — because what touches your skin matters.</p>
         </div>
       </div>
     </div>
     <!-- Panel 2 -->
-    <div class="relative reveal reveal-delay-1">
+    <div class="relative">
       <div class="aspect-[4/3] md:aspect-auto md:h-full">
         <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80" alt="Towel textures" class="w-full h-full object-cover opacity-40">
       </div>
       <div class="absolute inset-0 flex items-center justify-center p-8 sm:p-12">
         <div class="max-w-sm text-center">
-          <h3 class="font-heading text-2xl sm:text-3xl text-white leading-snug mb-4">Made with love by the world's best.</h3>
-          <p class="text-white/55 text-[15px] leading-relaxed">Our products are crafted by experienced artisans who understand that comfort is in the details. Every stitch, every seam, every fill adjustment is done by hand — not by algorithm.</p>
+          <h3 class="reveal font-heading text-2xl sm:text-3xl text-white leading-snug mb-4">Made with love by the world's best.</h3>
+          <p class="reveal reveal-delay-1 text-white/55 text-[15px] leading-relaxed">Our products are crafted by experienced artisans who understand that comfort is in the details. Every stitch, every seam, every fill adjustment is done by hand — not by algorithm.</p>
         </div>
       </div>
     </div>
@@ -285,73 +405,6 @@ tailwind.config = {
   </div>
 </section>
 
-<!-- ========== 9. JOIN OUR COMMUNITY (NEW) ========== -->
-<section class="bg-bg-alt py-16 sm:py-24 overflow-hidden">
-  <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
-    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <!-- Left: CTA -->
-      <div class="reveal">
-        <p class="text-[11px] font-semibold tracking-[2px] uppercase text-accent mb-4">Join the Community</p>
-        <h2 class="font-heading text-3xl sm:text-4xl text-txt leading-snug mb-4">Rest better.<br>Live better. Together.</h2>
-        <p class="text-txt-light text-[15px] leading-relaxed mb-6 max-w-md">Join 150,000+ people who've made comfort a priority. Get early access to new products, sleep tips from experts, and 10% off your first order.</p>
-
-        <!-- Email subscribe -->
-        <form class="flex gap-3 max-w-md mb-6" onsubmit="event.preventDefault();">
-          <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-full border border-border bg-white text-sm text-txt placeholder:text-txt-muted focus:outline-none focus:border-primary transition">
-          <button type="submit" class="bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-6 py-3 rounded-full transition-all duration-300 flex-shrink-0">Subscribe</button>
-        </form>
-
-        <p class="text-xs text-txt-muted">No spam, ever. Unsubscribe anytime.</p>
-
-        <!-- Social proof -->
-        <div class="flex items-center gap-4 mt-8">
-          <div class="flex -space-x-2">
-            <div class="w-8 h-8 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-xs font-semibold text-accent">A</div>
-            <div class="w-8 h-8 rounded-full bg-primary/20 border-2 border-white flex items-center justify-center text-xs font-semibold text-primary">M</div>
-            <div class="w-8 h-8 rounded-full bg-success/20 border-2 border-white flex items-center justify-center text-xs font-semibold text-success">J</div>
-            <div class="w-8 h-8 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-xs font-semibold text-accent">S</div>
-            <div class="w-8 h-8 rounded-full bg-primary/15 border-2 border-white flex items-center justify-center text-[10px] font-semibold text-primary">+5k</div>
-          </div>
-          <p class="text-xs text-txt-muted">Joined this month</p>
-        </div>
-      </div>
-
-      <!-- Right: UGC-style image grid -->
-      <div class="grid grid-cols-3 gap-3 reveal reveal-delay-1">
-        <div class="space-y-3">
-          <div class="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=300&h=300&fit=crop" alt="Community bedroom" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-          </div>
-          <div class="aspect-[3/4] rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=300&h=400&fit=crop" alt="Community living room" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-          </div>
-        </div>
-        <div class="space-y-3 pt-6">
-          <div class="aspect-[3/4] rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=300&h=400&fit=crop" alt="Community morning" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-          </div>
-          <div class="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=300&h=300&fit=crop" alt="Community bedroom design" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-          </div>
-        </div>
-        <div class="space-y-3 pt-2">
-          <div class="aspect-square rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=300&h=300&fit=crop" alt="Community bedding" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-          </div>
-          <div class="aspect-[3/4] rounded-xl overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1617325247661-675ab386e5bb?w=300&h=400&fit=crop" alt="Community kitchen" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-            <div class="absolute inset-0 bg-primary/60 flex items-center justify-center rounded-xl">
-              <div class="text-center">
-                <p class="text-white font-semibold text-sm mb-1">@wefancy</p>
-                <p class="text-white/70 text-xs">Follow us</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ========== 10. COMFORT PROMISE ========== -->
 <section class="bg-primary-dark py-12 sm:py-16">
@@ -386,7 +439,9 @@ tailwind.config = {
 <!-- ========== 11. FOOTER ========== -->
 <footer class="bg-bg-alt">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-16 pb-8">
-    <div class="mb-10"><a href="/"><img src="public/logo.png" alt="WEFANCY" class="h-7"></a></div>
+    <div class="mb-10">
+      <a href="/"><img src="public/logo.png" alt="WEFANCY" class="h-7"></a>
+    </div>
     <hr class="border-border mb-10">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
       <div>
@@ -397,6 +452,7 @@ tailwind.config = {
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Functional Pillows</a>
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Premium Towels</a>
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Bundles</a>
+          <a href="#" class="text-[13px] text-sale font-medium hover:text-sale/80 transition">Sale</a>
         </div>
       </div>
       <div>
@@ -405,6 +461,7 @@ tailwind.config = {
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">FAQ</a>
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Shipping &amp; Returns</a>
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Care Guide</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Size Guide</a>
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Track Order</a>
         </div>
       </div>
@@ -414,6 +471,7 @@ tailwind.config = {
           <a href="our-story.html" class="text-[13px] text-txt-light hover:text-primary transition">Our Story</a>
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Reviews</a>
           <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Press</a>
+          <a href="#" class="text-[13px] text-txt-light hover:text-primary transition">Careers</a>
           <a href="blog.html" class="text-[13px] text-txt-light hover:text-primary transition">Blog</a>
         </div>
       </div>
@@ -426,6 +484,7 @@ tailwind.config = {
         <div class="flex gap-3 mt-5">
           <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Instagram"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
           <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Facebook"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="Pinterest"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"/></svg></a>
           <a href="#" class="w-9 h-9 rounded-full border border-border flex items-center justify-center text-txt-light hover:text-primary hover:border-primary transition" aria-label="TikTok"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
         </div>
       </div>
@@ -438,11 +497,13 @@ tailwind.config = {
         <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">AMEX</span>
         <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">PayPal</span>
         <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Apple Pay</span>
+        <span class="text-xs border border-border rounded px-1.5 py-0.5 font-medium">Shop Pay</span>
       </div>
       <p class="text-txt-muted text-[11px]">&copy; 2026 WEFANCY. All rights reserved.</p>
       <div class="flex gap-4">
         <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Terms of Service</a>
         <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Privacy Policy</a>
+        <a href="#" class="text-[11px] text-txt-muted hover:text-txt transition">Accessibility</a>
       </div>
     </div>
   </div>
@@ -462,6 +523,17 @@ function closeAnnouncementBar() {
   setTimeout(() => { bar.style.display = 'none'; }, 300);
   document.getElementById('mainNav').style.top = '0';
 }
+
+// Mega menu sync
+(function() {
+  var nav = document.getElementById('mainNav');
+  var mega = document.getElementById('megaMenu');
+  if (!nav || !mega) return;
+  function syncMega() { mega.style.top = (nav.offsetTop + nav.offsetHeight) + 'px'; }
+  syncMega();
+  window.addEventListener('scroll', syncMega, { passive: true });
+  new MutationObserver(syncMega).observe(nav, { attributes: true, attributeFilter: ['style'] });
+})();
 
 // Nav hide on scroll
 (function() {
@@ -513,6 +585,35 @@ function closeAnnouncementBar() {
     });
   }, { threshold: 0.5 });
   document.querySelectorAll('.stat-number').forEach(el => statObserver.observe(el));
+})();
+
+// Word-by-word scroll reveal for brand statement
+(function() {
+  var el = document.getElementById('brandStatement');
+  if (!el) return;
+  var text = el.dataset.text;
+  var words = text.split(' ');
+  el.innerHTML = words.map(function(w) { return '<span class="word">' + w + '</span>'; }).join(' ');
+  var wordEls = el.querySelectorAll('.word');
+  var totalWords = wordEls.length;
+
+  function update() {
+    var rect = el.getBoundingClientRect();
+    var winH = window.innerHeight;
+    // Start revealing when section enters viewport, finish when it's centered
+    var sectionTop = rect.top;
+    var sectionH = rect.height;
+    // progress: 0 when section top hits bottom of viewport, 1 when section is ~40% up
+    var progress = Math.max(0, Math.min(1, (winH - sectionTop) / (winH * 0.6 + sectionH * 0.4)));
+    var litCount = Math.round(progress * totalWords);
+    wordEls.forEach(function(w, i) {
+      if (i < litCount) w.classList.add('lit');
+      else w.classList.remove('lit');
+    });
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
 })();
 
 // Mobile menu
